@@ -18,7 +18,7 @@ from geopy.geocoders import Nominatim
 coordonees = []
 
 with open('coordonnees_departements.csv','r') as f:
-    read = csv.DictReader(f,delimiter=',',fieldnames=['departement','coordonnee'])
+    read = csv.DictReader(f,delimiter=',',fieldnames=['Code','departement','coordonnee'])
     for ligne in read:
         coordonees.append("".join(ligne['coordonnee']).strip('][').split(', '))
 
@@ -166,3 +166,4 @@ m.save("temperature_map.html")
 
 # Ajouter une interface de visualisation en direct
 
+# ce qu'il reste à faire :  supprimer les doublons dans le csv
