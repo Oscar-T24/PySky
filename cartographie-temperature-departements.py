@@ -1,7 +1,10 @@
+
 import pandas as pd
 import folium
 from creation_departements_temp import randomizer
 import csv
+import numpy
+from random import randint
 
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 
@@ -66,7 +69,6 @@ with open("departements-france.csv","r") as f:
         temperatures.append(temperature)
         #print(coordinate_temperature(departement_coordinate(row[1])),row[1])
 
-
 # ecrire le dioctinnaire dans temperatures
 with open('temperature_data.csv','w') as f:
     fieldnames = ['Code', 'Temperature']
@@ -74,9 +76,7 @@ with open('temperature_data.csv','w') as f:
     ecr.writeheader()
     for e in temperatures:
         ecr.writerow(e)
-
 '''
-
 # Load the GeoJSON file of French department boundaries
 geojson_url = "https://france-geojson.gregoiredavid.fr/repo/departements.geojson"
 geojson_data = folium.GeoJson(geojson_url).data
@@ -110,7 +110,7 @@ folium.raster_layers.ImageOverlay(
     name = 'Sun'
 ).add_to(m)
 """
-folium.Choropleth(
+folium.Choropleth( # on instancie l'element chloropleth pour pouvoir le modifier apres sa definition
     geo_data=geojson_data,
     name="Temperature",
     data=merged_data,
@@ -121,8 +121,43 @@ folium.Choropleth(
     line_opacity=0.5,
     legend_name="Temperature (°C)",
     style_function=lambda x: {'fillColor': 'transparent', 'color': 'blue', 'weight': 2},
+    highlight=True,
+    overlay=True,
 ).add_to(m)
 
+#folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
+#https://www.python-graph-gallery.com/312-add-markers-on-folium-map?utm_content=cmp-true
+
+html=f"""
+        <h1>LOL</h1>
+        <p>You can use any html here! Let's do a list:</p>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+        </ul>
+        </p>
+        <p>And that's a <a href="https://www.python-graph-gallery.com">link</a></p>
+    """
+coordonees = []
+
+with open('departements-france.csv','r') as f:
+    read = csv.DictReader(f,delimiter=',')
+    for ligne in read:
+        coordonees.append(list(departement_coordinate(ligne['nom_departement'])))
+        
+for i in range(len(geojson_df)):
+    iframe = folium.IFrame(html=html, width=200, height=200)
+    popup = folium.Popup(iframe, max_width=2650)
+    weather = 'image0' # juste pour le test
+    folium.Marker(
+                location=coordonees[i],
+                popup=popup,
+                icon=folium.DivIcon(html=f"""
+                    <div>
+                    <img src='http://93.14.22.225/FLASK/flask/{weather}.png'height='20px'width='auto'>
+                    </div>"""),
+    ).add_to(m)
+    # juste une image de test : on prend un soleil ici par exemple
 
 '''
 # Bring the image overlay to the front
@@ -130,6 +165,8 @@ fg = folium.FeatureGroup().add_to(m)
 fg.add_child(folium.LayerControl())
 #m.get_name('Sun')
 '''
+folium.TileLayer('cartodbpositron', name='cartodbpositron').add_to(m)
+
 folium.LayerControl().add_to(m)
 
 # Display the map
@@ -161,3 +198,4 @@ if __name__ == "__main__":
 m.save("temperature_map.html")
 
 # Ajouter une interface de visualisation en direct
+

@@ -16,3 +16,4 @@ def randomizer():
             fichier.append([noms_departements[i],randint(1,40)])
 
         ecr.writerows(fichier)
+randomizer()
