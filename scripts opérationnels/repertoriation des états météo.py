@@ -112,5 +112,6 @@ grouped = df.groupby('Code')['etat'].value_counts()
 new_df = pd.DataFrame({'etat': grouped.groupby(level=0).idxmax().apply(lambda x: x[1])}).reset_index()
 temp_df = pd.read_csv('temperature_data.csv')
 f_df = pd.merge(temp_df, new_df,  on='Code', how='inner')
+
 f_df.to_csv('tableau_finalv2.csv', index=False)
 

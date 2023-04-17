@@ -25,8 +25,8 @@ def coordinate_temperature(coordonees):
 
     # Process JSON data
     units = data["properties"]["meta"]["units"]
-    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
-
+    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]  
+    print(data["properties"]["timeseries"][0]["data"]["instant"]["details"])
     return weather['air_temperature'] # la temperature du departement
 
 temperatures = []
