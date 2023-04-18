@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 
-def truncate_sky(image_path):
+def truncate_sky(img):
     # Load the image and convert it to the HSV color space
-    img = cv2.imread(image_path)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Define the range of sky colors in HSV color space
@@ -36,11 +35,10 @@ def truncate_sky(image_path):
     # Extract the sky region from the original image and save it
     sky = img[y:y+h, x:x+w]
     cv2.imwrite('sky.jpg', sky)
-    return w,h
+    return w,h,sky
 
-def truncate_sky2(image_path):
+def truncate_sky2(img):
     # Load the image and convert it to the HSV color space
-    img = cv2.imread(image_path)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Define the range of sky colors in HSV color space
@@ -72,19 +70,20 @@ def truncate_sky2(image_path):
 
     # Extract the sky region from the original image and save it
     sky = img[y:y+h, x:x+w]
-    cv2.imwrite('sky.jpg', sky)
-    return w,h
+    return w,h,sky
 
 
-def tronquer(path):
-    image = cv2.imread(path)
-    dimensions = image.shape
+def tronquer(image):
     # height, width, number of channels in image
     height = image.shape[0]
     width = image.shape[1]
 
-    w,h = truncate_sky('testnuage3.jpg')
+    w,h,sky = truncate_sky(image)
     if w < width // 2 and h < height // 2:
-        w,h = truncate_sky2('testnuage3.jpg')
+        w,h,sky = truncate_sky2(image)
         if w < width // 2 and h < height // 2:
-            cv2.imwrite('sky.jpg',image)
+            return image
+        else:
+            return sky
+    else: 
+        return sky

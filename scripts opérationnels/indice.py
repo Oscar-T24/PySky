@@ -17,6 +17,3 @@ def determine_weather_index(sky_image):
     
     return normalized_index
 
-sky_path = 'sky.jpg'
-sky_image = cv2.imread(sky_path)
-print(determine_weather_index(sky_image))
