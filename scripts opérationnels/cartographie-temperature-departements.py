@@ -119,7 +119,7 @@ for i in range(len(coordonees)):
                         popup=popup,
                         icon=folium.DivIcon(html=f"""
                             <div>
-                            <img src='http://93.14.22.225/{weather}.png'height='20px'width='auto'>
+                            <img src='http://93.14.22.225/{weather}.png'height='35px'width='auto'>
                             </div>"""),
             ).add_to(m)
            

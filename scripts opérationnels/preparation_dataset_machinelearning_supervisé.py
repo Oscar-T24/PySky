@@ -170,5 +170,5 @@ if __name__ == "__main__":
             
             # creer / actualiser un csv pour létat météo d'un departement
             lect = csv.DictWriter(f,fieldnames=['Code','coordonnees','indice','temperature','humidite','weather'])
-            lect.writeheader()
+            #lect.writeheader() juste pour la première fois
             lect.writerows(dico_etats_meteos)

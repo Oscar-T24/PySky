@@ -124,10 +124,10 @@ def alocation_meteo():
         }
         merged.append(merged_dict)
         a_ecrire = []
-        for i in range(len(merged)):
-            a_ecrire.append({'Code':merged[i]['Code'],'temperature':merged[i]['temperature'],'etat':merged[i]['weather']})
+        for i in range(1,len(merged)):
+            a_ecrire.append({'Code':merged[i]['Code'],'Temperature':merged[i]['temperature'],'etat':merged[i]['weather']})
     with open('tableau_finalv2.csv','w') as f:
-        ecr = csv.DictWriter(f,delimiter=',',fieldnames=['Code','temperature','etat'])
+        ecr = csv.DictWriter(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
         ecr.writeheader()
         ecr.writerows(a_ecrire)
     
