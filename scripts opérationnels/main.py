@@ -1,15 +1,12 @@
-import os
+import subprocess
 import time
 
 time_depart = time.time()
-with open("recuperation_donneswebcam.py") as f:
-    exec(f.read())
+#subprocess.run(["python3", "recuperation_donneswebcam.py"])
 #exec('recuperation_donneswebcam.py')
 print('etape 1 finie : actualisation de la base de donnée webcams')
-with open("preparation_dataset_machinelearning_supervisé.py") as f:
-    exec(f.read())
+subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
 print('etape 2 finie : preparation du dataset de supervisation')
-with open("KNN_meteo.py") as f:
-    exec(f.read())
+subprocess.run(["python3", "KNN_meteo.py"])
 print('etape 3 finie : analyse de la météo')
 print('temps ecoulé pour tout faire : ',time.time() - time_depart)
