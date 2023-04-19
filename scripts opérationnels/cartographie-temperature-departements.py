@@ -101,7 +101,7 @@ with open('tableau_finalv2.csv','r') as f:
 for i in range(len(coordonees)):
     iframe = folium.IFrame(html=html, width=200, height=200)
     popup = folium.Popup(iframe, max_width=2650)
-    weather = ''
+    weather = 'cross'
     try:
         match dico_temperatures_etat[i]['etat']:
                 case 'Cloudy':
@@ -113,7 +113,7 @@ for i in range(len(coordonees)):
                 case 'Foggy':
                     weather = 'fog'
                 case other:
-                    weather = 'sun'
+                    weather = 'cross'
         folium.Marker(
                         location=coordonees[i],
                         popup=popup,
