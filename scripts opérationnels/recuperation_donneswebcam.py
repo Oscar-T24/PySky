@@ -10,11 +10,14 @@ import csv
 # set up Selenium driver
 
 # loop through links
+'''
 with open('donnees_cameras','w') as f:
     ecr = csv.DictWriter(f,delimiter=',',fieldnames=['lien', 'departement'])
     ecr.writeheader()
     ecr.writerow({'lien': 'test', 'departement': 'test'})
-
+'''
+global cameras
+cameras = []
 for identifiant in range(0,700):
 
     driver = webdriver.Firefox()
@@ -39,11 +42,11 @@ for identifiant in range(0,700):
         h3_text = h3_tag.text.strip()
     except AttributeError:
         h3_text = "NULL"
-
+    cameras.append({'lien': link[:25]+img_src, 'departement': h3_text})
+    driver.close()
     # save the img src to a CSV file
-    with open('donnees_cameras.csv', mode='w') as file:
+with open('donnees_cameras.csv', mode='w') as file:
         writer = csv.DictWriter(file,fieldnames=['lien','departement'])
         writer.writeheader()
-        writer.writerow({'lien': link[:25]+img_src, 'departement': h3_text})
+        writer.writerows(cameras)
 
-    driver.close()

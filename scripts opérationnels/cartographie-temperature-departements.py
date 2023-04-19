@@ -62,9 +62,15 @@ folium.raster_layers.ImageOverlay(
     name = 'Sun'
 ).add_to(m)
 """
+from datetime import datetime
+
+# datetime object containing current date and time
+now = datetime.now()
+dt_string = now.strftime("%d %H:%M")
+
 folium.Choropleth( # on instancie l'element chloropleth pour pouvoir le modifier apres sa definition
     geo_data=geojson_data,
-    name="Temperature",
+    name=f"Temperature à {dt_string}",
     data=merged_data,
     columns=["properties.nom", "Temperature"],
     key_on="feature.properties.nom",
@@ -101,7 +107,7 @@ with open('tableau_finalv2.csv','r') as f:
 for i in range(len(coordonees)):
     iframe = folium.IFrame(html=html, width=200, height=200)
     popup = folium.Popup(iframe, max_width=2650)
-    weather = 'cross'
+    weather = ''
     try:
         match dico_temperatures_etat[i]['etat']:
                 case 'Cloudy':
@@ -113,7 +119,7 @@ for i in range(len(coordonees)):
                 case 'Foggy':
                     weather = 'fog'
                 case other:
-                    weather = 'cross'
+                    weather = 'sun'
         folium.Marker(
                         location=coordonees[i],
                         popup=popup,
@@ -124,7 +130,8 @@ for i in range(len(coordonees)):
             ).add_to(m)
            
     except IndexError:
-        print('pas assez de departements')
+        #print('pas assez de departements')
+        pass
 
 '''
 # Bring the image overlay to the front
@@ -148,7 +155,36 @@ from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
+from flask import Flask, render_template_string, url_for
+
+app = Flask(__name__)
+
 @app.route("/")
+def map():
+    # ... (the code that generates the map)
+    # Save the map to a temporary file and get the HTML as a string
+    tmp_file = "tmp_map.html"
+    m.save(tmp_file)
+    with open(tmp_file, "r") as f:
+        map_html = f.read()
+    # Generate the URL for the remote favicon
+    favicon_url = "http://93.14.22.225/favicon.ico"
+    # Return the HTML string with the favicon link tag
+    return render_template_string(
+        f"<html><head><link rel='shortcut icon' href='{favicon_url}'></head><body>{map_html}</body></html>"
+    )
+
+if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0', port=4650)
+
+m.save("temperature_map.html")
+
+# Ajouter une interface de visualisation en direct
+
+# ce qu'il reste à faire :  supprimer les doublons dans le csv
+"""
+    @app.route("/")
+'''
 def map():
     # ... (the code that generates the map)
     # Save the map to a temporary file and get the HTML as a string
@@ -161,9 +197,5 @@ def map():
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=4650)
-
-m.save("temperature_map.html")
-
-# Ajouter une interface de visualisation en direct
-
-# ce qu'il reste à faire :  supprimer les doublons dans le csv
+'''
+"""#a#aaaa
