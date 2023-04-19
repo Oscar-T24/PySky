@@ -160,7 +160,7 @@ def map():
     return render_template_string(map_html)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0', port=4650)
 
 m.save("temperature_map.html")
 
