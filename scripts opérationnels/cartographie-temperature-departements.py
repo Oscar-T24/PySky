@@ -143,7 +143,7 @@ from IPython.display import IFrame
 
 map_html = m._repr_html_()
 IFrame(width=1000, height=500, src=map_html)
-'''
+
 from flask import Flask, render_template_string
 
 app = Flask(__name__)
@@ -161,7 +161,7 @@ def map():
 
 if __name__ == "__main__":
     app.run(debug=True)
-'''
+
 m.save("temperature_map.html")
 
 # Ajouter une interface de visualisation en direct
