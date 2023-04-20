@@ -125,7 +125,7 @@ def alocation_meteo():
         a_ecrire = []
         for i in range(1,len(merged)):
             a_ecrire.append({'Code':merged[i]['Code'],'Temperature':merged[i]['temperature'],'etat':merged[i]['weather']})
-    
+
     global codes_completer 
     codes_completer = []
 
@@ -140,10 +140,11 @@ def alocation_meteo():
         for i in range(1,len(codes_completer)):
             coordonnee = codes_completer[i]['coordonnee'].strip('][').split(', ')
             coordonnee = [float(e) for e in coordonnee]
-            if codes_completer[i]['Code'] in a_ecrire[i]['Code']:
-                ecr.writerow(a_ecrire[i])
-            else:
-                code = {'Code':codes_completer['Code'],'Temperature':coordinate_temperature(coordonnee)['air_temperature'],'etat':'NULL'}
+            try:
+                if codes_completer[i]['Code'] in a_ecrire[i]['Code']:
+                    ecr.writerow(a_ecrire[i])
+            except IndexError:
+                code = {'Code':codes_completer[i]['Code'],'Temperature':coordinate_temperature(coordonnee)['air_temperature'],'etat':'NULL'}
                 ecr.writerow(code)
 
     

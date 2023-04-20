@@ -107,7 +107,7 @@ html=f"""
 
 
 dico_temperatures_etat = []
-with open('tableau_finalv3.csv','r') as f:
+with open('tableau_finalv2.csv','r') as f:
     read = csv.DictReader(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
     for ligne in read:
         dico_temperatures_etat.append(ligne)
@@ -115,8 +115,8 @@ with open('tableau_finalv3.csv','r') as f:
 for i in range(len(coordonees)):
     iframe = folium.IFrame(html=html, width=200, height=200)
     popup = folium.Popup(iframe, max_width=2650)
-    weather = ''
     try:
+        weather = 'cross'
         match dico_temperatures_etat[i]['etat']:
                 case 'Cloudy':
                     weather = 'cloud'
@@ -126,8 +126,6 @@ for i in range(len(coordonees)):
                     weather = 'sun'
                 case 'Foggy':
                     weather = 'fog'
-                case other:
-                    weather = 'sun'
         folium.Marker(
                         location=coordonees[i],
                         popup=popup,
@@ -203,4 +201,4 @@ def map():
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=4650)
 '''
-"""#aaaaaaaaaaaaaaaaaaaaaaa
+"""#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
