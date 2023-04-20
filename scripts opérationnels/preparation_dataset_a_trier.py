@@ -122,6 +122,8 @@ with open('donnees_cameras.csv','r',encoding="ISO-8859-1") as f:
 
 dico_etats_meteos = sorted(dico_etats_meteos,key=lambda dico_etats_meteos: dico_etats_meteos['Code'])
 
+# on comble les departements sans infos avec les temperatures
+
 with open('donnes_a_classifie.csv','w') as f:
     # creer / actualiser un csv pour létat météo d'un departement
     lect = csv.DictWriter(f,fieldnames=['Code','coordonnees','indice','temperature','humidite','weather'])

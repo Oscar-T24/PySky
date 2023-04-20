@@ -40,6 +40,13 @@ temperature_data = pd.read_csv("tableau_finalv2.csv", dtype={"Code": str})
 # Merge the dataset with the GeoJSON file using the department code as the common key
 merged_data = pd.merge(geojson_df, temperature_data, left_on="properties.code", right_on="Code")
 
+'''
+list_of_dicts = merged_data.to_dict(orient='records')
+print(list_of_dicts)
+import time
+time.sleep(5)
+'''
+
 # Create a choropleth map of the temperature
 m = folium.Map(location=[46.5, 2], zoom_start=6)
 # Add a layer control to the map
@@ -100,7 +107,7 @@ html=f"""
 
 
 dico_temperatures_etat = []
-with open('tableau_finalv2.csv','r') as f:
+with open('tableau_finalv3.csv','r') as f:
     read = csv.DictReader(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
     for ligne in read:
         dico_temperatures_etat.append(ligne)

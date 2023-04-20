@@ -1,5 +1,4 @@
-# TP Choixpeau magique
-
+from preparation_dataset_a_trier import coordinate_temperature
 import csv
 
 def distance(el1, el2):
@@ -126,9 +125,29 @@ def alocation_meteo():
         a_ecrire = []
         for i in range(1,len(merged)):
             a_ecrire.append({'Code':merged[i]['Code'],'Temperature':merged[i]['temperature'],'etat':merged[i]['weather']})
+    
+    global codes_completer 
+    codes_completer = []
+
+    with open('coordonnees_departements.csv','r') as f: # pour combler les trous
+        lect = csv.DictReader(f,fieldnames=['Code','departement','coordonnee'])
+        for row in lect:
+            codes_completer.append(row)
+
     with open('tableau_finalv2.csv','w') as f:
         ecr = csv.DictWriter(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
         ecr.writeheader()
-        ecr.writerows(a_ecrire)
+        for i in range(1,len(codes_completer)):
+            coordonnee = codes_completer[i]['coordonnee'].strip('][').split(', ')
+            coordonnee = [float(e) for e in coordonnee]
+            if codes_completer[i]['Code'] in a_ecrire[i]['Code']:
+                ecr.writerow(a_ecrire[i])
+            else:
+                code = {'Code':codes_completer['Code'],'Temperature':coordinate_temperature(coordonnee)['air_temperature'],'etat':'NULL'}
+                ecr.writerow(code)
+
     
 alocation_meteo()
+
+
+
