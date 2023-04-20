@@ -5,6 +5,7 @@ import time
 subprocess.run(["python3", "recuperation_donneswebcam.py"])
 print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
+from datetime import datetime
 while True:
     time_depart = time.time()
     #subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
@@ -15,11 +16,13 @@ while True:
     print('etape 4 finie : analyse de la météo')
     #subprocess.run(["python3", "cartographie-temperature-departements.py"])
     #print('etape 5 finie :creation d"une carte')
-    print('temps ecoulé pour tout faire : ',time.time() - time_depart)
+    now = datetime.now()
+    dt_string = now.strftime("%d %H:%M")
+    print('temps ecoulé pour tout faire : (etape 2,3,4)',time.time() - time_depart)
     global temps
     temps = time.time() - time_depart
     with open('temps_ecoulement.txt','a') as f:
-        f.write(f'temps ecoule :{temps}s')
+        f.write(f'temps ecoule :{temps}s (etape 2,3,4) {dt_string}')
         f.write('\n')
     with open('cartographie-temperature-departements.py','a') as f: #ecrire sur le fichier cartographie pour relancer flask
         f.write('a')

@@ -66,7 +66,8 @@ from datetime import datetime
 
 # datetime object containing current date and time
 now = datetime.now()
-dt_string = now.strftime("%d %H:%M")
+dt_string = now.strftime("%H:%M")
+print(dt_string)
 
 folium.Choropleth( # on instancie l'element chloropleth pour pouvoir le modifier apres sa definition
     geo_data=geojson_data,
@@ -151,9 +152,6 @@ from IPython.display import IFrame
 map_html = m._repr_html_()
 IFrame(width=1000, height=500, src=map_html)
 
-from flask import Flask, render_template_string
-
-app = Flask(__name__)
 
 from flask import Flask, render_template_string, url_for
 
@@ -198,4 +196,4 @@ def map():
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=4650)
 '''
-"""#a#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"""#aaaaaaaaaaaaaaaaaaaaaaa

@@ -1368,3 +1368,26 @@ temps ecoule :257.18232822418213s
 temps ecoule :247.38708519935608s
 temps ecoule :244.5605959892273s
 temps ecoule :234.6485893726349s
+temps ecoule :271.99297618865967s
+temps ecoule :249.87182068824768s
+temps ecoule :237.98767161369324s (etape 2,3,4) 20 08:28
+temps ecoule :243.52072477340698s (etape 2,3,4) 20 08:32
+temps ecoule :244.26673817634583s (etape 2,3,4) 20 08:36
+temps ecoule :253.52088069915771s (etape 2,3,4) 20 08:41
+temps ecoule :247.7822036743164s (etape 2,3,4) 20 08:45
+temps ecoule :253.8127579689026s (etape 2,3,4) 20 08:49
+temps ecoule :255.4628598690033s (etape 2,3,4) 20 08:53
+temps ecoule :260.4949188232422s (etape 2,3,4) 20 08:58
+temps ecoule :252.17082691192627s (etape 2,3,4) 20 09:02
+temps ecoule :237.65353441238403s (etape 2,3,4) 20 09:06
+temps ecoule :232.19759964942932s (etape 2,3,4) 20 09:10
+temps ecoule :249.94779920578003s (etape 2,3,4) 20 09:14
+temps ecoule :235.0925006866455s (etape 2,3,4) 20 09:18
+temps ecoule :233.41319346427917s (etape 2,3,4) 20 09:22
+temps ecoule :246.84632015228271s (etape 2,3,4) 20 09:26
+temps ecoule :256.5494101047516s (etape 2,3,4) 20 09:30
+temps ecoule :245.30630707740784s (etape 2,3,4) 20 09:34
+temps ecoule :11537.751054763794s (etape 2,3,4) 20 12:46
+temps ecoule :22030.721361637115s pour la recuperation des données caméras
+temps ecoule :282.81472086906433s (etape 2,3,4) 20 12:51
+temps ecoule :223.59193325042725s (etape 2,3,4) 20 12:55
