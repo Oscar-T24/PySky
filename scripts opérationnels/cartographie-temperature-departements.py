@@ -136,7 +136,7 @@ for i in range(len(coordonees)):
             ).add_to(m)
            
     except IndexError:
-        #print('pas assez de departements')
+        print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondne tpas')
         pass
 
 '''
@@ -201,4 +201,4 @@ def map():
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=4650)
 '''
-"""#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"""#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

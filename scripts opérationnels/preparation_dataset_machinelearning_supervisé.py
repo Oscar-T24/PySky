@@ -100,7 +100,7 @@ with open('coordonnees_departements.csv','r') as f:
     lect = csv.DictReader(f,delimiter=',')
     try:
         for row in lect:
-            departements_numeros.append(row)
+                departements_numeros.append(row)
     except:
         pass
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             read = csv.DictReader(f,fieldnames=['lien','departement'])
             # DETERMINATION DE L'ÉTAT MÉTÉO
             for ligne in read: 
-                if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien'] and ligne != 'lien':
+                if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien'] and ligne['lien'] != 'lien':
                     url = ligne['lien'] 
                     if True:
                     #try: 

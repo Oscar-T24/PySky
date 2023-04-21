@@ -15,5 +15,5 @@ def determine_weather_index(sky_image):
     max_index = (255 / 255) + ((255 / (2*255)))
     normalized_index = index / max_index
     
-    return normalized_index
+    return normalized_index*100 # mulitplier par 100 pour qu'il prenne plus d'importance dans la mesure
 
