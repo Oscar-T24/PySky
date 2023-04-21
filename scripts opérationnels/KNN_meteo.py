@@ -1,5 +1,36 @@
-from preparation_dataset_a_trier import coordinate_temperature
+#from preparation_dataset_a_trier import coordinate_temperature
+import requests
 import csv
+import json
+
+def coordinate_temperature(coordonees):
+    """
+# Dans cet exemple nous allons utiliser le service météo du Meteorologisk institutt de Norvège
+# (api.met.no/weatherapi is an interface to a selection of data produced by MET Norway)
+# url: https://api.met.no/weatherapi/locationforecast/2.0/documentation
+
+# Grâce à Google Maps, nous trouvons que les coordonnées de l'IUT à Mont de Marsan sont
+# latitude 43.88566272770907, longitude -0.5092243304975015
+#
+# Ce qui nous donne l'URL suivante pour accéder aux prévisions météo au format JSON:
+# https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=43.88566272770907&lon=-0.5092243304975015
+# Fetch data from URL
+    """
+    latitude = coordonees[0]
+    longitude = coordonees[1]
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0',
+            'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
+    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}", headers=headers)
+    text = url.text
+
+    # Get JSON data
+    data = json.loads(text)
+    #print(data)
+
+    # Process JSON data
+    units = data["properties"]["meta"]["units"]
+    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]  
+    return weather
 
 def distance(el1, el2):
     """ dict, dict -> int
@@ -139,11 +170,34 @@ def alocation_meteo():
         lect = csv.DictReader(f,fieldnames=['Code','departement','coordonnee'])
         for row in lect:
             codes_complets.append(row)
-
+    codes_complets.pop(0)
+    '''
+        for i in range(len(a_ecrire)):
+            if 'etat' in a_ecrire[i].keys():
+                if a_ecrire[i]['etat'] != '':
+                    print(a_ecrire[i]['Code'],a_ecrire[i])
+    '''
+    #print(codes_complets[1])
+        # DEBOGAGE
     with open('tableau_finalv2.csv','w') as f:
         ecr = csv.DictWriter(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
         ecr.writeheader()
 
+        list1 = a_ecrire
+        list2 = codes_complets
+
+        merged_list = []
+        for item in list2:
+            match_found = False
+            for d in list1:
+                if d['Code'] == item['Code']:
+                    merged_list.append(d)
+                    match_found = True
+                    break
+            if not match_found:
+                new_dict = {'Code': item['Code'], 'coordonnee': item['coordonnee']}
+                merged_list.append(new_dict)
+        '''
                 # example input data
         list1 = a_ecrire # dictionnaire avcec des données potentiellements manquantes
         list2 = codes_complets # donnes pour completer les blancs de departements
@@ -176,9 +230,17 @@ def alocation_meteo():
 
         merged_list = sorted(merged_list, key=lambda merged_list: merged_list['Code']) 
         merged_list.pop(-1)
-        for i in range(1,len(merged_list)):
-            if 'Temperature' in merged_list[i]: # si le dictionnaire est bon
-                merged_list[i].pop('coordonnee')
+        
+        for i in range(len(merged_list)):
+            if etat in merged_list[i].keys():
+                if merged_list[i]['etat'] != '':
+                    print(merged_list[i]['Code'],merged_list[i])
+        
+        # DEBOGAGE
+        '''
+        for i in range(len(merged_list)):
+            if 'Temperature' in merged_list[i].keys(): # si le dictionnaire est bon
+                #merged_list[i].pop('coordonnee')
                 ecr.writerow(merged_list[i])
             else: 
                 coordonnee = merged_list[i]['coordonnee'].strip('][').split(', ')
