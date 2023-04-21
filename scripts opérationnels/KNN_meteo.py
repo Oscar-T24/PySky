@@ -176,7 +176,7 @@ def alocation_meteo():
 
         merged_list = sorted(merged_list, key=lambda merged_list: merged_list['Code']) 
         merged_list.pop(-1)
-        for i in range(len(merged_list)):
+        for i in range(1,len(merged_list)):
             if 'Temperature' in merged_list[i]: # si le dictionnaire est bon
                 merged_list[i].pop('coordonnee')
                 ecr.writerow(merged_list[i])
