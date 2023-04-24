@@ -89,7 +89,11 @@ with open('donnees_cameras.csv','r',encoding="ISO-8859-1") as f:
             except:
                 print("probleme de recuperation d'image")
                 continue # on skip l'iteration actuelle
-            no_departement = re.findall(r'\d+', ligne['departement'])
+            try:
+                no_departement = re.findall(r'\d+', ligne['departement'])
+            except TypeError:
+                print("Except no_departement")
+                continue
             if len(no_departement) == 1:
                 no_departement = ''.join(no_departement)
             else:
