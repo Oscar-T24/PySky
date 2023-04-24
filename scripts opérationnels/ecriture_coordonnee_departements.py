@@ -1,16 +1,7 @@
 
 import csv
-from prediction import prediction 
-import requests
-from PIL import Image
-from io import BytesIO
-import numpy
-import re
-import time
-import pandas as pd
 
 from geopy.geocoders import Nominatim
-import re
 coordonees = []
 
 def departement_coordinate(departement):
@@ -37,4 +28,3 @@ with open('coordonnees_departements.csv','w') as f:
     ecr.writeheader()
     ecr.writerows(coordonees)
 
-    

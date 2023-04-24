@@ -1,16 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.filedialog import askopenfilename
 import csv
 import requests
 from PIL import Image
 from io import BytesIO
 import numpy
-import re
-import pandas as pd
 import json
 import cv2
-import time
 
 
 from indice import determine_weather_index #argument : image cv2

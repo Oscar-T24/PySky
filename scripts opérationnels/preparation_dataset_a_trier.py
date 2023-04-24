@@ -6,11 +6,7 @@ import requests
 from PIL import Image
 from io import BytesIO
 import numpy
-import re
-import time
-import pandas as pd
 import json
-import cv2
 
 from geopy.geocoders import Nominatim
 import re

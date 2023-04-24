@@ -1,4 +1,3 @@
-#from preparation_dataset_a_trier import coordinate_temperature
 import requests
 import csv
 import json

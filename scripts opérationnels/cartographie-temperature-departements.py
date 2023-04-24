@@ -1,9 +1,6 @@
-
 import pandas as pd
 import folium
 import csv
-import numpy
-from random import randint
 
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 
