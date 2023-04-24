@@ -2,6 +2,11 @@ import cv2
 import numpy as np
 
 def truncate_sky(img):
+    '''
+    premiere fonction tronquer 
+    :param : image PIL / opencv2
+    :out : image tronquée ne gardant que le ciel
+    '''
     # Load the image and convert it to the HSV color space
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -74,6 +79,14 @@ def truncate_sky2(img):
 
 
 def tronquer(image):
+    '''
+    fonction tronquer principale
+    utilise deux fonctions avec des seuils differents : truncate_sky() et truncate_sky2()
+    truncate_sky2() n'est utilisée que si truncate_sky() renvoit une image trop petite
+    si l'image est toujours trop petite, renvoyer l'image originale
+    :param : image PIL / opencv2
+    :out : image tronquée ne gardant que le ciel
+    '''
     # height, width, number of channels in image
     height = image.shape[0]
     width = image.shape[1]

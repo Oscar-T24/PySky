@@ -1,0 +1,20 @@
+> ajouter une fonction qui geolocalise l'utilisateur et propose du contenu adapté à sa position :
+- mettre en bleu le departement ou la personne reside
+
+> faire une analyse OCR sur les images dont on ne peux pas déterminer le departement
+- scripts dans le dossier parent
+
+>ajouter un cloropleth sur l'humidité
+
+> combiner les scripts main2.py et recuperation_donnees_cameras.py en un seul scripts
+
+>pour 'l'operationalite' (critere des trophées) : faire une liste des attentes finales de la carte pour deboguer
+
+> expliciter les commentaires
+
+> pour les popups de la carte : ajouter des informations pratiques type : snapshot caméra + weather + données
+
+> specification des fonctions 
+
+> faire une option slider avec 'meteo passee'
+
