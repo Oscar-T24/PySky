@@ -20,7 +20,7 @@ with open('normale.csv', 'w', newline='') as n:
             for year in range(today.year - 11, today.year - 1):
                 data = pd.read_json(f'https://archive-api.open-meteo.com/v1/archive?latitude={x}&longitude={y}&start_date={year}-{mois}-15&end_date={year}-{mois}-15&daily=precipitation_sum&timezone=Europe%2FLondon')
                 #print(data.to_string())
-                precipitation = data.values.tolist()[1][-1][0] # 2 car c'est le troisième paramètre que l'on appelle de l'API
+                precipitation = data.values.tolist()[1][-1][0]
                 #print(precipitation)
                 normales_dep_mois.append(precipitation)
             normales_dep.append(round(sum(normales_dep_mois)/len(normales_dep_mois), 4))
