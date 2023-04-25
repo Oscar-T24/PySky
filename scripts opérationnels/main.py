@@ -16,6 +16,8 @@ while True:
     print('etape 4 finie : analyse de la météo')
     subprocess.run(["python3", "autres_donnees.py"]) # script qui associe un état météo à un département
     print('etape 5 finie : ajout des données météo secondaires')
+    subprocess.run(["python3", "modeles.py"]) # script qui associe un état météo à un département
+    print('etape 6 finie : evaluation des evenements climatiques')
     #subprocess.run(["python3", "cartographie-temperature-departements.py"])
     #print('etape 5 finie :creation d"une carte')
     now = datetime.now()

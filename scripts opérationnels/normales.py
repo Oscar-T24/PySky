@@ -7,7 +7,7 @@ today = datetime.now()
 f = open('coordonnees_departements.csv', 'r')
 coordonnees = list(csv.DictReader(f))
 
-with open('normale.csv', 'w', newline='') as n:
+with open('normale_precipitation.csv', 'w', newline='') as n:
     normale = csv.writer(n)
     normale.writerow(["Code", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
     for e in coordonnees:
