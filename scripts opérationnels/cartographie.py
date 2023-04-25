@@ -49,6 +49,7 @@ time.sleep(5)
 m = folium.Map(location=[46.5, 2], zoom_start=6)
 # Add a layer control to the map
 
+
 # bbox = [[latitudemin,longitudemin],[latitudemax,longitudemax]]
 '''
 folium.raster_layers.ImageOverlay(
@@ -100,7 +101,8 @@ for donnee in descripteurs:
         legend_name=f"{donnee}UNITÉ ICI",
         style_function=lambda x: {'fillColor': 'transparent', 'color': 'blue', 'weight': 2},
         highlight=True,
-        overlay=True,
+        show=False,
+        overlay= True,
     ).add_to(m)
 
 #folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
@@ -144,7 +146,7 @@ for i in range(len(coordonees)):
             ).add_to(m)
            
     except IndexError:
-        print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondne tpas')
+        print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondent pas')
         pass
 
 '''
