@@ -43,7 +43,6 @@ for e in coordonnees:
     index_ux.append(data.values.tolist()[7][-1][today.hour])
 
 
-print(air_quality)
 df = pd.read_csv('tableau_finalv2.csv')
 df["air_quality (pm2.5)"] = air_quality
 df["river_discharge (m3/s)"] = river_discharge
