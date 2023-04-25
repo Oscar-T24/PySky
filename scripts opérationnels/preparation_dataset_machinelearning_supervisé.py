@@ -147,7 +147,7 @@ if __name__ == "__main__":
                         #print("probleme avec l'indexation de l'image") 
                         #indice = 'NULL'
                     
-                    if no_departement != None :   
+                    if no_departement != None and etat_meteo != '' :   
                             coordonnes = sum([d['coordonnee'].strip('][').split(', ') for d in departements_numeros if d['Code'] == no_departement],[])
                             coordonnes = [float(i) for i in coordonnes]
                             try :
