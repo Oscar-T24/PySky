@@ -26,7 +26,6 @@ for e in coordonnees:
     data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={today.isoformat()[:10]}&end_date={today.isoformat()[:10]}")
     quality = data.values.tolist()[1][-1][today.hour]
     air_quality.append(quality)
-    
 
     # Débit moyen des rivières
     data = pd.read_json(f"https://flood-api.open-meteo.com/v1/flood?latitude={x}&longitude={y}&daily=river_discharge_mean&start_date={today.isoformat()[:10]}&end_date={today.isoformat()[:10]}&forecast_days=1")

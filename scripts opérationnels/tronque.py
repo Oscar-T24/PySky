@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
 
+
 def truncate_sky(img):
-    '''
-    premiere fonction tronquer 
+    """
+    premiere fonction tronquer
     :param : image PIL / opencv2
     :out : image tronquée ne gardant que le ciel
-    '''
+    """
     # Load the image and convert it to the HSV color space
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -18,7 +19,7 @@ def truncate_sky(img):
     mask = cv2.inRange(hsv, lower_sky, upper_sky)
 
     # Apply morphological opening to remove small noise and fill small gaps in the mask
-    kernel = np.ones((5,5), np.uint8)
+    kernel = np.ones((5, 5), np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
     # Apply morphological closing to fill any remaining gaps in the mask
@@ -38,9 +39,10 @@ def truncate_sky(img):
     x, y, w, h = cv2.boundingRect(max_contour)
 
     # Extract the sky region from the original image and save it
-    sky = img[y:y+h, x:x+w]
+    sky = img[y:y + h, x:x + w]
     cv2.imwrite('sky.jpg', sky)
-    return w,h,sky
+    return w, h, sky
+
 
 def truncate_sky2(img):
     # Load the image and convert it to the HSV color space
@@ -54,7 +56,7 @@ def truncate_sky2(img):
     mask = cv2.inRange(hsv, lower_sky, upper_sky)
 
     # Apply morphological opening to remove small noise and fill small gaps in the mask
-    kernel = np.ones((5,5), np.uint8)
+    kernel = np.ones((5, 5), np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
     # Apply edge detection to find the boundaries of the sky region
@@ -74,29 +76,29 @@ def truncate_sky2(img):
     x, y, w, h = cv2.boundingRect(max_contour)
 
     # Extract the sky region from the original image and save it
-    sky = img[y:y+h, x:x+w]
-    return w,h,sky
+    sky = img[y:y + h, x:x + w]
+    return w, h, sky
 
 
 def tronquer(image):
-    '''
+    """
     fonction tronquer principale
     utilise deux fonctions avec des seuils differents : truncate_sky() et truncate_sky2()
     truncate_sky2() n'est utilisée que si truncate_sky() renvoit une image trop petite
     si l'image est toujours trop petite, renvoyer l'image originale
     :param : image PIL / opencv2
     :out : image tronquée ne gardant que le ciel
-    '''
+    """
     # height, width, number of channels in image
     height = image.shape[0]
     width = image.shape[1]
 
-    w,h,sky = truncate_sky(image)
+    w, h, sky = truncate_sky(image)
     if w < width // 2 and h < height // 2:
-        w,h,sky = truncate_sky2(image)
+        w, h, sky = truncate_sky2(image)
         if w < width // 2 and h < height // 2:
             return image
         else:
             return sky
-    else: 
+    else:
         return sky

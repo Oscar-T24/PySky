@@ -2,6 +2,7 @@ import requests
 import csv
 import json
 
+
 def coordinate_temperature(coordonees):
     """
 # Dans cet exemple nous allons utiliser le service météo du Meteorologisk institutt de Norvège
@@ -18,27 +19,29 @@ def coordinate_temperature(coordonees):
     latitude = coordonees[0]
     longitude = coordonees[1]
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0',
-            'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
-    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}", headers=headers)
+               'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
+    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}",
+                       headers=headers)
     text = url.text
 
     # Get JSON data
     data = json.loads(text)
-    #print(data)
+    # print(data)
 
     # Process JSON data
     units = data["properties"]["meta"]["units"]
-    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]  
+    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
     return weather
+
 
 def distance(el1, el2):
     """ dict, dict -> int
     renvoie la distance de Manhattan entre 2 images positions
     """
     d = 0
-    attributs = ['indice','temperature','humidite']
-    for q in attributs :
-        d += abs(float(el1[q])-float(el2[q]))
+    attributs = ['indice', 'temperature', 'humidite']
+    for q in attributs:
+        d += abs(float(el1[q]) - float(el2[q]))
     return d
 
 
@@ -46,15 +49,17 @@ def charge_table(nom_fichier):
     """ str -> list
     renvoie une liste de dictionnaires
     """
-    with open(nom_fichier,'r') as f:
-        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','pression','weather'])
+    with open(nom_fichier, 'r') as f:
+        lect = csv.DictReader(f, delimiter=',',
+                              fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
+                                          'weather'])
         liste_eleves = []
-        for row in lect :
+        for row in lect:
             # partie nouvelle
             if row['indice'] != 'NULL':
                 liste_eleves.append(row)
     return liste_eleves[1:]
-    
+
 
 def frequences_des_maisons(table):
     """ list -> dict
@@ -62,16 +67,16 @@ def frequences_des_maisons(table):
     renvoie le dictionnaire des fréquences des maisons
     """
     d = {}
-    for e in table :
+    for e in table:
         m = e['weather']
         if m not in d:
             d[m] = 1
-        else :
+        else:
             d[m] += 1
 
-    for m in d :
-        d[m] = d[m]/len(table)
-        
+    for m in d:
+        d[m] = d[m] / len(table)
+
     return d
 
 
@@ -82,12 +87,13 @@ def meteo_majoritaire(table):
     """
     dict_freq = frequences_des_maisons(table)
     freq_max = 0
-    for m in dict_freq :
-        if dict_freq[m] > freq_max :
+    for m in dict_freq:
+        if dict_freq[m] > freq_max:
             maison = m
             freq_max = dict_freq[m]
-            
+
     return maison
+
 
 def k_plus_proches_voisins(nouveau, table, k):
     '''
@@ -97,32 +103,38 @@ def k_plus_proches_voisins(nouveau, table, k):
 
     :out : liste de longueur k des plus proches voisins
     '''
-    distances = {} # dictionnaire de distances et de l'indice de l'éleve dans la liste d'éleves identifiés
+    distances = {}  # dictionnaire de distances et de l'indice de l'éleve dans la liste d'éleves identifiés
     for i in range(len(table)):
-        distances[i] = distance(table[i],nouveau)
-    distances = sorted(distances.items(), key=lambda item: item[1])[:k] # on ne garde que les k premiers
+        distances[i] = distance(table[i], nouveau)
+    distances = sorted(distances.items(), key=lambda item: item[1])[:k]  # on ne garde que les k premiers
     # distances : un tuple (indice_eleve, distance)
-    eleves_k = [{} for _ in range(k)] # creer une liste de dictionnaires
+    eleves_k = [{} for _ in range(k)]  # creer une liste de dictionnaires
     for i in range(len(distances)):
         eleves_k[i] = table[distances[i][0]]
     return eleves_k
 
+
 def meteo_majoritaire(table):
-    maisons = ['Rainy','Cloudy','Foggy','Sunny','Night']
-    return sorted(frequences_des_maisons(table).items(), key=lambda item: item[1],reverse=True)[0][0] # on peux enlever le second [0] pour afficher le score en plus
+    maisons = ['Rainy', 'Cloudy', 'Foggy', 'Sunny', 'Night']
+    return sorted(frequences_des_maisons(table).items(), key=lambda item: item[1], reverse=True)[0][
+        0]  # on peux enlever le second [0] pour afficher le score en plus
+
 
 def alocation_meteo():
     table_supervisee = charge_table('donnes_classifiees.csv')
     with open('donnes_a_classifie.csv') as f:
-        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','pression','weather'])
+        lect = csv.DictReader(f, delimiter=',',
+                              fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
+                                          'weather'])
         global elements_assigner
         elements_assigner = []
         for row in lect:
             if row['indice'] != 'NULL':
                 elements_assigner.append(row)
 
-    for i in range(1,len(elements_assigner)):
-        elements_assigner[i]['weather'] = meteo_majoritaire(k_plus_proches_voisins(elements_assigner[i],table_supervisee,3))
+    for i in range(1, len(elements_assigner)):
+        elements_assigner[i]['weather'] = meteo_majoritaire(
+            k_plus_proches_voisins(elements_assigner[i], table_supervisee, 3))
         # ETAPE SUIVANTE : enlever les doublons
     from collections import Counter
 
@@ -149,7 +161,7 @@ def alocation_meteo():
             'indice': group[0]['indice'],
             'temperature': group[0]['temperature'],
             'humidite': group[0]['humidite'],
-            'pression':group[0]['pression'],
+            'pression': group[0]['pression'],
             'weather': most_common_weather
         }
         merged.append(merged_dict)
@@ -159,14 +171,15 @@ def alocation_meteo():
         '''
 
         a_ecrire = []
-        for i in range(1,len(merged)):
-            a_ecrire.append({'Code':merged[i]['Code'],'Temperature':merged[i]['temperature'],'etat':merged[i]['weather']})
+        for i in range(1, len(merged)):
+            a_ecrire.append(
+                {'Code': merged[i]['Code'], 'Temperature': merged[i]['temperature'], 'etat': merged[i]['weather']})
 
-    global codes_complets 
+    global codes_complets
     codes_complets = []
 
-    with open('coordonnees_departements.csv','r') as f: # pour combler les trous
-        lect = csv.DictReader(f,fieldnames=['Code','departement','coordonnee'])
+    with open('coordonnees_departements.csv', 'r') as f:  # pour combler les trous
+        lect = csv.DictReader(f, fieldnames=['Code', 'departement', 'coordonnee'])
         for row in lect:
             codes_complets.append(row)
     codes_complets.pop(0)
@@ -176,10 +189,10 @@ def alocation_meteo():
                 if a_ecrire[i]['etat'] != '':
                     print(a_ecrire[i]['Code'],a_ecrire[i])
     '''
-    #print(codes_complets[1])
-        # DEBOGAGE
-    with open('tableau_finalv2.csv','w') as f:
-        ecr = csv.DictWriter(f,delimiter=',',fieldnames=['Code','Temperature','etat'])
+    # print(codes_complets[1])
+    # DEBOGAGE
+    with open('tableau_finalv2.csv', 'w') as f:
+        ecr = csv.DictWriter(f, delimiter=',', fieldnames=['Code', 'Temperature', 'etat'])
         ecr.writeheader()
 
         list1 = a_ecrire
@@ -238,16 +251,15 @@ def alocation_meteo():
         # DEBOGAGE
         '''
         for i in range(len(merged_list)):
-            if 'Temperature' in merged_list[i].keys(): # si le dictionnaire est bon
-                #merged_list[i].pop('coordonnee')
+            if 'Temperature' in merged_list[i].keys():  # si le dictionnaire est bon
+                # merged_list[i].pop('coordonnee')
                 ecr.writerow(merged_list[i])
-            else: 
+            else:
                 coordonnee = merged_list[i]['coordonnee'].strip('][').split(', ')
-                coordonnee = [float(e) for e in coordonnee ]
-                code = {'Code':merged_list[i]['Code'],'Temperature':coordinate_temperature(coordonnee)['air_temperature'],'etat':'NULL'}
+                coordonnee = [float(e) for e in coordonnee]
+                code = {'Code': merged_list[i]['Code'],
+                        'Temperature': coordinate_temperature(coordonnee)['air_temperature'], 'etat': 'NULL'}
                 ecr.writerow(code)
 
+
 alocation_meteo()
-
-
-

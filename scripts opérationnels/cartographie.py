@@ -2,21 +2,23 @@ import pandas as pd
 import folium
 import csv
 import random
+from IPython.display import IFrame
+from datetime import datetime
+from flask import Flask, render_template_string
 
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 
 from geopy.geocoders import Nominatim
 
-
-#----------------------------------------------------------------
+# ----------------------------------------------------------------
 
 # RECUPERATION DE LA TEMPERATURE AVEC SES CORDONNÉES
 
 
 coordonees = []
 
-with open('coordonnees_departements.csv','r') as c:
-    read = csv.DictReader(c,delimiter=',',fieldnames=['Code','departement','coordonnee'])
+with open('coordonnees_departements.csv', 'r') as c:
+    read = csv.DictReader(c, delimiter=',', fieldnames=['Code', 'departement', 'coordonnee'])
     for ligne in read:
         coordonees.append("".join(ligne['coordonnee']).strip('][').split(', '))
 
@@ -68,7 +70,6 @@ folium.raster_layers.ImageOverlay(
     name = 'Sun'
 ).add_to(m)
 """
-from datetime import datetime
 
 # datetime object containing current date and time
 now = datetime.now()
@@ -76,37 +77,37 @@ dt_string = now.strftime("%H:%M")
 print(dt_string)
 
 descripteurs = []
-with open('tableau_finalv2.csv','r') as f:
-    descripteurs = list(csv.reader(f,delimiter=','))[0] # la ligne 0 correspond aux descripteurs
+with open('tableau_finalv2.csv', 'r') as f:
+    descripteurs = list(csv.reader(f, delimiter=','))[0]  # la ligne 0 correspond aux descripteurs
 
 dico_temperatures_etat = []
-with open('tableau_finalv2.csv','r') as f:
-    read = csv.DictReader(f,delimiter=',',fieldnames=descripteurs)
-    #print(list(read)[0])
+with open('tableau_finalv2.csv', 'r') as f:
+    read = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
+    # print(list(read)[0])
     for ligne in read:
         dico_temperatures_etat.append(ligne)
-descripteurs = [e for e in descripteurs if e != 'Code' and e != 'etat'] # on n'exploite pas ces données visuelles
-#print(dico_temperatures_etat)
+descripteurs = [e for e in descripteurs if e != 'Code' and e != 'etat']  # on n'exploite pas ces données visuelles
+# print(dico_temperatures_etat)
 for donnee in descripteurs:
-    folium.Choropleth( # premier cloropleth pour la temperature
+    folium.Choropleth(  # premier cloropleth pour la temperature
         geo_data=geojson_data,
         name=f"{donnee} à {dt_string}",
         data=merged_data,
         columns=["properties.nom", f"{donnee}"],
         key_on="feature.properties.nom",
-        fill_color=random.choice(["YlOrRd","PuBuGn", "YlGnBu","PuBu","PuBu"]), #ColorBrewer code
-        #https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
+        fill_color=random.choice(["YlOrRd", "PuBuGn", "YlGnBu", "PuBu", "PuBu"]),  # ColorBrewer code
+        # https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
         fill_opacity=1,
         line_opacity=0.5,
         legend_name=f"{donnee}UNITÉ ICI",
         style_function=lambda x: {'fillColor': 'transparent', 'color': 'blue', 'weight': 2},
         highlight=True,
         show=False,
-        overlay= True,
+        overlay=True,
     ).add_to(m)
 
-#folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
-#https://www.python-graph-gallery.com/312-add-markers-on-folium-map?utm_content=cmp-true
+# folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
+# https://www.python-graph-gallery.com/312-add-markers-on-folium-map?utm_content=cmp-true
 
 f = open('tableau_finalv2.csv', 'r')
 meteo = list(csv.DictReader(f, delimiter=','))
@@ -115,7 +116,7 @@ df = pd.read_csv('departements-france.csv')
 departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
-    html=f"""
+    html = f"""
         <h1>{i} - {departements[i]}</h1>
         <p>Voici les données météo pour ce département:</p>
         <ul>
@@ -136,27 +137,27 @@ for i in range(len(coordonees)):
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'cross'
-        match dico_temperatures_etat[i+1]['etat']:
-                case 'Cloudy':
-                    weather = 'cloud'
-                case 'Rainy':
-                    weather = 'rain'
-                case 'Sunny':
-                    weather = 'sun'
-                case 'Foggy':
-                    weather = 'fog'
-                case 'Nigt':
-                    weather = 'nigt'
-                    # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_temperatures_etat[i]['etat'].lower()
+        match dico_temperatures_etat[i + 1]['etat']:
+            case 'Cloudy':
+                weather = 'cloud'
+            case 'Rainy':
+                weather = 'rain'
+            case 'Sunny':
+                weather = 'sun'
+            case 'Foggy':
+                weather = 'fog'
+            case 'Nigt':
+                weather = 'nigt'
+                # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_temperatures_etat[i]['etat'].lower()
         folium.Marker(
-                        location=coordonees[i],
-                        popup=popup,
-                        icon=folium.DivIcon(html=f"""
+            location=coordonees[i],
+            popup=popup,
+            icon=folium.DivIcon(html=f"""
                             <div>
                             <img src='http://93.14.22.225/{weather}.png'height='35px'width='auto'>
                             </div>"""),
-            ).add_to(m)
-           
+        ).add_to(m)
+
     except IndexError:
         print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondent pas')
         pass
@@ -169,10 +170,10 @@ fg.add_child(folium.LayerControl())
 '''
 folium.TileLayer('cartodbpositron', name='carte simplifiee').add_to(m)
 
-folium.LayerControl().add_to(m) # ajouter le panneau de controle
+folium.LayerControl().add_to(m)  # ajouter le panneau de controle
 
 # Display the map
-from IPython.display import IFrame
+
 
 # PARTIE RENDERING
 
@@ -180,9 +181,9 @@ map_html = m._repr_html_()
 IFrame(width=1000, height=500, src=map_html)
 
 
-from flask import Flask, render_template_string, url_for
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def map():
@@ -199,8 +200,9 @@ def map():
         f"<html><head><link rel='shortcut icon' href='{favicon_url}'></head><body>{map_html}</body></html>"
     )
 
+
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0', port=4650)
+    app.run(debug=True, host='0.0.0.0', port=4650)
 
 m.save("temperature_map.html")
 
@@ -223,4 +225,4 @@ def map():
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=4650)
 '''
-"""#
+"""  #

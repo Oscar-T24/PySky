@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from bs4 import BeautifulSoup
 import csv
 
@@ -28,7 +28,7 @@ for identifiant in range(0,700):
     
     # wait for the #webcam image to load
     wait = WebDriverWait(driver, 10)
-    img_element = wait.until(EC.presence_of_element_located((By.ID, 'webcam')))
+    img_element = wait.until(ec.presence_of_element_located((By.ID, 'webcam')))
     
     # parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
