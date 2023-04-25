@@ -1,6 +1,7 @@
 import pandas as pd
 import folium
 import csv
+import random
 
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 
@@ -77,15 +78,14 @@ descripteurs = []
 with open('tableau_finalv2.csv','r') as f:
     descripteurs = list(csv.reader(f,delimiter=','))[0] # la ligne 0 correspond aux descripteurs
 
-descripteurs = [e for e in descripteurs if e != 'Code' and e != 'etat'] # on n'exploite pas ces données visuelles
-
 dico_temperatures_etat = []
 with open('tableau_finalv2.csv','r') as f:
-    read = csv.DictReader(f,delimiter=',')
-    print(list(read)[0])
+    read = csv.DictReader(f,delimiter=',',fieldnames=descripteurs)
+    #print(list(read)[0])
     for ligne in read:
         dico_temperatures_etat.append(ligne)
-
+descripteurs = [e for e in descripteurs if e != 'Code' and e != 'etat'] # on n'exploite pas ces données visuelles
+#print(dico_temperatures_etat)
 for donnee in descripteurs:
     folium.Choropleth( # premier cloropleth pour la temperature
         geo_data=geojson_data,
@@ -93,10 +93,11 @@ for donnee in descripteurs:
         data=merged_data,
         columns=["properties.nom", f"{donnee}"],
         key_on="feature.properties.nom",
-        fill_color="YlOrRd",
+        fill_color=random.choice(["YlOrRd","PuBuGn", "YlGnBu","PuBu","PuBu"]), #ColorBrewer code
+        #https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
         fill_opacity=1,
         line_opacity=0.5,
-        legend_name="Temperature (°C)", # ajouter une option custom pour les unites # A CHANGER
+        legend_name=f"{donnee}UNITÉ ICI",
         style_function=lambda x: {'fillColor': 'transparent', 'color': 'blue', 'weight': 2},
         highlight=True,
         overlay=True,
