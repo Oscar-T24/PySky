@@ -47,7 +47,7 @@ def charge_table(nom_fichier):
     renvoie une liste de dictionnaires
     """
     with open(nom_fichier,'r') as f:
-        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','weather'])
+        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','pression','weather'])
         liste_eleves = []
         for row in lect :
             # partie nouvelle
@@ -108,13 +108,13 @@ def k_plus_proches_voisins(nouveau, table, k):
     return eleves_k
 
 def meteo_majoritaire(table):
-    maisons = ['Rainy','Cloudy','Foggy','Sunny']
+    maisons = ['Rainy','Cloudy','Foggy','Sunny','Night']
     return sorted(frequences_des_maisons(table).items(), key=lambda item: item[1],reverse=True)[0][0] # on peux enlever le second [0] pour afficher le score en plus
 
 def alocation_meteo():
     table_supervisee = charge_table('donnes_classifiees.csv')
     with open('donnes_a_classifie.csv') as f:
-        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','weather'])
+        lect = csv.DictReader(f, delimiter = ',',fieldnames=['Code','coordonnees','indice','temperature','humidite','pression','weather'])
         global elements_assigner
         elements_assigner = []
         for row in lect:
@@ -124,7 +124,6 @@ def alocation_meteo():
     for i in range(1,len(elements_assigner)):
         elements_assigner[i]['weather'] = meteo_majoritaire(k_plus_proches_voisins(elements_assigner[i],table_supervisee,3))
         # ETAPE SUIVANTE : enlever les doublons
-    
     from collections import Counter
 
     # Group the dictionaries by their 'Code' value
@@ -150,6 +149,7 @@ def alocation_meteo():
             'indice': group[0]['indice'],
             'temperature': group[0]['temperature'],
             'humidite': group[0]['humidite'],
+            'pression':group[0]['pression'],
             'weather': most_common_weather
         }
         merged.append(merged_dict)

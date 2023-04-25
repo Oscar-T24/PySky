@@ -152,7 +152,7 @@ if __name__ == "__main__":
                             coordonnes = [float(i) for i in coordonnes]
                             try :
                                 meteo = coordinate_temperature(coordonnes)
-                                dico_etats_meteos.append({'Code':no_departement,'coordonnees':coordonnes,'indice':indice,'temperature':meteo['air_temperature'],'humidite':meteo['relative_humidity'],'weather':etat_meteo})
+                                dico_etats_meteos.append({'Code':no_departement,'coordonnees':coordonnes,'indice':indice,'temperature':meteo['air_temperature'],'humidite':meteo['relative_humidity'],'pression':meteo['air_pressure_at_sea_level'],'weather':etat_meteo})
                             except IndexError:
                                 print('PROBLEME')
                     if arreter == True:
@@ -165,6 +165,6 @@ if __name__ == "__main__":
         with open('donnes_classifiees.csv','a') as f:
             
             # creer / actualiser un csv pour létat météo d'un departement
-            lect = csv.DictWriter(f,fieldnames=['Code','coordonnees','indice','temperature','humidite','weather'])
+            lect = csv.DictWriter(f,fieldnames=['Code','coordonnees','indice','temperature','humidite','pression','weather'])
             #lect.writeheader() juste pour la première fois
             lect.writerows(dico_etats_meteos)
