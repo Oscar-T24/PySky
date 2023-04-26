@@ -71,18 +71,6 @@ for e in coordonnees:
 
 indices_meteo = {}
 
-def get_department(commune_name):
-    geolocator = Nominatim(user_agent="my-app")
-    commune_name = commune_name.encode('ISO 8859-1').decode('utf-8')
-    print(commune_name)
-    if 'Paris' in commune_name:  # on sait pas pk ca marche pas avec Paris (renbvoi 13 mais c Marseille ca)
-        return '75'
-    location = geolocator.geocode(commune_name + ", France")
-    if location:
-        return "".join(re.findall(r'-?\d+', location.raw['display_name']))[:2]
-    else:
-        return None
-
 with open('donnees_camerasv2.csv', 'r') as f:
     read = csv.DictReader(f, fieldnames=['lien', 'departement'])
     # determination de l'indice
@@ -103,7 +91,7 @@ with open('donnees_camerasv2.csv', 'r') as f:
             print("problemes d'indexations ou autre avec tronuqer")
             continue
         indices_meteo[no_departement] =  determine_weather_index(image_tronquee) # NE MARCHE PAS AVEC LA CORSE
-        print(indices_meteo[no_departement])
+        #print(indices_meteo[no_departement])
         # UNE SEULE camera par departement 
 
 for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, "2A", "2B", 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 971, 972, 973, 974, 976]:
