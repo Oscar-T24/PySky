@@ -19,7 +19,7 @@ def iframe():
 def execute():
     value = request.args.get('value')
     print('execution')
-    # Executer le script main pour mettre à jour
+    # Executer le script main
     subprocess.call(['python3', 'main.py', value])
     
     # Render a new template that includes the additional element

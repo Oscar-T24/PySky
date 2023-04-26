@@ -128,7 +128,7 @@ for i in range(len(coordonees)):
     iframe = folium.IFrame(html=html, width=300, height=350)
     popup = folium.Popup(iframe, max_width=2650)
     try:
-        weather = 'Circle'
+        weather = 'circle'
         match dico_meteo[i]['Etat_meteo']:
             case 'Cloudy':
                 weather = 'cloud'

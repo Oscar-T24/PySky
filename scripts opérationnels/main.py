@@ -18,12 +18,13 @@ if __name__ == '__main__':
     my_function(value)
     with open('diff_jours.txt','w') as f:
         f.write(value)
+    print(value)
 
     time_depart = time.time()
 
     subprocess.run(["python3", "preparation_dataset_a_trier.py"])  # script qui permet d'ajouter une entrée pour l'algorithme KNN
     print('etape 3 finie : preparation du dataset à classifier')
-    if value == 0:
+    if int(value) == 0:
         subprocess.run(["python3", "KNN_meteo.py"])  # script qui associe un état météo à un département
         print('etape 4 finie : analyse de la météo')
     else:
