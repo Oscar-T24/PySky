@@ -97,7 +97,7 @@ footer{
     </div>
     </table>
     <div class="spinner" style="display: none; width:150px;height:150px;"></div>
-    <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onloadeddata="enlever()"></iframe>
+    <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%"></iframe> <!-- onload="enlever()-->
 
     <script>
         // Get slider, day element, and button elements
@@ -139,6 +139,7 @@ footer{
             var myButton = document.getElementById('execute');
             var loadingDiv = document.querySelector('.spinner');
             loadingDiv.style.display = 'none'; 
+            alert('FINI NDE CHARGER')
         }
     </script>
 </body>

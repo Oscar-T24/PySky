@@ -18,8 +18,9 @@ def execute():
     print('execution')
     # Execute Python script with value as parameter
     #subprocess.call(['python3', 'cartographie.py', value])
-    print('ACTUALISATION TERMINÉE : recharger la page')
-    return ''
+    
+    # Render a new template that includes the additional element
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
