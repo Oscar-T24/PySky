@@ -35,7 +35,7 @@ def coordinate_temperature(coordonees):
 
 # determination des fieldnames qui serviront tout le long 
 descriteurs = []
-with open('donnes_meteo_classifiees.csv', 'r') as f:
+with open('donnees_meteo.csv', 'r') as f:
     descripteurs = list(csv.reader(f))[0]
 
 
@@ -124,8 +124,8 @@ def meteo_majoritaire(table):
 
 
 def alocation_meteo():
-    table_supervisee = charge_table('donnes_meteo_classifiees.csv')
-    with open('donnes_a_classifie.csv') as f: # IL FAUT LE PRENDRE DE donnees_meteo.csv !!!!
+    table_supervisee = charge_table('donnees_meteo_classifiees.csv')
+    with open('donnees_meteo.csv') as f:
         lect = csv.DictReader(f, delimiter=',',
                               fieldnames=descripteurs)
         global elements_assigner
@@ -151,118 +151,5 @@ def alocation_meteo():
 
     # Merge the dictionaries with the same 'Code' value
     merged = []
-    for code, group in groups.items():
-        # Count the occurrences of each 'weather' value
-        weather_counts = Counter(d['weather'] for d in group)
-        # Find the most common 'weather' value
-        most_common_weather = weather_counts.most_common(1)[0][0]
-        # Merge the dictionaries with the same 'Code' value and keep the most common 'weather' value
-        merged_dict = {
-            'Code': code,
-            'coordonnees': group[0]['coordonnees'],
-            'indice': group[0]['indice'],
-            'temperature': group[0]['temperature'],
-            'humidite': group[0]['humidite'],
-            'pression': group[0]['pression'],
-            'weather': most_common_weather # PAS LES BONS DESCRIPTEURS
-        }
-        merged.append(merged_dict)
-        '''
-        for i in range(len(merged)):
-            print(merged[i]['Code'])
-        '''
-
-        a_ecrire = []
-        for i in range(1, len(merged)):
-            a_ecrire.append(
-                {'Code': merged[i]['Code'], 'Temperature': merged[i]['temperature'],'Humidite': merged[i]['humidite'],'Pression':merged[i]['pression'], 'etat': merged[i]['weather']})
-
-    global codes_complets
-    codes_complets = []
-
-    with open('coordonnees_departements.csv', 'r') as f:  # pour combler les trous
-        lect = csv.DictReader(f, fieldnames=['Code', 'departement', 'coordonnee'])
-        for row in lect:
-            codes_complets.append(row)
-    codes_complets.pop(0)
-    '''
-        for i in range(len(a_ecrire)):
-            if 'etat' in a_ecrire[i].keys():
-                if a_ecrire[i]['etat'] != '':
-                    print(a_ecrire[i]['Code'],a_ecrire[i])
-    '''
-    # print(codes_complets[1])
-    # DEBOGAGE
-    with open('tableau_finalv2.csv', 'w') as f:
-        ecr = csv.DictWriter(f, delimiter=',', fieldnames=['Code','Temperature','Humidite','Pression','etat'])
-        ecr.writeheader()
-
-        list1 = a_ecrire
-        list2 = codes_complets
-
-        merged_list = []
-        for item in list2:
-            match_found = False
-            for d in list1:
-                if d['Code'] == item['Code']:
-                    merged_list.append(d)
-                    match_found = True
-                    break
-            if not match_found:
-                new_dict = {'Code': item['Code'], 'coordonnee': item['coordonnee']}
-                merged_list.append(new_dict)
-        '''
-                # example input data
-        list1 = a_ecrire # dictionnaire avcec des données potentiellements manquantes
-        list2 = codes_complets # donnes pour completer les blancs de departements
-        # create a dictionary from each input list where the keys are the 'Code' values
-        dict1 = {d['Code']: d for d in list1}
-        dict2 = {d['Code']: d for d in list2}
-
-        # loop over the missing dictionaries in list1 and update with coordonnee if found in list2
-        for d in list1:
-            if d['Code'] in dict2:
-                d2 = dict2[d['Code']]
-                d.update({'coordonnee': d2['coordonnee']})
-            else:
-                d.update({'coordonnee': ''})
-
-        # merge the updated dictionaries from list1 and the dictionaries from list2 into a single dictionary
-        merged_dict = {**dict1, **dict2}
-
-        # create a new list of dictionaries with the desired keys/values
-        merged_list = []
-        for code, d in merged_dict.items():
-            if code in dict1:
-                # retrieve 'Temperature' and 'etat' from the dictionary in list1
-                temperature = dict1[code].get('Temperature', None)
-                etat = dict1[code].get('etat', None)
-                merged_list.append({'Code': code, 'Temperature': temperature, 'etat': etat, 'coordonnee': d.get('coordonnee', '')})
-            else:
-                # only keep 'Code' and 'coordonnee' for missing dictionaries
-                merged_list.append({'Code': code, 'coordonnee': d.get('coordonnee', '')})
-
-        merged_list = sorted(merged_list, key=lambda merged_list: merged_list['Code']) 
-        merged_list.pop(-1)
-        
-        for i in range(len(merged_list)):
-            if etat in merged_list[i].keys():
-                if merged_list[i]['etat'] != '':
-                    print(merged_list[i]['Code'],merged_list[i])
-        
-        # DEBOGAGE
-        '''
-        for i in range(len(merged_list)):
-            if 'Temperature' in merged_list[i].keys():  # si le dictionnaire est bon
-                # merged_list[i].pop('coordonnee')
-                ecr.writerow(merged_list[i])
-            else:
-                coordonnee = merged_list[i]['coordonnee'].strip('][').split(', ')
-                coordonnee = [float(e) for e in coordonnee]
-                donnees = coordinate_temperature(coordonnee)
-                code = {'Code': merged_list[i]['Code'],
-                        'Temperature': donnees['air_temperature'],'Humidite':donnees['relative_humidity'],'Pression':donnees['air_pressure_at_sea_level'], 'etat': 'NULL'}
-                ecr.writerow(code)
-
 
 alocation_meteo()

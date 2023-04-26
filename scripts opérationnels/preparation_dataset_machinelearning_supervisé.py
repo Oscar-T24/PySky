@@ -1,18 +1,16 @@
 import tkinter as tk
-from tkinter import ttk
-import csv
-import requests
-from PIL import Image
-from io import BytesIO
-import numpy
-import json
-import cv2
+import subprocess
 from PIL import ImageTk as itk
-from indice import determine_weather_index  # argument : image cv2
-from tronque import tronquer  # argument : chemin d'acces photo
+from random import choice
+import requests
+import numpy
+from io import BytesIO
+from tkinter import ttk
+from PIL import Image
+import cv2
+import csv
 
 
-# Function to display image and dropdown menu for weather selection
 def display_image(image):
     # Create tkinter window
     root = tk.Tk()
@@ -23,6 +21,7 @@ def display_image(image):
     blue, green, red = cv2.split(image)
     image = cv2.merge((red, green, blue))
     image = Image.fromarray(image)
+    from PIL import ImageTk as itk
     img = itk.PhotoImage(image)
     canvas = tk.Canvas(root, width=500, height=500)  # tk.Canvas(root, width=img.width(), height=img.height())
     canvas.create_image(0, 0, anchor='nw', image=img)
@@ -32,18 +31,14 @@ def display_image(image):
     weather_label = ttk.Label(root, text='Select Weather:')
     weather_label.pack(pady=10)
     weather_var = tk.StringVar(root)
-    weather_dropdown = ttk.Combobox(root, textvariable=weather_var,
-                                    values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
+    weather_dropdown = ttk.Combobox(root, textvariable=weather_var, values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
     weather_dropdown.pack()
 
     # Create button to save weather and close window
     save_button = ttk.Button(root, text='Save Weather', command=lambda: [ajouter(weather_var.get()), root.destroy()])
     save_button.pack(pady=20)
-    my_button2 = ttk.Button(root, text="arreter", command=lambda: [quitter(), root.destroy()])
-    my_button2.pack(pady=20)
 
     root.mainloop()
-
 
 arreter = False
 
@@ -51,97 +46,47 @@ arreter = False
 def ajouter(etat):
     f = open('temp_meteo.txt', 'w')
     f.write(etat)
-    print('ecriture de', etat)
+    print('Ecriture de', etat)
     f.close()
 
 
-def quitter():
-    global arreter
-    arreter = True
 
+# FIN DU MPENU TKINTER --------------------------------------------------------------------------------------------------------------------
 
-# PARTIE 2 -------------------------------------
+#subprocess.run(["python3", "preparation_dataset_a_trier.py"])
 
-def coordinate_temperature(coordonees):
-    latitude = coordonees[0]
-    longitude = coordonees[1]
-    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0',
-               'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
-    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}",
-                       headers=headers)
-    text = url.text
+f = open('donnees_meteo.csv', 'r')
+data = list(csv.DictReader(f))
 
-    # Get JSON data
-    data = json.loads(text)
-    # print(data)
+f = open("donnees_camerasv2.csv", "r")
+cameras = list(csv.DictReader(f))
 
-    # Process JSON data
-    units = data["properties"]["meta"]["units"]
-    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
-    return weather
+f = open("donnees_meteo_classifiees.csv", "a")
+ecr = csv.DictWriter(f, delimiter=",", fieldnames=["code","Date","Temperature (°C)","Humidite_relative (%)","Temperature_ressentie (°C)","Probabilite_pluie (%)","Precipitation (mm)","Pression (0m)(hPa)","Couverture_nuageuse (%)","Visibility (m)","Vitesse_vent (km/h)","Index_UV","Air_quality (pm2.5)","River_discharge (m3/s)","Probabilité sècheresse","Probabilité canicule (%)","Probabilité innondation","Indice","Etat_meteo"])
 
+def eval_photo():
+    ligne = choice(cameras)
+    url = ligne["lien"]
+    dep = ligne["departement"]
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    open_cv_image = numpy.array(img) # Image bon format?
+    display_image(open_cv_image)
 
-with open('donnees_meteo_a_classifier.csv','r') as f:
-    global descripteurs
-    descripteurs = list(csv.reader(f))[0]
-# on garde les memes descripteurs que le fichier a classifier
+    f = open("temp_meteo.txt", "r+")
+    utilisateur = f.read()
+    f.write("")
 
-read = []
+    if utilisateur is None:
+        return
 
-global departements_numeros
-departements_numeros = []
+    meteo_dep = [e for e in data if e["code"] == dep][0]
+    meteo_dep["Etat_meteo"] = utilisateur
 
-with open('coordonnees_departements.csv', 'r') as f:
-    lect = csv.DictReader(f, delimiter=',')
-    try:
-        for row in lect:
-            departements_numeros.append(row)
-    except:
-        pass
+    ecr.writerow(meteo_dep)
+    print(meteo_dep)
 
-dico_etats_meteos = []
-if True:
-    try:
-        with open('donnees_camerasv2.csv', 'r') as f:
-            read = csv.DictReader(f, fieldnames=['lien', 'departement'])
-            for ligne in read:
-                # try:
-                url,no_departement  = ligne['lien'],ligne['departement']  
-                try:
-                    response = requests.get(url)
-                    img = Image.open(BytesIO(response.content))
-                    # img.save("webcam_image.jpg", "JPEG")
-                    open_cv_image = numpy.array(img)
-                except:
-                    print('erreur')
-                    continue       
-                # PARTIE DETERMINATION
-                try: 
-                    open_cv_image = open_cv_image[:, :, ::-1].copy()
-                    image_tronquee = tronquer(open_cv_image)
-                    indice = determine_weather_index(open_cv_image)
-                except:
-                    print("erreur lors de la copie de l'image")
-                    continue
-                display_image(open_cv_image)
-                with open('temp_meteo.txt', 'r+') as f:
-                    etat_meteo = f.read()
-                    f.write('')
-                    
-                # ----- RECUPERER TOUTES LES DONNÉES MÉTÉO ICI -------
+while True:
+    eval_photo()
 
-
-                
-                    if arreter:# arret manuel depuis la fenetre tkinter
-                        assert True == False
-                    # print(dico_etats_meteos)
-
-    except AssertionError:
-        print('FINALISATION DES DONNÉES ENTRÉES')
-        dico_etats_meteos = sorted(dico_etats_meteos, key=lambda dico_etats_meteos: dico_etats_meteos['Code'])
-        with open('donnes_meteo_classifiees.csv', 'a') as f:
-
-            # creer / actualiser un csv pour létat météo d'un departement
-            lect = csv.DictWriter(f, fieldnames=descripteurs)
-            # lect.writeheader() juste pour la première fois
-            lect.writerows(dico_etats_meteos)
+f.close()
