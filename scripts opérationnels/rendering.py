@@ -20,7 +20,9 @@ def execute():
     # Execute Python script with value as parameter
     subprocess.call(['python3', 'cartographie.py', value])
 
-    return ''
+
+    return render_template('loading.html', value=value)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

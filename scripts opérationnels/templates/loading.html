@@ -25,8 +25,16 @@
 <body>
     <div id="loading"></div>
     <script>
-        // Redirect to the execute route after 1 second
-        
+        // Execute Python script with value as parameter
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/execute?value=' + {{ value|tojson }}, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Redirect to the iframe route
+                window.location.href = '/iframe';
+            }
+        };
+        xhr.send();
     </script>
 </body>
 </html>
