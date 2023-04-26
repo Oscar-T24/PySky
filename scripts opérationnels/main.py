@@ -8,7 +8,7 @@ print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
 while True:
     time_depart = time.time()
-    # subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
+    # subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
     print('etape 2 finie : preparation du dataset de supervisation')
     subprocess.run(["python3", "preparation_dataset_a_trier.py"])  # script qui permet d'ajouter une entrée pour l'algorithme KNN
     print('etape 3 finie : preparation du dataset à classifier')
