@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+    <style>
+        /* Center the loading GIF */
+        #loading {
+            display: block;
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-top-color: #3498db;
+            animation: spin 1s infinite linear;
+        }
+
+        /* Spin animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading"></div>
+    <script>
+        // Redirect to the execute route after 1 second
+        /*
+        setTimeout(function() {
+            window.location.href = '/execute';
+        }, 1000);
+        */
+    </script>
+</body>
+</html>
