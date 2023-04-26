@@ -31,7 +31,7 @@ index_ux = []
 air_quality = []
 river_discharge = []
 
-"""
+
 for e in coordonnees:
     c = e['coordonnee'].split(" ")
     d, x, y = e['Code'], float(c[0][1:-2]), float(c[-1][:-2])
@@ -58,7 +58,7 @@ for e in coordonnees:
     data = pd.read_json(f"https://flood-api.open-meteo.com/v1/flood?latitude={x}&longitude={y}&daily=river_discharge_mean&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}&forecast_days=1")
     debit = data.values.tolist()[1][-1][0]
     river_discharge.append(debit)
-"""
+
 
 indices_meteo = {}
 
@@ -78,7 +78,7 @@ def get_department(commune_name):
 with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
     read = csv.DictReader(f, fieldnames=['lien', 'departement'])
     # DETERMINATION DE L'ÉTAT MÉTÉO
-    for ligne in list(read)[0:100]:
+    for ligne in read:
         if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien']:
             url = ligne['lien']
             try:
