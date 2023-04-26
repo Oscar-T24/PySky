@@ -9,6 +9,10 @@ def index():
 import subprocess
 from flask import request
 
+@app.route('/iframe')
+def iframe():
+    return render_template('map.html')
+
 @app.route('/execute')
 def execute():
     value = request.args.get('value')

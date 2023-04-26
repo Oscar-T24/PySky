@@ -1,14 +1,75 @@
 <!DOCTYPE html>
+<style>
+#presentation{
+    position:center;
+    background-color: brown;
+    padding-left: 40%;
+    padding-top: 10px;
+}
+h3{
+font-style:italic;
+}
+
+#explication{
+    font-family:cursive;
+    color:blueviolet;
+    background-color: blanchedalmond;
+    font-size :large;
+}
+footer{
+    height: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+#legende{
+    background-color:aliceblue;
+}
+</style>
 <html>
 <head>
-    <title>My Meteorological Site</title>
+    <title>Site Météréologique<br> des Trophées NSI</title>
 </head>
 <body>
-    <h1>My Meteorological Site</h1>
-    <p>Selectionner <span id="day">0</span></p>
-    <input type="range" min="-10" max="10" step="1" id="slider">
-    <button id="execute">Actualiser la carte</button>
-    <iframe src="./map.html" height="1000px" width="100%"></iframe>
+    <table>
+        <td style="width:40%;">
+            <div id="'explication">
+                <h3>Besoin d'aide ?</h3>
+                <p> pour selectionner un jour dans la timeline, faites glisser le slider</p>
+                <p>Ainsi, vous selectionnerez un jour passé, <br>ou les données les plus actualisées pour aujourdhui</p>
+            </div>
+        </td>
+        <td style="width:100%;">
+            <div id="presentation">
+                <h1>Site Météréologique des Trophées NSI</h1>
+                <h3>Enjoy</h3>
+                <p>Selectionner <span id="day">0</span></p>
+                <input type="range" min="-10" max="10" step="1" id="slider">
+                <button id="execute">Actualiser la carte</button>
+        </td>
+        <td id="legende">
+            <table style="width:100%">
+                <tr>
+                  <th>Icone</th>
+                  <th>Signification</th>
+                  <th>Icone</th>
+                  <th>Signification</th>
+                </tr>
+                <tr>
+                  <td><img src='http://93.14.22.225/sun.png' height='25px'></td>
+                  <td>soleil</td>
+                  <td><img src='http://93.14.22.225/sun.png'height='25px'></td>
+                  <td>pluie</td>
+                </tr>
+                <tr>
+                  <td><img src='http://93.14.22.225/fog.png'height='25px'></td>
+                  <td>brouillard</td>
+                  <td><img src='http://93.14.22.225/cloud.png'height='25px'></td>
+                  <td>nuageux</td>
+                </tr>
+              </table>
+        </td>
+    </div>
+    </table>
+    <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%"></iframe>
 
     <script>
         // Get slider, day element, and button elements
@@ -36,4 +97,7 @@
         });
     </script>
 </body>
+<footer>
+<p> Trophées NSI édition 2023. Site crée par Oscar et Paul 1ère à l'EJM Paris</p>
+</footer>
 </html>
