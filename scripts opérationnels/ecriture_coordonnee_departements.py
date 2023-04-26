@@ -7,7 +7,7 @@ coordonees = []
 def departement_coordinate(departement):
     # Enter the name of the department
     # print(departement.encode('ISO 8859-1').decode('utf-8'))#.encode('ISO 8859-1')
-    department_name = departement.encode('ISO 8859-1').decode('utf-8')
+    department_name = departement#.encode('ISO 8859-1').decode('utf-8')
     # Create a geolocator object
     geolocator = Nominatim(user_agent="geoapiExercises")
     # Use the geolocator to get the location of the department
