@@ -58,7 +58,7 @@ for identifiant in range(0,700):
         try :
             no_departement =  re.findall(r'\d+', h3_text[h3_text.index('de'):])
         except ValueError:
-            # nunméro pas présent
+            # nunméro pas présent quand on cherche le site web 
             no_departement = get_department(h3_text[h3_text.index('de') + 2:h3_text.index('(')])
     except AttributeError:
         h3_text = "NULL"
