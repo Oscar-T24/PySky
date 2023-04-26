@@ -174,7 +174,6 @@ occitanie2020 = (57.5, 17.8, 924, 80.2)
 def distance_4d(t1, t2):
     return sqrt(sum([(t1[i] - t2[i]) ** 2 for i in range(4)]))
 
-
 def distance_flood(t):
     if t[2] is None:
         return 0

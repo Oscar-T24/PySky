@@ -17,11 +17,7 @@ margin-left: 100px;
 #presentation{
     position:center;
     background-color: brown;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-bottom: 5px;
-    color:aliceblue;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
 }
 h3{
 font-style:italic;
@@ -40,83 +36,179 @@ footer{
 #legende{
     background-color:aliceblue;
 }
+
+header {
+    padding:20px;
+}
+
+#inlineception {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+
+.inline {
+    display:flex;
+    justify-content:space-between;
+}
+
+.inline div {
+    padding: 10px;
+}
+
+#aide {
+    display: flex;
+    align-items: center;
+}
+
 .spinner {
-        /* chargement */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-        }
-        /* animation chargement */
-        .spinner::before {
-            content: "";
-            box-sizing: border-box;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 10px solid rgba(0, 0, 0, 0.1);
-            border-top-color: #09f;
-            animation: spinner 0.6s linear infinite;
-        }
-        @keyframes spinner {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+/* chargement */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+/* animation chargement */
+.spinner::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #09f;
+    animation: spinner 0.6s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.popup{
+    background-color: #ffffff;
+    padding: 30px 40px;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 8px;
+    display: none;
+    text-align: center;
+    border:2px solid #000;
+    width:30%;
+}
+
+
+.popup button{ /* Style du bouton de fermeture */
+    display: block;
+    font-size: 30px;
+    color: #ffffff;
+    background: #03549a;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    float:right;
+    cursor: pointer; /* Change la souris sur hover */
+}
+
+.popup p {
+    text-align:center;
+}
+
+.popup img {
+   width: 80%;
+   height: auto;
+ }
+
+.boutons  {
+    /* Style texte */
+    color: black;
+    text-transform: uppercase;
+    text-align:center;
+    text-decoration: none;
+    /* Style bouton */
+    background-color: #fff;
+    display: block;
+    padding: 10px 20px;
+    border:1px solid #000;
+    border-radius: 50px; /* Arrondi les cotés */
+
+}
+
+
+.boutons:hover {
+    background-color: lightgreen;
+    color: white;
+}
+
+
+.boutons:active {
+    color:black;
+    background-color:yellow;
+}
+
 </style>
 <html>
 <head>
     <title>Site Météréologique<br> des Trophées NSI</title>
+    <meta charset = "utf-8">
 </head>
 <body>
-    <table>
-        <td style="width:30%;">
+
+    <div class="popup">
+        <button id="close">&times;</button>
+        <h2>Besoin d'aide?</h2>
+        <img src="pins.png">
+        <td style="width:40%;">
             <div id="'explication">
-                <h3>Besoin d'aide ?</h3>
-                <p> pour selectionner un jour dans la timeline, faites glisser le slider</p>
-                <p>Ainsi, vous selectionnerez un jour passé, <br>ou les données les plus actualisées pour aujourdhui</p>
+                <p>Pour selectionner un jour dans la timeline, faites glisser le slider</p>
             </div>
         </td>
-        <td style="width:100%;">
-            <div id="presentation">
-                <h1>Site Météréologique des Trophées NSI</h1>
-                <h3>Enjoy</h3>
-                <p>Selectionner <span id="day">0</span></p>
-                <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
-                <button id="execute" onclick="recharger()">Actualiser la carte</button>
-        </td>
-        <td id="legende">
-            <table style="width:50%">
-                <tr>
-                  <th>Icone</th>
-                  <th>Signification</th>
-                  <th>Icone</th>
-                  <th>Signification</th>
-                </tr>
-                <tr>
-                  <td><img src='http://93.14.22.225/sun.png' height='25px'></td>
-                  <td>soleil</td>
-                  <td><img src='http://93.14.22.225/rain.png'height='25px'></td>
-                  <td>pluie</td>
-                </tr>
-                <tr>
-                  <td><img src='http://93.14.22.225/fog.png'height='25px'></td>
-                  <td>brouillard</td>
-                  <td><img src='http://93.14.22.225/cloud.png'height='25px'></td>
-                  <td>nuageux</td>
-                </tr>
-              </table>
-        </td>
     </div>
-    </table>
+    <header>
+        <div class="inline">
+                <div class="header" id="presentation">
+                    <h1>PySky - Trophées NSI</h1>
+                </div>
+                <div class="header" id="inlineception">
+                    <input type="range" min="-10" max="10" step="1" id="slider">
+                    <p><span id="day">0</span></p>
+                    <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
+                </div>
+                <div class="header" id="aide">
+                    <button onclick="pop(this)" class="boutons" id="rules">Aide</button>
+                </div>
+        </div>
+    </header>
+
     <div class="spinner" style="display: none; width:150px;height:150px;"></div>
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
 
     <script>
+
+        // Ouverture du popup:
+        function pop(){  // Au chargement de la page:
+            document.querySelector(".popup").style.display = "block"; // On affiche la class popup comme un bloc
+        };
+
+        // Fermeture lors du click:
+        document.querySelector("#close").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
+            document.querySelector(".popup").style.display = "none"; // On met plus de display au bloc de class popup
+        });
+
+        document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
+            document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
+        });
+
         // Get slider, day element, and button elements
         const slider = document.getElementById('slider');
         const dayElement = document.getElementById('day');
@@ -163,6 +255,6 @@ footer{
     </script>
 </body>
 <footer>
-<p> Trophées NSI édition 2023. Site crée par Oscar et Paul 1ère à l'EJM Paris</p>
+<p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
 </footer>
 </html>
