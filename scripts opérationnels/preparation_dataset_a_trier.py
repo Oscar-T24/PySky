@@ -76,6 +76,7 @@ for e in coordonnees:
 
     print(f"Données météo extraites pour le département {d} (sur 101)")
 
+
 # ON CREE UNE COLONNE POUR L'INDICE DE METEO DETERMINE A PARTIR DES WEBCAMS, ON LA PASSE ENSUITE PAR KNN POUR OBTENIR UNE CLASSE
 indices_meteo = {}
 

@@ -11,24 +11,6 @@ from geopy.geocoders import Nominatim
 
 # ---------------INTERPRETATION DES DONNES ENVOYES ------------------------------
 
-import sys
-
-def my_function(value):
-    if int(value) == 0:
-        print('AFFICHER LA METEO DAJD COMME NORMALEMENT')
-    else:
-        print('UTILISER LES VALEURS DE HISTORIC DATA')
-    pass
-
-if __name__ == '__main__':
-    value = sys.argv[1]
-    my_function(value)
-    with open('diff_jours.txt','w') as f:
-        f.write(value)
-
-# RECUPERATION DE LA TEMPERATURE AVEC SES CORDONNÉES
-
-
 coordonees = []
 
 with open('coordonnees_departements.csv', 'r') as c:
@@ -103,6 +85,7 @@ for donnee in descripteurs:
 
 f = open('donnees_meteo.csv', 'r')
 descripteurs = list(csv.reader(f, delimiter=','))[0]
+f = open('donnees_meteo.csv', 'r')
 meteo = list(csv.DictReader(f, delimiter=','))
 
 df = pd.read_csv('departements-france.csv')
@@ -110,32 +93,31 @@ departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
     try:
-        try:
-            html = f"""
-            <h1>{i} - {departements[i]}</h1>
-            <p>Voici les données météo pour ce département:</p>
-            <ul>
-                <li>Temperature: {meteo[i]["Temperature"]}°C</li>
-                <li>Etat (now): {meteo[i]["etat"]}</li>
-                <li>Qualité de l'air: {meteo[i]["air_quality (pm2.5)"]} (pm2.5)</li>
-                <li>Débit moyen des rivières: {meteo[i]["river_discharge (m3/s)"]} (m^3/s)</li>
-                <li>Probabilité pluie: {meteo[i]["probabilite_pluie (%)"]} (%)</li>
-                <li>Précipitation: {meteo[i]["precipitation (mm)"]} (mm)</li>
-                <li>Pression atmosphérique: {meteo[i]["pression (hPa)"]} (hPa)</li>
-                <li>Couverture nuageuse: {meteo[i]["couverture_nuageuse (%)"]} (%)</li>
-                <li>Visibilité: {meteo[i]["visibility (m)"]} (m)</li>
-                <li>Vitesse du vent (10m): {meteo[i]["vitesse_vent (km/h)"]} (km/h)</li>
-                <li>Index UV: {meteo[i]["index_ux"]}</li>
-            </ul>
-            """
-        except IndexError:
-                        html = f"""
-            <p>Voici les données météo pour ce département:</p>
-            <ul>
-            </ul>
-            """
+        html = f"""
+        <h1>{i} - {departements[i]}</h1>
+        <p>Voici les données météo pour ce département:</p>
+        <ul>
+            <li>Date: {meteo[i]["Date"]}</li>
+            <li>Temperature: {meteo[i]["Temperature (°C)"]}°C</li>
+            <li>Humidité relative: {meteo[i]["Humidite_relative (%)"]}%</li>
+            <li>Temperature (ressentie): {meteo[i]["Temperature_ressentie (°C)"]}°C</li>
+            <li>Probabilité qu'il pleuve: {meteo[i]["Probabilite_pluie (%)"]}%</li>
+            <li>Precipitation: {meteo[i]["Precipitation (mm)"]} mm</li>
+            <li>Pression à 0m: {meteo[i]["Pression (0m)(hPa)"]} hPa</li>
+            <li>Couverture nuageuse: {meteo[i]["Couverture_nuageuse (%)"]}%</li>
+            <li>Visibilité: {meteo[i]["Visibility (m)"]} m</li>
+            <li>Vitesse du vent (0m): {meteo[i]["Vitesse_vent (km/h)"]} km/h</li>
+            <li>Index UV: {meteo[i]["Index_UV"]}</li>
+            <li>Qualité de l'aire: {meteo[i]["Air_quality (pm2.5)"]} (PM 2.5)</li>
+            <li>Débit moyen des rivières: {meteo[i]["River_discharge (m3/s)"]} m^3/s</li>
+            <li>Probabilité de sècheresse: {meteo[i]["Probabilité sècheresse"]}</li>
+            <li>Canicule: {meteo[i]["Probabilité canicule (%)"]}</li>
+            <li>Probablité innondation: {meteo[i]["Probabilité innondation"]}</li>
+            <li>Météo: {meteo[i]["Etat_meteo"]}</li>
+        </ul>
+        """
     except KeyError:
-        print('les données recherchées ne coprrepsondent pas à celles de tableau_finalv2.csv ')
+        print('les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv ')
         html = f"""
             <p>test</p>
         """
