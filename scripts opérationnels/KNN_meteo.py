@@ -33,6 +33,11 @@ def coordinate_temperature(coordonees):
     weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
     return weather
 
+# determination des fieldnames qui serviront tout le long 
+descriteurs = []
+with open('donnes_classifiees.csv','r') as f:
+    descripteurs = list(csv.reader(f))[0]
+
 
 def distance(el1, el2):
     """ dict, dict -> int
@@ -51,17 +56,16 @@ def charge_table(nom_fichier):
     """
     with open(nom_fichier, 'r') as f:
         lect = csv.DictReader(f, delimiter=',',
-                              fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
-                                          'weather'])
-        liste_eleves = []
+                              fieldnames=descripteurs)
+        liste_dict = []
         for row in lect:
             # partie nouvelle
             if row['indice'] != 'NULL':
-                liste_eleves.append(row)
-    return liste_eleves[1:]
+                liste_dict.append(row)
+    return liste_dict[1:]
 
 
-def frequences_des_maisons(table):
+def frequence_etats(table):
     """ list -> dict
     prend en paramètre une liste de dictionnaires (élèves)
     renvoie le dictionnaire des fréquences des maisons
@@ -85,7 +89,7 @@ def meteo_majoritaire(table):
     prend en paramètre une liste de dictionnaires (élèves)
     renvoie la maison la plus représentée
     """
-    dict_freq = frequences_des_maisons(table)
+    dict_freq = frequence_etats(table)
     freq_max = 0
     for m in dict_freq:
         if dict_freq[m] > freq_max:
@@ -97,8 +101,8 @@ def meteo_majoritaire(table):
 
 def k_plus_proches_voisins(nouveau, table, k):
     '''
-    nouveau : un dictionnaire contenant les informations d'un éleve à classer
-    table : une liste de dictionnaire d'élèves déja enregistrés
+    nouveau : un dictionnaire contenant les informations d'une image à classer
+    table : une liste d'images déjas classifiées (en provenance de donnees_classifiees)
     k : le nombre de voisins à integrer 
 
     :out : liste de longueur k des plus proches voisins
@@ -115,17 +119,15 @@ def k_plus_proches_voisins(nouveau, table, k):
 
 
 def meteo_majoritaire(table):
-    maisons = ['Rainy', 'Cloudy', 'Foggy', 'Sunny', 'Night']
-    return sorted(frequences_des_maisons(table).items(), key=lambda item: item[1], reverse=True)[0][
-        0]  # on peux enlever le second [0] pour afficher le score en plus
+    meteos = ['Rainy', 'Cloudy', 'Foggy', 'Sunny', 'Night']
+    return sorted(frequence_etats(table).items(), key=lambda item: item[1], reverse=True)[0][0]  # on peux enlever le second [0] pour afficher le score en plus
 
 
 def alocation_meteo():
     table_supervisee = charge_table('donnes_classifiees.csv')
     with open('donnes_a_classifie.csv') as f:
         lect = csv.DictReader(f, delimiter=',',
-                              fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
-                                          'weather'])
+                              fieldnames=descripteurs)
         global elements_assigner
         elements_assigner = []
         for row in lect:
@@ -173,7 +175,7 @@ def alocation_meteo():
         a_ecrire = []
         for i in range(1, len(merged)):
             a_ecrire.append(
-                {'Code': merged[i]['Code'], 'Temperature': merged[i]['temperature'], 'etat': merged[i]['weather']})
+                {'Code': merged[i]['Code'], 'Temperature': merged[i]['temperature'],'Humidite': merged[i]['humidite'],'Pression':merged[i]['pression'], 'etat': merged[i]['weather']})
 
     global codes_complets
     codes_complets = []
@@ -192,7 +194,7 @@ def alocation_meteo():
     # print(codes_complets[1])
     # DEBOGAGE
     with open('tableau_finalv2.csv', 'w') as f:
-        ecr = csv.DictWriter(f, delimiter=',', fieldnames=['Code', 'Temperature', 'etat'])
+        ecr = csv.DictWriter(f, delimiter=',', fieldnames=['Code','Temperature','Humidite','Pression','etat'])
         ecr.writeheader()
 
         list1 = a_ecrire
@@ -257,8 +259,9 @@ def alocation_meteo():
             else:
                 coordonnee = merged_list[i]['coordonnee'].strip('][').split(', ')
                 coordonnee = [float(e) for e in coordonnee]
+                donnees = coordinate_temperature(coordonnee)
                 code = {'Code': merged_list[i]['Code'],
-                        'Temperature': coordinate_temperature(coordonnee)['air_temperature'], 'etat': 'NULL'}
+                        'Temperature': donnees['air_temperature'],'Humidite':donnees['relative_humidity'],'Pression':donnees['air_pressure_at_sea_level'], 'etat': 'NULL'}
                 ecr.writerow(code)
 
 

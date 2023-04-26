@@ -108,6 +108,10 @@ for donnee in descripteurs:
 
 # folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
 # https://www.python-graph-gallery.com/312-add-markers-on-folium-map?utm_content=cmp-true
+with open('tableau_finalv2.csv', 'r') as f:
+    descripteurs = list(csv.reader(f, delimiter=','))[0]
+
+# Les descripteurs du tableau_finalv2 sont repertoriés ici. Stv en ajouter d'autres modifie KNN_meteo pour les enregistrer dans le tableau à la fin
 
 f = open('tableau_finalv2.csv', 'r')
 meteo = list(csv.DictReader(f, delimiter=','))
@@ -116,23 +120,29 @@ df = pd.read_csv('departements-france.csv')
 departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
-    html = f"""
-        <h1>{i} - {departements[i]}</h1>
-        <p>Voici les données météo pour ce département:</p>
-        <ul>
-            <li>Temperature: {meteo[i]["Temperature"]}°C</li>
-            <li>Etat: {meteo[i]["etat"]}</li>
-            <li>Qualité de l'air: {meteo[i]["air_quality (pm2.5)"]} (pm2.5)</li>
-            <li>Débit moyen des rivières: {meteo[i]["river_discharge (m3/s)"]} (m^3/s)</li>
-            <li>Probabilité pluie: {meteo[i]["probabilite_pluie (%)"]} (%)</li>
-            <li>Précipitation: {meteo[i]["precipitation (mm)"]} (mm)</li>
-            <li>Pression atmosphérique: {meteo[i]["pression (hPa)"]} (hPa)</li>
-            <li>Couverture nuageuse: {meteo[i]["couverture_nuageuse (%)"]} (%)</li>
-            <li>Visibilité: {meteo[i]["visibility (m)"]} (m)</li>
-            <li>Vitesse du vent (10m): {meteo[i]["vitesse_vent (km/h)"]} (km/h)</li>
-            <li>Index UV: {meteo[i]["index_ux"]}</li>
-        </ul>
-    """
+    try: 
+        html = f"""
+            <h1>{i} - {departements[i]}</h1>
+            <p>Voici les données météo pour ce département:</p>
+            <ul>
+                <li>Temperature: {meteo[i]["Temperature"]}°C</li>
+                <li>Etat: {meteo[i]["etat"]}</li>
+                <li>Qualité de l'air: {meteo[i]["air_quality (pm2.5)"]} (pm2.5)</li>
+                <li>Débit moyen des rivières: {meteo[i]["river_discharge (m3/s)"]} (m^3/s)</li>
+                <li>Probabilité pluie: {meteo[i]["probabilite_pluie (%)"]} (%)</li>
+                <li>Précipitation: {meteo[i]["precipitation (mm)"]} (mm)</li>
+                <li>Pression atmosphérique: {meteo[i]["pression (hPa)"]} (hPa)</li>
+                <li>Couverture nuageuse: {meteo[i]["couverture_nuageuse (%)"]} (%)</li>
+                <li>Visibilité: {meteo[i]["visibility (m)"]} (m)</li>
+                <li>Vitesse du vent (10m): {meteo[i]["vitesse_vent (km/h)"]} (km/h)</li>
+                <li>Index UV: {meteo[i]["index_ux"]}</li>
+            </ul>
+        """
+    except KeyError:
+        print('les données recherchées ne coprrepsondent pas à celles de tableau_finalv2.csv ')
+        html = f"""
+            <p>test</p>
+        """
     iframe = folium.IFrame(html=html, width=300, height=350)
     popup = folium.Popup(iframe, max_width=2650)
     try:
@@ -146,8 +156,8 @@ for i in range(len(coordonees)):
                 weather = 'sun'
             case 'Foggy':
                 weather = 'fog'
-            case 'Nigt':
-                weather = 'nigt'
+            case 'Night':
+                weather = 'night'
                 # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_temperatures_etat[i]['etat'].lower()
         folium.Marker(
             location=coordonees[i],
