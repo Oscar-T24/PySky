@@ -13,6 +13,10 @@ from geopy.geocoders import Nominatim
 with open('diff_jours.txt','r+') as f:
     global variable
     variable = f.read()
+    if variable == '':
+        variable = 0
+    else:
+        variable = int(variable)
     f.write('')
 
 
@@ -79,48 +83,27 @@ def get_department(commune_name):
     else:
         return None
 
-
-with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
+with open('donnees_camerasv2.csv', 'r') as f:
     read = csv.DictReader(f, fieldnames=['lien', 'departement'])
-    # DETERMINATION DE L'ÉTAT MÉTÉO
+    # determination de l'indice
     for ligne in read:
-        if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien']:
-            url = ligne['lien']
-            try:
-                response = requests.get(url)
-                img = Image.open(BytesIO(response.content))
-                # img.save("webcam_image.jpg", "JPEG")
-                open_cv_image = numpy.array(img)
-                # Convert RGB to BGR 
-            except:
-                print("probleme de recuperation d'image")
-                continue  # on skip l'iteration actuelle
-            try:
-                no_departement = re.findall(r'\d+', ligne['departement'])
-            except TypeError:
-                print("Except no_departement")
-                continue
-            if len(no_departement) == 1:
-                no_departement = ''.join(no_departement)
-            else:
-                try:
-                    # si on a pas le~numéo, essayer de geopy le nom de la commune pour trouver
-                    no_departement = get_department(
-                        ligne['departement'][ligne['departement'].index('de') + 2:ligne['departement'].index('(')])
-                    print('utilisation reussie de geopy',
-                          ligne['departement'][ligne['departement'].index('de') + 2:ligne['departement'].index('(')],
-                          'numero determiné', no_departement)
-                except:
-                    # probleme avec Geopy : numero sauté
-                    continue
-            try:
-                # INDICE DE METEO
-                open_cv_image = open_cv_image[:, :, ::-1].copy()
-                image_tronquee = tronquer(open_cv_image)
-                indices_meteo[no_departement] = determine_weather_index(image_tronquee)  # NE MARCHE PAS AVEC LA CORSE
-
-            except:
-                print("probleme avec l'indexation de l'image")
+        try: 
+            response = requests.get(ligne["lien"])
+            img = Image.open(BytesIO(response.content))
+            open_cv_image = numpy.array(img)
+            # Convert RGB to BGR 
+        except : 
+            print('ERREUR')
+            continue
+        no_departement = ligne['departement']
+        try:
+            open_cv_image = open_cv_image[:, :, ::-1].copy()
+            image_tronquee = tronquer(open_cv_image)
+        except IndexError:
+            print("problemes d'indexations")
+            continue
+        indices_meteo[no_departement] =  determine_weather_index(image_tronquee) # NE MARCHE PAS AVEC LA CORSE
+        # UNE SEULE camera par departement 
 
 for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, "2A", "2B", 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 971, 972, 973, 974, 976]:
     if i not in indices_meteo.keys():
