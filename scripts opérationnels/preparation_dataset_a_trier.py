@@ -41,7 +41,7 @@ pression_niveaumer = []
 couverture_nuageuse = []
 visibility = []
 vitesse_vent = []
-index_ux = []
+index_uv = []
 air_quality = []
 river_discharge = []
 
@@ -60,7 +60,7 @@ for e in coordonnees:
     couverture_nuageuse.append(data.values.tolist()[7][-1][today.hour])
     visibility.append(data.values.tolist()[8][-1][today.hour])
     vitesse_vent.append(data.values.tolist()[9][-1][today.hour])
-    index_ux.append(data.values.tolist()[10][-1][today.hour])
+    index_uv.append(data.values.tolist()[10][-1][today.hour])
 
     # Données de qualité de l'air
     data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
@@ -179,17 +179,23 @@ def distance_flood(t):
     liste_distances = [distance_4d(t, e) for e in [var2010, garonne2013, languedoc2014, seine2016, aude2018, occitanie2020]]
     return round(sum(liste_distances), 3)
 
-
 for i in range(len(precipitation)): # On a que les données d'humidité pour la france metropolitaine
     try:
         probabilite_flood.append(distance_flood((precipitation[i], temperature[i], river_discharge[i], humidite_relative[i])))
     except ValueError:
         probabilite_flood.append("")
 
-probabilite_floodv2 = [None if e == 0 else e for e in probabilite_flood]
+def z_score_normalization(distance, ensemble_distances=probabilite_flood):
+    """
+    float, list --> float
+    Processus de normalisation z-score: Determination de l'intensité de la variance de la distance pour KNN par rapport a la moyenne de ensemble_distances
+    """
+    return abs((distance - numpy.mean(ensemble_distances)) / numpy.std(ensemble_distances))
+
+probabilite_floodv2 = [z_score_normalization(e) if e != 0 else None for e in probabilite_flood]
+
 
 print("Determination du risque d'innondations effectué")
-
 
 print("Calcul des probabilités de catastrophes naturelles effectué")
 
@@ -200,21 +206,21 @@ print("Importation de toutes les données dans le tableau")
 
 df["code"] = liste_departements
 df["Date"] = [date for i in range(101)]
-df["temperature (°C)"] = temperature
-df["humidite_relative (%)"] = humidite_relative
-df["temperature_ressentie (°C)"] = temperature_ressentie
-df["probabilite_pluie (%)"] = probabilite_pluie
-df["precipitation (mm)"] = precipitation
-df["pression (0m)(hPa)"] = pression_niveaumer
-df["couverture_nuageuse (%)"] = couverture_nuageuse
-df["visibility (m)"] = visibility
-df["vitesse_vent (km/h)"] = vitesse_vent
-df["index_ux"] = index_ux
-df["air_quality (pm2.5)"] = air_quality
-df["river_discharge (m3/s)"] = river_discharge
+df["Temperature (°C)"] = temperature
+df["Humidite_relative (%)"] = humidite_relative
+df["Temperature_ressentie (°C)"] = temperature_ressentie
+df["Probabilite_pluie (%)"] = probabilite_pluie
+df["Precipitation (mm)"] = precipitation
+df["Pression (0m)(hPa)"] = pression_niveaumer
+df["Couverture_nuageuse (%)"] = couverture_nuageuse
+df["Visibility (m)"] = visibility
+df["Vitesse_vent (km/h)"] = vitesse_vent
+df["Index_UV"] = index_uv
+df["Air_quality (pm2.5)"] = air_quality
+df["River_discharge (m3/s)"] = river_discharge
 df["Probabilité sècheresse"] = index_secheresse
 df["Probabilité canicule (%)"] = canicule
-df["Probabilité innondation"] = probabilite_flood
+df["Probabilité innondation"] = probabilite_floodv2
 df["Indice"] = indices_meteov2
 df["Etat_meteo"] = [None for i in range(101)]
 df.to_csv('donnees_meteo_a_classifier.csv', index=False)
