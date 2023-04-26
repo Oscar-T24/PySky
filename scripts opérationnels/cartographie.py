@@ -32,7 +32,7 @@ if __name__ == '__main__':
 coordonees = []
 
 with open('coordonnees_departements.csv', 'r') as c:
-    read = csv.DictReader(c, delimiter=',', fieldnames=['Code', 'departement', 'coordonnee'])
+    read = csv.DictReader(c, delimiter=',', fieldnames=['code', 'departement', 'coordonnee'])
     for ligne in read:
         coordonees.append("".join(ligne['coordonnee']).strip('][').split(', '))
 
@@ -49,10 +49,10 @@ geojson_data = folium.GeoJson(geojson_url).data
 geojson_df = pd.json_normalize(geojson_data["features"])
 
 # Load the dataset of temperature by department
-temperature_data = pd.read_csv("tableau_finalv2.csv", dtype={"Code": str})
+temperature_data = pd.read_csv("donnees_meteo.csv", dtype={"code": str})
 
 # Merge the dataset with the GeoJSON file using the department code as the common key
-merged_data = pd.merge(geojson_df, temperature_data, left_on="properties.code", right_on="Code")
+merged_data = pd.merge(geojson_df, temperature_data, left_on="properties.code", right_on="code")
 
 '''
 list_of_dicts = merged_data.to_dict(orient='records')
@@ -67,23 +67,6 @@ m = folium.Map(location=[46.5, 2], zoom_start=6)
 
 
 # bbox = [[latitudemin,longitudemin],[latitudemax,longitudemax]]
-'''
-folium.raster_layers.ImageOverlay(
-    image='sun.png',
-    bounds = [[41, 5], [45, 9]],
-    opacity=1,
-    overlay=True, 
-    control=True,
-).add_to(m)
-'''
-"""
-folium.raster_layers.ImageOverlay(
-    image='sun.png',
-    bounds = [[41, 5], [45, 9]],
-    opacity=1,
-    name = 'Sun'
-).add_to(m)
-"""
 
 # datetime object containing current date and time
 now = datetime.now()
@@ -91,17 +74,18 @@ dt_string = now.strftime("%H:%M")
 print(dt_string)
 
 descripteurs = []
-with open('tableau_finalv2.csv', 'r') as f:
+with open('donnees_meteo.csv', 'r') as f:
     descripteurs = list(csv.reader(f, delimiter=','))[0]  # la ligne 0 correspond aux descripteurs
-
+    #descripteurs = [e for e in descripteurs if e != 'code' and e != 'Date' and e !='Air_quality (pm2.5)' and e != 'Etat_meteo' and e != 'Indice']  # on n'exploite pas ces données visuelles
 dico_temperatures_etat = []
-with open('tableau_finalv2.csv', 'r') as f:
+with open('donnees_meteo.csv', 'r') as f:
     read = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
     # print(list(read)[0])
     for ligne in read:
         dico_temperatures_etat.append(ligne)
-descripteurs = [e for e in descripteurs if e != 'Code' and e != 'etat']  # on n'exploite pas ces données visuelles
 # print(dico_temperatures_etat)
+descripteurs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation']
+# on modifie expressement les descripteurs pour n'inclure que ceux qu'on veux mettre en cloropleth
 for donnee in descripteurs:
     folium.Choropleth(  # premier cloropleth pour la temperature
         geo_data=geojson_data,
@@ -122,20 +106,20 @@ for donnee in descripteurs:
 
 # folium.Marker(location=[46, 6], icon=folium.Icon(icon='sun')).add_to(m)
 # https://www.python-graph-gallery.com/312-add-markers-on-folium-map?utm_content=cmp-true
-with open('tableau_finalv2.csv', 'r') as f:
-    descripteurs = list(csv.reader(f, delimiter=','))[0]
 
 # Les descripteurs du tableau_finalv2 sont repertoriés ici. Stv en ajouter d'autres modifie KNN_meteo pour les enregistrer dans le tableau à la fin
 
-f = open('tableau_finalv2.csv', 'r')
+f = open('donnees_meteo.csv', 'r')
+descripteurs = list(csv.reader(f, delimiter=','))[0]
 meteo = list(csv.DictReader(f, delimiter=','))
 
 df = pd.read_csv('departements-france.csv')
 departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
-    try: 
-        html = f"""
+    try:
+        try :
+            html = f"""
             <h1>{i} - {departements[i]}</h1>
             <p>Voici les données météo pour ce département:</p>
             <ul>
@@ -151,7 +135,15 @@ for i in range(len(coordonees)):
                 <li>Vitesse du vent (10m): {meteo[i]["vitesse_vent (km/h)"]} (km/h)</li>
                 <li>Index UV: {meteo[i]["index_ux"]}</li>
             </ul>
-        """
+            """
+        except IndexError:
+            print("probleme")
+            html=f"""
+            <h1>{i} - {departements[i]}</h1>
+            <p>Voici les données météo pour ce département:</p>
+            <ul>
+            </ul>
+            """
     except KeyError:
         print('les données recherchées ne coprrepsondent pas à celles de tableau_finalv2.csv ')
         html = f"""
@@ -161,7 +153,7 @@ for i in range(len(coordonees)):
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'cross'
-        match dico_temperatures_etat[i + 1]['etat']:
+        match dico_temperatures_etat[i + 1]['Etat_meteo']:
             case 'Cloudy':
                 weather = 'cloud'
             case 'Rainy':
@@ -229,6 +221,8 @@ if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=4650)
 '''
 m.save("templates/map.html")
+
+print('ecriture reussie')
 
 # Ajouter une interface de visualisation en direct
 
