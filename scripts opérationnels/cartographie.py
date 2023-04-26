@@ -24,6 +24,8 @@ def my_function(value):
 if __name__ == '__main__':
     value = sys.argv[1]
     my_function(value)
+    with open('diff_jours.txt','w') as f:
+        f.write(value)
 
 # RECUPERATION DE LA TEMPERATURE AVEC SES CORDONNÉES
 

@@ -10,10 +10,15 @@ import pandas as pd
 from datetime import datetime, timedelta
 from geopy.geocoders import Nominatim
 
-variable = 0  # LE DEPLACEMENT COMME DEFINIT PAR LUTILISATEUR, MAIS PAR DEFAULT 0
+with open('diff_jours.txt','r+') as f:
+    global variable
+    variable = f.read()
+    f.write('')
+
+variable =   # LE DEPLACEMENT COMME DEFINIT PAR LUTILISATEUR, MAIS PAR DEFAULT 0
 today = datetime.now()
 dif = timedelta(days= variable)
-date = today + dif  # A revoir pour les histoires de + et de -
+date = today + dif 
 
 f = open('coordonnees_departements.csv', 'r')
 coordonnees = list(csv.DictReader(f))
