@@ -15,7 +15,6 @@ with open('diff_jours.txt','r+') as f:
     variable = f.read()
     f.write('')
 
-variable =   # LE DEPLACEMENT COMME DEFINIT PAR LUTILISATEUR, MAIS PAR DEFAULT 0
 today = datetime.now()
 dif = timedelta(days= variable)
 date = today + dif 
