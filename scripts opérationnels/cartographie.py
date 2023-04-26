@@ -113,7 +113,7 @@ for donnee in descripteurs:
         # https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
         fill_opacity=1,
         line_opacity=0.5,
-        legend_name=f"{donnee}UNITÉ ICI",
+        legend_name=f"{donnee}",
         style_function=lambda x: {'fillColor': 'transparent', 'color': 'blue', 'weight': 2},
         highlight=True,
         show=False,

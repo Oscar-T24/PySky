@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 labeled_data = pd.read_csv('clean_donnees_cameras.csv')
-data_to_classify = pd.read_csv('donnes_classifiees.csv')
+data_to_classify = pd.read_csv('donnes_meteo_classifiees.csv')
 
 # Define function to calculate the euclidean distance between two data points
 def euclidean_distance(x1, x2):

@@ -10,8 +10,7 @@ while True:
     time_depart = time.time()
     # subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
     print('etape 2 finie : preparation du dataset de supervisation')
-    subprocess.run(
-        ["python3", "preparation_dataset_a_trier.py"])  # script qui permet d'ajouter une entrée pour l'algorithme KNN
+    subprocess.run(["python3", "preparation_dataset_a_trier.py"])  # script qui permet d'ajouter une entrée pour l'algorithme KNN
     print('etape 3 finie : preparation du dataset à classifier')
     subprocess.run(["python3", "KNN_meteo.py"])  # script qui associe un état météo à un département
     print('etape 4 finie : analyse de la météo')

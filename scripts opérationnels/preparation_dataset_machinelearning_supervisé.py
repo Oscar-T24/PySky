@@ -139,7 +139,7 @@ if True:
     except AssertionError:
         print('FINALISATION DES DONNÉES ENTRÉES')
         dico_etats_meteos = sorted(dico_etats_meteos, key=lambda dico_etats_meteos: dico_etats_meteos['Code'])
-        with open('donnes_classifiees.csv', 'a') as f:
+        with open('donnes_meteo_classifiees.csv', 'a') as f:
 
             # creer / actualiser un csv pour létat météo d'un departement
             lect = csv.DictWriter(f, fieldnames=descripteurs)

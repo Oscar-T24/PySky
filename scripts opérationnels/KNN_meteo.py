@@ -35,7 +35,7 @@ def coordinate_temperature(coordonees):
 
 # determination des fieldnames qui serviront tout le long 
 descriteurs = []
-with open('donnes_classifiees.csv','r') as f:
+with open('donnes_meteo_classifiees.csv', 'r') as f:
     descripteurs = list(csv.reader(f))[0]
 
 
@@ -124,7 +124,7 @@ def meteo_majoritaire(table):
 
 
 def alocation_meteo():
-    table_supervisee = charge_table('donnes_classifiees.csv')
+    table_supervisee = charge_table('donnes_meteo_classifiees.csv')
     with open('donnes_a_classifie.csv') as f: # IL FAUT LE PRENDRE DE donnees_meteo.csv !!!!
         lect = csv.DictReader(f, delimiter=',',
                               fieldnames=descripteurs)

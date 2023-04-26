@@ -4,6 +4,9 @@ from flask import request
 
 app = Flask(__name__)
 
+with open('diff_jours.txt','w') as f:
+    f.write("0")
+
 @app.route('/')
 def index():
     return render_template('index.html')

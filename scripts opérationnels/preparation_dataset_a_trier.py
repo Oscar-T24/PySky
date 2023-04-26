@@ -22,6 +22,7 @@ with open('diff_jours.txt', 'r+') as f:
 today = datetime.now()
 dif = timedelta(days=variable)
 date = today + dif
+dateiso = date.isoformat()[:10]
 
 # PRISE DES DEPARTEMENTS, DE LEURS CODES ET DE LEURS COORDONNÉES
 f = open('coordonnees_departements.csv', 'r')
@@ -30,6 +31,7 @@ coordonnees = list(csv.DictReader(f))
 # CREATION D'UN TABLEAU
 headers = ['code']
 df = pd.DataFrame(columns=headers)
+
 
 # CREATION DE TABLES VIDES POUR CHAQUE COLONNE
 temperature = []
@@ -50,7 +52,7 @@ for e in coordonnees:
     c = e['coordonnee'].split(" ")
     d, x, y = e['Code'], float(c[0][1:-2]), float(c[-1][:-2])
 
-    data = pd.read_json(f"https://api.open-meteo.com/v1/forecast?latitude={x}&longitude={y}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,pressure_msl,cloudcover,visibility,windspeed_10m,uv_index&forecast_days=1&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
+    data = pd.read_json(f"https://api.open-meteo.com/v1/forecast?latitude={x}&longitude={y}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,pressure_msl,cloudcover,visibility,windspeed_10m,uv_index&forecast_days=1&start_date={dateiso}&end_date={dateiso}")
     temperature.append(data.values.tolist()[1][-1][today.hour])
     humidite_relative.append(data.values.tolist()[2][-1][today.hour])
     temperature_ressentie.append(data.values.tolist()[3][-1][today.hour])
@@ -63,12 +65,12 @@ for e in coordonnees:
     index_uv.append(data.values.tolist()[10][-1][today.hour])
 
     # Données de qualité de l'air
-    data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
+    data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={dateiso}&end_date={dateiso}")
     quality = data.values.tolist()[1][-1][today.hour]
     air_quality.append(quality)
 
     # Débit moyen des rivières
-    data = pd.read_json(f"https://flood-api.open-meteo.com/v1/flood?latitude={x}&longitude={y}&daily=river_discharge_mean&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}&forecast_days=1")
+    data = pd.read_json(f"https://flood-api.open-meteo.com/v1/flood?latitude={x}&longitude={y}&daily=river_discharge_mean&start_date={dateiso}&end_date={dateiso}&forecast_days=1")
     debit = data.values.tolist()[1][-1][0]
     river_discharge.append(debit)
 
@@ -205,7 +207,7 @@ print("Calcul des probabilités de catastrophes naturelles effectué")
 print("Importation de toutes les données dans le tableau")
 
 df["code"] = liste_departements
-df["Date"] = [date for i in range(101)]
+df["Date"] = [dateiso for i in range(101)]
 df["Temperature (°C)"] = temperature
 df["Humidite_relative (%)"] = humidite_relative
 df["Temperature_ressentie (°C)"] = temperature_ressentie
@@ -223,6 +225,6 @@ df["Probabilité canicule (%)"] = canicule
 df["Probabilité innondation"] = probabilite_floodv2
 df["Indice"] = indices_meteov2
 df["Etat_meteo"] = [None for i in range(101)]
-df.to_csv('donnees_meteo_a_classifier.csv', index=False)
+df.to_csv('donnees_meteo.csv', index=False)
 
 print("Tableau donnees_meteo.csv mis à jour!")
