@@ -1,13 +1,12 @@
 from flask import Flask, render_template
+import subprocess
+from flask import request
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-import subprocess
-from flask import request
 
 @app.route('/iframe')
 def iframe():
@@ -16,12 +15,12 @@ def iframe():
 @app.route('/execute')
 def execute():
     value = request.args.get('value')
-
+    print('execution')
     # Execute Python script with value as parameter
-    subprocess.call(['python3', 'cartographie.py', value])
-
-    return ''
+    #subprocess.call(['python3', 'cartographie.py', value])
+    
+    # Render a new template that includes the additional element
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
