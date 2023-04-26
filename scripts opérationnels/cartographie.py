@@ -54,13 +54,6 @@ temperature_data = pd.read_csv("donnees_meteo.csv", dtype={"code": str})
 # Merge the dataset with the GeoJSON file using the department code as the common key
 merged_data = pd.merge(geojson_df, temperature_data, left_on="properties.code", right_on="code")
 
-'''
-list_of_dicts = merged_data.to_dict(orient='records')
-print(list_of_dicts)
-import time
-time.sleep(5)
-'''
-
 # Create a choropleth map of the temperature
 m = folium.Map(location=[46.5, 2], zoom_start=6)
 # Add a layer control to the map
@@ -71,19 +64,18 @@ m = folium.Map(location=[46.5, 2], zoom_start=6)
 # datetime object containing current date and time
 now = datetime.now()
 dt_string = now.strftime("%H:%M")
-print(dt_string)
 
 descripteurs = []
 with open('donnees_meteo.csv', 'r') as f:
     descripteurs = list(csv.reader(f, delimiter=','))[0]  # la ligne 0 correspond aux descripteurs
     #descripteurs = [e for e in descripteurs if e != 'code' and e != 'Date' and e !='Air_quality (pm2.5)' and e != 'Etat_meteo' and e != 'Indice']  # on n'exploite pas ces données visuelles
-dico_temperatures_etat = []
+dico_meteo = []
 with open('donnees_meteo.csv', 'r') as f:
     read = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
     # print(list(read)[0])
     for ligne in read:
-        dico_temperatures_etat.append(ligne)
-# print(dico_temperatures_etat)
+        dico_meteo.append(ligne)
+# print(dico_meteo)
 descripteurs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation']
 # on modifie expressement les descripteurs pour n'inclure que ceux qu'on veux mettre en cloropleth
 for donnee in descripteurs:
@@ -118,7 +110,6 @@ departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
     try:
-        try :
             html = f"""
             <h1>{i} - {departements[i]}</h1>
             <p>Voici les données météo pour ce département:</p>
@@ -136,14 +127,6 @@ for i in range(len(coordonees)):
                 <li>Index UV: {meteo[i]["index_ux"]}</li>
             </ul>
             """
-        except IndexError:
-            print("probleme")
-            html=f"""
-            <h1>{i} - {departements[i]}</h1>
-            <p>Voici les données météo pour ce département:</p>
-            <ul>
-            </ul>
-            """
     except KeyError:
         print('les données recherchées ne coprrepsondent pas à celles de tableau_finalv2.csv ')
         html = f"""
@@ -153,7 +136,7 @@ for i in range(len(coordonees)):
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'cross'
-        match dico_temperatures_etat[i + 1]['Etat_meteo']:
+        match dico_meteo[i + 1]['Etat_meteo']:
             case 'Cloudy':
                 weather = 'cloud'
             case 'Rainy':
@@ -166,7 +149,7 @@ for i in range(len(coordonees)):
                 weather = 'night'
             case "NULL":
                 weather = "circle"
-                # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_temperatures_etat[i]['etat'].lower()
+                # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_meteo[i]['etat'].lower()
         folium.Marker(
             location=coordonees[i],
             popup=popup,
