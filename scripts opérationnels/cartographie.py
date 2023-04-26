@@ -4,7 +4,6 @@ import csv
 import random
 from IPython.display import IFrame
 from datetime import datetime
-from flask import Flask, render_template_string
 
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 

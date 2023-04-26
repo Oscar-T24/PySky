@@ -7,7 +7,7 @@ from io import BytesIO
 import numpy
 import json
 import cv2
-
+from PIL import ImageTk as itk
 from indice import determine_weather_index  # argument : image cv2
 from tronque import tronquer  # argument : chemin d'acces photo
 
@@ -23,7 +23,6 @@ def display_image(image):
     blue, green, red = cv2.split(image)
     image = cv2.merge((red, green, blue))
     image = Image.fromarray(image)
-    from PIL import ImageTk as itk
     img = itk.PhotoImage(image)
     canvas = tk.Canvas(root, width=500, height=500)  # tk.Canvas(root, width=img.width(), height=img.height())
     canvas.create_image(0, 0, anchor='nw', image=img)
@@ -80,10 +79,6 @@ def coordinate_temperature(coordonees):
     units = data["properties"]["meta"]["units"]
     weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
     return weather
-
-
-from geopy.geocoders import Nominatim
-import re
 
 
 with open('donnees_meteo_a_classifier.csv','r') as f:
