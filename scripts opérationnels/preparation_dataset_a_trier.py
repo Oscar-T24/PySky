@@ -199,6 +199,7 @@ print("Calcul des probabilités de catastrophes naturelles effectué")
 print("Importation de toutes les données dans le tableau")
 
 df["code"] = liste_departements
+df["Date"] = [date for i in range(101)]
 df["temperature (°C)"] = temperature
 df["humidite_relative (%)"] = humidite_relative
 df["temperature_ressentie (°C)"] = temperature_ressentie
@@ -214,8 +215,8 @@ df["river_discharge (m3/s)"] = river_discharge
 df["Probabilité sècheresse"] = index_secheresse
 df["Probabilité canicule (%)"] = canicule
 df["Probabilité innondation"] = probabilite_flood
-df["Etat_meteo"] = indices_meteov2
-
+df["Indice"] = indices_meteov2
+df["Etat_meteo"] = [None for i in range(101)]
 df.to_csv('donnees_meteo.csv', index=False)
 
 print("Tableau donnees_meteo.csv mis à jour!")
