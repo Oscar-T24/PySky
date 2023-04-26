@@ -171,7 +171,6 @@ header {
     <meta charset = "utf-8">
 </head>
 <body>
-
     <div class="popup">
         <button id="close">&times;</button>
         <h2>Besoin d'aide?</h2>
@@ -191,6 +190,8 @@ header {
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                     <p><span id="day">0</span></p>
                     <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
+                    <!-- HTML element to hold the timer value -->
+<div id="timer">3:00</div>
                 </div>
                 <div class="header" id="aide">
                     <button onclick="pop(this)" class="boutons" id="rules">Aide</button>
@@ -260,6 +261,33 @@ header {
         document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
             document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
         });
+ 
+  // Set the timer duration to 3 minutes (in seconds)
+  let timerDuration = 3 * 60;
+
+  // Get the timer element
+  const timerElement = document.getElementById('timer');
+
+  // Update the timer element with the remaining time
+  function updateTimer() {
+    const minutes = Math.floor(timerDuration / 60);
+    const seconds = timerDuration % 60;
+    timerElement.innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
+  // Start the timer
+  updateTimer(); // Display initial time
+  const interval = setInterval(function() {
+    timerDuration--; // Decrease the remaining time
+    updateTimer(); // Update the timer element
+
+    // Reload the webpage when the timer reaches 0
+    if (timerDuration <= 0) {
+      clearInterval(interval);
+      location.reload();
+    }
+  }, 1000); // Update the timer every second
+
     </script>
 </body>
 <footer>
