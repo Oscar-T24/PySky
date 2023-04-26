@@ -99,8 +99,8 @@ with open('donnees_camerasv2.csv', 'r') as f:
         try:
             open_cv_image = open_cv_image[:, :, ::-1].copy()
             image_tronquee = tronquer(open_cv_image)
-        except IndexError:
-            print("problemes d'indexations")
+        except:
+            print("problemes d'indexations ou autre avec tronuqer")
             continue
         indices_meteo[no_departement] =  determine_weather_index(image_tronquee) # NE MARCHE PAS AVEC LA CORSE
         # UNE SEULE camera par departement 
