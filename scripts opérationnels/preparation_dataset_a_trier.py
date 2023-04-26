@@ -15,9 +15,9 @@ with open('diff_jours.txt','r+') as f:
     variable = f.read()
     f.write('')
 
-variable =   # LE DEPLACEMENT COMME DEFINIT PAR LUTILISATEUR, MAIS PAR DEFAULT 0
+
 today = datetime.now()
-dif = timedelta(days= variable)
+dif = timedelta(days=variable)
 date = today + dif 
 
 f = open('coordonnees_departements.csv', 'r')
@@ -117,7 +117,7 @@ with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
                 # INDICE DE METEO
                 open_cv_image = open_cv_image[:, :, ::-1].copy()
                 image_tronquee = tronquer(open_cv_image)
-                indices_meteo[no_departement] =  determine_weather_index(image_tronquee) # NE MARCHE PAS AVEC LA CORSE
+                indices_meteo[no_departement] = determine_weather_index(image_tronquee)  # NE MARCHE PAS AVEC LA CORSE
 
             except:
                 print("probleme avec l'indexation de l'image")
