@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <style>
-
-input[type="range"] {
-  width:100px;
-  height:30px;
+button {
+  margin-left: 70px;
+  background-color: #800000;
+  border: 2px solid #ffd700;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
 }
-
+input {
+margin-left: 100px;
+}
 #presentation{
     position:center;
     background-color: brown;
-    padding-left: 40%;
     padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    color:aliceblue;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 h3{
 font-style:italic;
@@ -63,7 +73,7 @@ footer{
 </head>
 <body>
     <table>
-        <td style="width:40%;">
+        <td style="width:30%;">
             <div id="'explication">
                 <h3>Besoin d'aide ?</h3>
                 <p> pour selectionner un jour dans la timeline, faites glisser le slider</p>
@@ -75,11 +85,11 @@ footer{
                 <h1>Site Météréologique des Trophées NSI</h1>
                 <h3>Enjoy</h3>
                 <p>Selectionner <span id="day">0</span></p>
-                <input type="range" min="-10" max="10" step="1" id="slider">
+                <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                 <button id="execute" onclick="recharger()">Actualiser la carte</button>
         </td>
         <td id="legende">
-            <table style="width:100%">
+            <table style="width:50%">
                 <tr>
                   <th>Icone</th>
                   <th>Signification</th>
