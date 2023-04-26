@@ -8,7 +8,7 @@ print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
 def my_function(value):
     if int(value) == 0:
-        print('AFFICHER LA METEO DAJD COMME NORMALEMENT')
+        print('AFFICHER LA METEO DE AUJOURDHUI')
     else:
         print('UTILISER LES VALEURS DE HISTORIC DATA')
     pass
@@ -19,16 +19,17 @@ if __name__ == '__main__':
     with open('diff_jours.txt','w') as f:
         f.write(value)
 
-if True:
     time_depart = time.time()
-    # subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
-    print('etape 2 finie : preparation du dataset de supervisation')
+
     subprocess.run(["python3", "preparation_dataset_a_trier.py"])  # script qui permet d'ajouter une entrée pour l'algorithme KNN
     print('etape 3 finie : preparation du dataset à classifier')
-    subprocess.run(["python3", "KNN_meteo.py"])  # script qui associe un état météo à un département
-    print('etape 4 finie : analyse de la météo')
-    # subprocess.run(["python3", "cartographie-temperature-departements.py"])
-    # print('etape 5 finie :creation d"une carte')
+    if value == 0:
+        subprocess.run(["python3", "KNN_meteo.py"])  # script qui associe un état météo à un département
+        print('etape 4 finie : analyse de la météo')
+    else:
+        print('etape 4 sautée : demande utilisateur historic data')
+    subprocess.run(["python3", "cartographie.py"])
+    print('etape 5 finie :creation d"une carte')
     now = datetime.now()
     dt_string = now.strftime("%d %H:%M")
     print('temps ecoulé pour tout faire : (etape 2,3,4)', time.time() - time_depart)
@@ -37,8 +38,5 @@ if True:
     with open('temps_ecoulement.txt', 'a') as f:
         f.write(f'temps ecoule :{temps}s (etape 2,3,4) {dt_string}')
         f.write('\n')
-    with open('cartographie-temperature-departements.py',
-              'a') as f:  # ecrire sur le fichier cartographie pour relancer flask
-        f.write('a')
 # temps pour faire les étapes 2 à 4 : 4 minutes +/- 10s
 # temps pour la partie 1 : 160,7 minutes soit 2,67 heures
