@@ -36,8 +36,7 @@ def display_image(image):
     weather_label = ttk.Label(root, text='Select Weather:')
     weather_label.pack(pady=10)
     weather_var = tk.StringVar(root)
-    weather_dropdown = ttk.Combobox(root, textvariable=weather_var,
-                                    values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
+    weather_dropdown = ttk.Combobox(root, textvariable=weather_var, values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
     weather_dropdown.pack()
 
     # Create button to save weather and close window
