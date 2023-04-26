@@ -172,6 +172,8 @@ for i in range(len(coordonees)):
                 weather = 'fog'
             case 'Night':
                 weather = 'night'
+            case "NULL":
+                weather = "circle"
                 # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_temperatures_etat[i]['etat'].lower()
         folium.Marker(
             location=coordonees[i],
