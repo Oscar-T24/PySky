@@ -205,7 +205,7 @@ header {
                 </div>
                 <div class="header" id="inlineception">
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
-                    <p><span id="day">+0 jours</span></p>
+                    <p><span id="day">Présent</span></p>
                     <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
                 </div>
                 <div class="header" id="aide">
@@ -230,7 +230,7 @@ header {
             const sliderValue = slider.value;
 
             // Update day element with selected day
-            const day = sliderValue == 0 ? "+0 jours" : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
+            const day = sliderValue == 0 ? "Présent" : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
             dayElement.textContent = day;
         });
 
