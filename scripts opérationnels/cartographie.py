@@ -140,7 +140,7 @@ for i in range(len(coordonees)):
             <p>Voici les données météo pour ce département:</p>
             <ul>
                 <li>Temperature: {meteo[i]["Temperature"]}°C</li>
-                <li>Etat: {meteo[i]["etat"]}</li>
+                <li>Etat (now): {meteo[i]["etat"]}</li>
                 <li>Qualité de l'air: {meteo[i]["air_quality (pm2.5)"]} (pm2.5)</li>
                 <li>Débit moyen des rivières: {meteo[i]["river_discharge (m3/s)"]} (m^3/s)</li>
                 <li>Probabilité pluie: {meteo[i]["probabilite_pluie (%)"]} (%)</li>
