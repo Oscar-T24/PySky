@@ -1,12 +1,25 @@
 import subprocess
 import time
 from datetime import datetime
-
+import sys
 '''
 subprocess.run(["python3", "recuperation_donneswebcam.py"])
 print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
-while True:
+def my_function(value):
+    if int(value) == 0:
+        print('AFFICHER LA METEO DAJD COMME NORMALEMENT')
+    else:
+        print('UTILISER LES VALEURS DE HISTORIC DATA')
+    pass
+
+if __name__ == '__main__':
+    value = sys.argv[1]
+    my_function(value)
+    with open('diff_jours.txt','w') as f:
+        f.write(value)
+
+if True:
     time_depart = time.time()
     # subprocess.run(["python3", "preparation_dataset_machinelearning_supervisé.py"])
     print('etape 2 finie : preparation du dataset de supervisation')

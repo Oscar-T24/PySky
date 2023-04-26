@@ -11,20 +11,6 @@ from geopy.geocoders import Nominatim
 
 # ---------------INTERPRETATION DES DONNES ENVOYES ------------------------------
 
-import sys
-
-def my_function(value):
-    if int(value) == 0:
-        print('AFFICHER LA METEO DAJD COMME NORMALEMENT')
-    else:
-        print('UTILISER LES VALEURS DE HISTORIC DATA')
-    pass
-
-if __name__ == '__main__':
-    value = sys.argv[1]
-    my_function(value)
-    with open('diff_jours.txt','w') as f:
-        f.write(value)
 
 # RECUPERATION DE LA TEMPERATURE AVEC SES CORDONNÉES
 
