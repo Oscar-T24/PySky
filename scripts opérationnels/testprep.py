@@ -47,7 +47,6 @@ def display_image(image):
 
     root.mainloop()
 
-
 arreter = False
 
 
@@ -61,6 +60,7 @@ def ajouter(etat):
 def quitter():
     global arreter
     arreter = True
+    print('arreter')
 
 # FIN DU MPENU TKINTER ---------------------
 
@@ -157,6 +157,7 @@ try:
                 image_tronquee = tronquer(open_cv_image)
                 display_image(open_cv_image)
                 with open('temp_meteo.txt', 'r+') as f:
+                    global etat_meteo
                     etat_meteo = f.read()
                     f.write('')
                 etat_meteos[no_departement] = etat_meteo
