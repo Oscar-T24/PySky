@@ -17,10 +17,10 @@ def execute():
     value = request.args.get('value')
     print('execution')
     # Execute Python script with value as parameter
-    #subprocess.call(['python3', 'cartographie.py', value])
+    subprocess.call(['python3', 'cartographie.py', value])
     
     # Render a new template that includes the additional element
-    return render_template('index.html')
+    return ''
 
 if __name__ == '__main__':
     app.run(debug=True)

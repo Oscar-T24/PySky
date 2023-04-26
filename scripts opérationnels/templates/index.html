@@ -70,7 +70,7 @@ footer{
                 <h3>Enjoy</h3>
                 <p>Selectionner <span id="day">0</span></p>
                 <input type="range" min="-10" max="10" step="1" id="slider">
-                <button id="execute">Actualiser la carte</button>
+                <button id="execute" onclick="recharger()">Actualiser la carte</button>
         </td>
         <td id="legende">
             <table style="width:100%">
@@ -97,7 +97,7 @@ footer{
     </div>
     </table>
     <div class="spinner" style="display: none; width:150px;height:150px;"></div>
-    <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%"></iframe> <!-- onload="enlever()-->
+    <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
 
     <script>
         // Get slider, day element, and button elements
@@ -125,7 +125,7 @@ footer{
         });
         var myButton = document.getElementById('execute');
         var loadingDiv = document.querySelector('.spinner');
-
+        loadingDiv.style.display = 'block';
         myButton.addEventListener('click', function() {
             loadingDiv.style.display = 'block';
             /*
@@ -135,11 +135,13 @@ footer{
             */
         });
 
+        function recharger(){
+            location.reload()
+        }
         function enlever(){
             var myButton = document.getElementById('execute');
             var loadingDiv = document.querySelector('.spinner');
-            loadingDiv.style.display = 'none'; 
-            alert('FINI NDE CHARGER')
+            loadingDiv.style.display = 'none';
         }
     </script>
 </body>
