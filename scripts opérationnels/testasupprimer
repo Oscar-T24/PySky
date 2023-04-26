@@ -1,0 +1,5 @@
+with open('diff_jours.txt','r+') as f:
+    global variable
+    variable = f.read()
+    f.write('')
+print(variable)

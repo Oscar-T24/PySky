@@ -13,10 +13,11 @@ from geopy.geocoders import Nominatim
 with open('diff_jours.txt','r+') as f:
     global variable
     variable = f.read()
+    if variable == '':
+        variable = 0
     f.write('')
+# lit la valeur de jours différés et supprime le contenu apres
 
-if variable == '':
-    variable = 0
     
 today = datetime.now()
 dif = timedelta(days= variable)
@@ -69,20 +70,8 @@ for e in coordonnees:
 
 indices_meteo = {}
 
-def get_department(commune_name):
-    geolocator = Nominatim(user_agent="my-app")
-    commune_name = commune_name.encode('ISO 8859-1').decode('utf-8')
-    print(commune_name)
-    if 'Paris' in commune_name:  # on sait pas pk ca marche pas avec Paris (renbvoi 13 mais c Marseille ca)
-        return '75'
-    location = geolocator.geocode(commune_name + ", France")
-    if location:
-        return "".join(re.findall(r'-?\d+', location.raw['display_name']))[:2]
-    else:
-        return None
 
-
-with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
+with open('donnees_cameras.csv', 'r') as f:
     read = csv.DictReader(f, fieldnames=['lien', 'departement'])
     # DETERMINATION DE L'ÉTAT MÉTÉO
     for ligne in read:
