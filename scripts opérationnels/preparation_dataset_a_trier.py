@@ -217,6 +217,6 @@ df["Probabilité canicule (%)"] = canicule
 df["Probabilité innondation"] = probabilite_flood
 df["Indice"] = indices_meteov2
 df["Etat_meteo"] = [None for i in range(101)]
-df.to_csv('donnees_meteo.csv', index=False)
+df.to_csv('donnees_meteo_a_classifier.csv', index=False)
 
 print("Tableau donnees_meteo.csv mis à jour!")
