@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <style>
+span {
+ margin-top: 20px;
+ margin-left: 45px;
+}
 button {
   background-color: #800000;
   border: 2px solid #ffd700;
@@ -9,10 +13,12 @@ button {
   font-weight: bold;
   border-radius: 5px;
   float : right;
+  margin-left: 20%;
   
 }
 input {
-margin-left: 100px;
+margin-left: 10px;
+margin-right: 40px;
 }
 #presentation{
     position:center;
@@ -148,8 +154,8 @@ header {
 
 
 .boutons:hover {
-    background-color: lightgreen;
-    color: white;
+    background-color: rgb(209, 52, 99);
+    color: rgb(31, 18, 18);
 }
 
 
@@ -169,7 +175,7 @@ header {
     <div class="popup">
         <button id="close">&times;</button>
         <h2>Besoin d'aide?</h2>
-        <img src="pins.png">
+        <img src="http://93.14.22.225/Pins.png">
         <td style="width:40%;">
             <div id="'explication">
                 <p>Pour selectionner un jour dans la timeline, faites glisser le slider</p>
@@ -182,7 +188,7 @@ header {
                     <h1>PySky - Trophées NSI</h1>
                 </div>
                 <div class="header" id="inlineception">
-                    <input type="range" min="-10" max="10" step="1" id="slider">
+                    <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                     <p><span id="day">0</span></p>
                     <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
                 </div>

@@ -19,8 +19,8 @@ def iframe():
 def execute():
     value = request.args.get('value')
     print('execution')
-    # Execute Python script with value as parameter
-    subprocess.call(['python3', 'cartographie.py', value])
+    # Executer le script main
+    subprocess.call(['python3', 'main.py', value])
     
     # Render a new template that includes the additional element
     return ''
