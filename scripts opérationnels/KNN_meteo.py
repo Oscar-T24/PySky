@@ -44,7 +44,7 @@ def distance(el1, el2):
     renvoie la distance de Manhattan entre 2 images positions
     """
     d = 0
-    attributs = ['indice', 'temperature', 'humidite']
+    attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
     for q in attributs:
         d += abs(float(el1[q]) - float(el2[q]))
     return d
@@ -60,7 +60,7 @@ def charge_table(nom_fichier):
         liste_dict = []
         for row in lect:
             # partie nouvelle
-            if row['indice'] != 'NULL':
+            if row['Indice'] != 'NULL':
                 liste_dict.append(row)
     return liste_dict[1:]
 
@@ -72,7 +72,7 @@ def frequence_etats(table):
     """
     d = {}
     for e in table:
-        m = e['weather']
+        m = e['Etat_meteo']
         if m not in d:
             d[m] = 1
         else:
@@ -124,32 +124,27 @@ def meteo_majoritaire(table):
 
 
 def alocation_meteo():
-    table_supervisee = charge_table('donnees_meteo_classifiees.csv')
+    '''
+    associe à chaque département un état météo basé sur un dataset supervisé
+    '''
+    table_supervisee = charge_table('donnees_meteo_classifiees.csv') # charger le dataset classifé qui sert de support
     with open('donnees_meteo.csv') as f:
+        # ouvrir le fichier à charger
         lect = csv.DictReader(f, delimiter=',',
                               fieldnames=descripteurs)
-        global elements_assigner
-        elements_assigner = []
+        global meteo_associee
+        meteo_associee = []
         for row in lect:
-            if row['indice'] != 'NULL':
-                elements_assigner.append(row)
+            if row['Indice'] != 'NULL':
+                meteo_associee.append(row)
 
-    for i in range(1, len(elements_assigner)):
-        elements_assigner[i]['weather'] = meteo_majoritaire(
-            k_plus_proches_voisins(elements_assigner[i], table_supervisee, 3))
-        # ETAPE SUIVANTE : enlever les doublons
-    from collections import Counter
+    for i in range(1,len(meteo_associee)):
+        meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
+    
+    with open('donnees_meteo.csv','w') as f:
+        ecr = csv.DictWriter(f,fieldnames=descripteurs)
+        ecr.writerows(meteo_associee)
 
-    # Group the dictionaries by their 'Code' value
-
-    groups = {}
-    for d in elements_assigner:
-        code = d['Code']
-        if code not in groups:
-            groups[code] = []
-        groups[code].append(d)
-
-    # Merge the dictionaries with the same 'Code' value
-    merged = []
+    print('algorithme KNN terminé')
 
 alocation_meteo()
