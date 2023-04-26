@@ -66,7 +66,7 @@ for identifiant in range(0,700):
     departement = {'lien': link[:25]+img_src, 'departement': no_departement}
     if departement['department'] != '':
         cameras.append(departement)
-    print('ajout de ',{'lien': link[:25]+img_src, 'departement': no_departement})
+    #print('ajout de ',{'lien': link[:25]+img_src, 'departement': no_departement})
     driver.close()
     # save the img src to a CSV file
 with open('donnees_cameras.csv', mode='w') as file:
