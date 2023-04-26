@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Meteorological Site</title>
+</head>
+<body>
+    <h1>My Meteorological Site</h1>
+    <p>Selectionner <span id="day">0</span></p>
+    <input type="range" min="-10" max="10" step="1" id="slider">
+    <button id="execute">Actualiser la carte</button>
+    <iframe src="./map.html" height="1000px" width="100%"></iframe>
+
+    <script>
+        // Get slider, day element, and button elements
+        const slider = document.getElementById('slider');
+        const dayElement = document.getElementById('day');
+        const executeButton = document.getElementById('execute');
+
+        // Add event listener to slider
+        slider.addEventListener('input', () => {
+            // Get value of slider
+            const sliderValue = slider.value;
+
+            // Update day element with selected day
+            const day = sliderValue == 0 ? 'aujourdhui' : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
+            dayElement.textContent = day;
+        });
+
+        // Add event listener to button
+        executeButton.addEventListener('click', () => {
+            // Get value of slider
+            const sliderValue = slider.value;
+
+            // Call Flask endpoint to execute Python script with slider value as parameter
+            fetch(`/execute?value=${sliderValue}`);
+        });
+    </script>
+</body>
+</html>

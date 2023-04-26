@@ -10,7 +10,20 @@ from flask import Flask, render_template_string
 
 from geopy.geocoders import Nominatim
 
-# ----------------------------------------------------------------
+# ---------------INTERPRETATION DES DONNES ENVOYES ------------------------------
+
+import sys
+
+def my_function(value):
+    if int(value) == 0:
+        print('AFFICHER LA METEO DAJD COMME NORMALEMENT')
+    else:
+        print('UTILISER LES VALEURS DE HISTORIC DATA')
+    pass
+
+if __name__ == '__main__':
+    value = sys.argv[1]
+    my_function(value)
 
 # RECUPERATION DE LA TEMPERATURE AVEC SES CORDONNÉES
 
@@ -189,9 +202,7 @@ folium.LayerControl().add_to(m)  # ajouter le panneau de controle
 
 map_html = m._repr_html_()
 IFrame(width=1000, height=500, src=map_html)
-
-
-
+'''
 app = Flask(__name__)
 
 
@@ -213,8 +224,8 @@ def map():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=4650)
-
-m.save("temperature_map.html")
+'''
+m.save("templates/map.html")
 
 # Ajouter une interface de visualisation en direct
 
