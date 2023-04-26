@@ -142,6 +142,7 @@ try:
         erreurs = 0
         succes = 0
         for ligne in read:
+            print(etat_meteos,'etats meteos')
             try:
                 response = requests.get(ligne["lien"])
                 img = Image.open(BytesIO(response.content))
@@ -160,15 +161,16 @@ try:
                     etat_meteo = f.read()
                     f.write('')
                 etat_meteos[no_departement] = etat_meteo
+                if arreter:# arret manuel depuis la fenetre tkinter
+                    print('finalisation des données')
+                    assert True == False
             except:
                 print("Probleme avec le tronquage de l'image")
                 erreurs += 1
                 continue
             succes += 1
             indices_meteo[no_departement] = determine_weather_index(image_tronquee) # Ne prend que la dernière camera analysée par departement
-            if arreter:# arret manuel depuis la fenetre tkinter
-                    assert True == False
-            print(etat_meteos)
+
 except AssertionError :
     # on s'arette la pour prendre les images
     pass
