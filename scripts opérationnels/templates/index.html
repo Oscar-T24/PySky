@@ -195,20 +195,6 @@ header {
 
     <script>
 
-        // Ouverture du popup:
-        function pop(){  // Au chargement de la page:
-            document.querySelector(".popup").style.display = "block"; // On affiche la class popup comme un bloc
-        };
-
-        // Fermeture lors du click:
-        document.querySelector("#close").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
-            document.querySelector(".popup").style.display = "none"; // On met plus de display au bloc de class popup
-        });
-
-        document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
-            document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
-        });
-
         // Get slider, day element, and button elements
         const slider = document.getElementById('slider');
         const dayElement = document.getElementById('day');
@@ -220,7 +206,7 @@ header {
             const sliderValue = slider.value;
 
             // Update day element with selected day
-            const day = sliderValue == 0 ? 'aujourdhui' : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
+            const day = sliderValue == 0 ? '+0 jours' : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
             dayElement.textContent = day;
         });
 
@@ -252,6 +238,20 @@ header {
             var loadingDiv = document.querySelector('.spinner');
             loadingDiv.style.display = 'none';
         }
+
+        // Ouverture du popup:
+        function pop(){  // Au chargement de la page:
+            document.querySelector(".popup").style.display = "block"; // On affiche la class popup comme un bloc
+        };
+
+        // Fermeture lors du click:
+        document.querySelector("#close").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
+            document.querySelector(".popup").style.display = "none"; // On met plus de display au bloc de class popup
+        });
+
+        document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
+            document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
+        });
     </script>
 </body>
 <footer>
