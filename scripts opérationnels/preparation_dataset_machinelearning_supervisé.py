@@ -86,14 +86,10 @@ from geopy.geocoders import Nominatim
 import re
 
 
-def get_department(commune_name):
-    geolocator = Nominatim(user_agent="my-app")
-    location = geolocator.geocode(commune_name + ", France")
-    if location:
-        return "".join(re.findall(r'-?\d+', location.raw['display_name']))[:2]
-    else:
-        return None
-
+with open('donnees_meteo_a_classifier.csv','r') as f:
+    global descripteurs
+    descripteurs = list(csv.reader(f))[0]
+# on garde les memes descripteurs que le fichier a classifier
 
 read = []
 
@@ -109,70 +105,39 @@ with open('coordonnees_departements.csv', 'r') as f:
         pass
 
 dico_etats_meteos = []
-if __name__ == "__main__":
+if True:
     try:
-        with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
+        with open('donnees_camerasv2.csv', 'r') as f:
             read = csv.DictReader(f, fieldnames=['lien', 'departement'])
-            # DETERMINATION DE L'ÉTAT MÉTÉO
             for ligne in read:
-                if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien'] and ligne[
-                    'lien'] != 'lien':
-                    url = ligne['lien']
-                    if True:
-                        # try:
-                        response = requests.get(url)
-                        img = Image.open(BytesIO(response.content))
-                        # img.save("webcam_image.jpg", "JPEG")
-                        open_cv_image = numpy.array(img)
-                        # Convert RGB to BGR 
-                    # except:
-                    if True == False:
-                        print("probleme de recuperation d'image")
-                        continue  # on skip l'iteration actuelle
-                    no_departement = re.findall(r'\d+', ligne['departement'])
-                    if len(no_departement) == 1:
-                        no_departement = ''.join(no_departement)
-                    else:
-                        try:
-                            # si on a pas le~numéo, essayer de geopy le nom de la commune pour trouver
-                            no_departement = get_department(
-                                ligne['departement'][ligne['departement'].index('de'):ligne['departement'].index('(')])
-                            print('utilisation reussie de geopy', ligne['departement'][
-                                                                  ligne['departement'].index('de'):ligne[
-                                                                      'departement'].index('(')], 'numero determiné',
-                                  no_departement)
-                        except:
-                            # probleme avec Geopy : numero sauté
-                            continue
-                    global indice
-                    global etat_meteo
-                    # try :
-                    # PARTIE DETERMINATION
+                # try:
+                url,no_departement  = ligne['lien'],ligne['departement']  
+                try:
+                    response = requests.get(url)
+                    img = Image.open(BytesIO(response.content))
+                    # img.save("webcam_image.jpg", "JPEG")
+                    open_cv_image = numpy.array(img)
+                except:
+                    print('erreur')
+                    continue       
+                # PARTIE DETERMINATION
+                try: 
                     open_cv_image = open_cv_image[:, :, ::-1].copy()
                     image_tronquee = tronquer(open_cv_image)
                     indice = determine_weather_index(open_cv_image)
-                    display_image(open_cv_image)
-                    with open('temp_meteo.txt', 'r') as f:
-                        etat_meteo = f.read()
-                    with open('temp_meteo.txt', 'w') as f:
-                        f.write('')
-                    # except :
-                    # print("probleme avec l'indexation de l'image")
-                    # indice = 'NULL'
+                except:
+                    print("erreur lors de la copie de l'image")
+                    continue
+                display_image(open_cv_image)
+                with open('temp_meteo.txt', 'r+') as f:
+                    etat_meteo = f.read()
+                    f.write('')
+                    
+                # ----- RECUPERER TOUTES LES DONNÉES MÉTÉO ICI -------
 
-                    if no_departement is not None and etat_meteo != '':
-                        coordonnes = sum([d['coordonnee'].strip('][').split(', ') for d in departements_numeros if
-                                          d['Code'] == no_departement], [])
-                        coordonnes = [float(i) for i in coordonnes]
-                        try:
-                            meteo = coordinate_temperature(coordonnes)
-                            dico_etats_meteos.append(
-                                {'Code': no_departement, 'coordonnees': coordonnes, 'indice': indice,
-                                 'temperature': meteo['air_temperature'], 'humidite': meteo['relative_humidity'],
-                                 'pression': meteo['air_pressure_at_sea_level'], 'weather': etat_meteo})
-                        except IndexError:
-                            print('PROBLEME')
-                    if arreter:
+
+                
+                    if arreter:# arret manuel depuis la fenetre tkinter
                         assert True == False
                     # print(dico_etats_meteos)
 
@@ -182,7 +147,6 @@ if __name__ == "__main__":
         with open('donnes_classifiees.csv', 'a') as f:
 
             # creer / actualiser un csv pour létat météo d'un departement
-            lect = csv.DictWriter(f, fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
-                                                 'weather'])
+            lect = csv.DictWriter(f, fieldnames=descripteurs)
             # lect.writeheader() juste pour la première fois
             lect.writerows(dico_etats_meteos)

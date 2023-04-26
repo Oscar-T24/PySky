@@ -8,6 +8,62 @@ from datetime import datetime, timedelta
 import csv
 from math import sqrt
 import pandas as pd
+import tkinter as tk
+from tkinter import ttk
+import requests
+from PIL import Image
+import numpy
+import json
+import cv2
+
+def display_image(image):
+    # Create tkinter window
+    root = tk.Tk()
+
+    # Open file dialog and select image file
+
+    # Load image and display in window
+    blue, green, red = cv2.split(image)
+    image = cv2.merge((red, green, blue))
+    image = Image.fromarray(image)
+    from PIL import ImageTk as itk
+    img = itk.PhotoImage(image)
+    canvas = tk.Canvas(root, width=500, height=500)  # tk.Canvas(root, width=img.width(), height=img.height())
+    canvas.create_image(0, 0, anchor='nw', image=img)
+    canvas.pack()
+
+    # Create dropdown menu for weather selection
+    weather_label = ttk.Label(root, text='Select Weather:')
+    weather_label.pack(pady=10)
+    weather_var = tk.StringVar(root)
+    weather_dropdown = ttk.Combobox(root, textvariable=weather_var,
+                                    values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
+    weather_dropdown.pack()
+
+    # Create button to save weather and close window
+    save_button = ttk.Button(root, text='Save Weather', command=lambda: [ajouter(weather_var.get()), root.destroy()])
+    save_button.pack(pady=20)
+    my_button2 = ttk.Button(root, text="arreter", command=lambda: [quitter(), root.destroy()])
+    my_button2.pack(pady=20)
+
+    root.mainloop()
+
+
+arreter = False
+
+
+def ajouter(etat):
+    f = open('temp_meteo.txt', 'w')
+    f.write(etat)
+    print('ecriture de', etat)
+    f.close()
+
+
+def quitter():
+    global arreter
+    arreter = True
+
+# FIN DU MPENU TKINTER ---------------------
 
 # RECUPERE LA DATE DEMANDÉE PAR L'UTILISATEUR, PAR DEFAULT LA DATE D'AUJOURD'HUI
 with open('diff_jours.txt', 'r+') as f:
@@ -41,9 +97,10 @@ pression_niveaumer = []
 couverture_nuageuse = []
 visibility = []
 vitesse_vent = []
-index_uv = []
+index_ux = []
 air_quality = []
 river_discharge = []
+etat_meteos = []
 
 # ON REMPLIT LES COLONNES
 for e in coordonnees:
@@ -60,7 +117,7 @@ for e in coordonnees:
     couverture_nuageuse.append(data.values.tolist()[7][-1][today.hour])
     visibility.append(data.values.tolist()[8][-1][today.hour])
     vitesse_vent.append(data.values.tolist()[9][-1][today.hour])
-    index_uv.append(data.values.tolist()[10][-1][today.hour])
+    index_ux.append(data.values.tolist()[10][-1][today.hour])
 
     # Données de qualité de l'air
     data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
@@ -78,33 +135,43 @@ for e in coordonnees:
 indices_meteo = {}
 
 print("Debut de l'analyse qualitative des images")
-
-with open('donnees_camerasv2.csv', 'r') as f:
-    read = csv.DictReader(f, fieldnames=['lien', 'departement'])
-    # determination de l'indice
-    erreurs = 0
-    succes = 0
-    for ligne in read:
-        try:
-            response = requests.get(ligne["lien"])
-            img = Image.open(BytesIO(response.content))
-            open_cv_image = numpy.array(img)
-            # Convert RGB to BGR 
-        except:
-            print("Problème avec l'ouverture de l'image")
-            erreurs += 1
-            continue
-        no_departement = ligne['departement']
-        try:
-            open_cv_image = open_cv_image[:, :, ::-1].copy()
-            image_tronquee = tronquer(open_cv_image)
-        except:
-            print("Probleme avec le tronquage de l'image")
-            erreurs += 1
-            continue
-        succes += 1
-        indices_meteo[no_departement] = determine_weather_index(image_tronquee) # Ne prend que la dernière camera analysée par departement
-
+try: 
+    with open('donnees_camerasv2.csv', 'r') as f:
+        read = csv.DictReader(f, fieldnames=['lien', 'departement'])
+        # determination de l'indice
+        erreurs = 0
+        succes = 0
+        for ligne in read:
+            try:
+                response = requests.get(ligne["lien"])
+                img = Image.open(BytesIO(response.content))
+                open_cv_image = numpy.array(img)
+                # Convert RGB to BGR 
+            except:
+                print("Problème avec l'ouverture de l'image")
+                erreurs += 1
+                continue
+            no_departement = ligne['departement']
+            try:
+                open_cv_image = open_cv_image[:, :, ::-1].copy()
+                image_tronquee = tronquer(open_cv_image)
+                display_image(open_cv_image)
+                with open('temp_meteo.txt', 'r+') as f:
+                    etat_meteo = f.read()
+                    f.write('')
+                etat_meteos[no_departement] = etat_meteo
+            except:
+                print("Probleme avec le tronquage de l'image")
+                erreurs += 1
+                continue
+            succes += 1
+            indices_meteo[no_departement] = determine_weather_index(image_tronquee) # Ne prend que la dernière camera analysée par departement
+            if arreter:# arret manuel depuis la fenetre tkinter
+                    assert True == False
+            print(etat_meteos)
+except AssertionError :
+    # on s'arette la pour prendre les images
+    pass
 print(f"Analyse des images finie ; indexes extraits: {erreurs} erreurs pour {succes} succès. Taux de réussite de {(succes-erreurs)*100/(succes+erreurs)}%")
 
 
@@ -179,23 +246,17 @@ def distance_flood(t):
     liste_distances = [distance_4d(t, e) for e in [var2010, garonne2013, languedoc2014, seine2016, aude2018, occitanie2020]]
     return round(sum(liste_distances), 3)
 
+
 for i in range(len(precipitation)): # On a que les données d'humidité pour la france metropolitaine
     try:
         probabilite_flood.append(distance_flood((precipitation[i], temperature[i], river_discharge[i], humidite_relative[i])))
     except ValueError:
         probabilite_flood.append("")
 
-def z_score_normalization(distance, ensemble_distances=probabilite_flood):
-    """
-    float, list --> float
-    Processus de normalisation z-score: Determination de l'intensité de la variance de la distance pour KNN par rapport a la moyenne de ensemble_distances
-    """
-    return abs((distance - numpy.mean(ensemble_distances)) / numpy.std(ensemble_distances))
-
-probabilite_floodv2 = [z_score_normalization(e) if e != 0 else None for e in probabilite_flood]
-
+probabilite_floodv2 = [None if e == 0 else e for e in probabilite_flood]
 
 print("Determination du risque d'innondations effectué")
+
 
 print("Calcul des probabilités de catastrophes naturelles effectué")
 
@@ -206,23 +267,23 @@ print("Importation de toutes les données dans le tableau")
 
 df["code"] = liste_departements
 df["Date"] = [date for i in range(101)]
-df["Temperature (°C)"] = temperature
-df["Humidite_relative (%)"] = humidite_relative
-df["Temperature_ressentie (°C)"] = temperature_ressentie
-df["Probabilite_pluie (%)"] = probabilite_pluie
-df["Precipitation (mm)"] = precipitation
-df["Pression (0m)(hPa)"] = pression_niveaumer
-df["Couverture_nuageuse (%)"] = couverture_nuageuse
-df["Visibility (m)"] = visibility
-df["Vitesse_vent (km/h)"] = vitesse_vent
-df["Index_UV"] = index_uv
-df["Air_quality (pm2.5)"] = air_quality
-df["River_discharge (m3/s)"] = river_discharge
+df["temperature (°C)"] = temperature
+df["humidite_relative (%)"] = humidite_relative
+df["temperature_ressentie (°C)"] = temperature_ressentie
+df["probabilite_pluie (%)"] = probabilite_pluie
+df["precipitation (mm)"] = precipitation
+df["pression (0m)(hPa)"] = pression_niveaumer
+df["couverture_nuageuse (%)"] = couverture_nuageuse
+df["visibility (m)"] = visibility
+df["vitesse_vent (km/h)"] = vitesse_vent
+df["index_ux"] = index_ux
+df["air_quality (pm2.5)"] = air_quality
+df["river_discharge (m3/s)"] = river_discharge
 df["Probabilité sècheresse"] = index_secheresse
 df["Probabilité canicule (%)"] = canicule
-df["Probabilité innondation"] = probabilite_floodv2
+df["Probabilité innondation"] = probabilite_flood
 df["Indice"] = indices_meteov2
-df["Etat_meteo"] = [None for i in range(101)]
-df.to_csv('donnees_meteo_a_classifier.csv', index=False)
+df["Etat_meteo"] = etat_meteos
+df.to_csv('donnees_meteo_classifiees.csv', index=False)
 
 print("Tableau donnees_meteo.csv mis à jour!")
