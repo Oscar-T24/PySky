@@ -1,48 +1,66 @@
-import csv
 from indice import determine_weather_index
 from tronque import tronquer
 import requests
 from PIL import Image
 from io import BytesIO
 import numpy
-import json
-
-from geopy.geocoders import Nominatim
 import re
+import csv
+import pandas as pd
+from datetime import datetime, timedelta
+from geopy.geocoders import Nominatim
 
-global dico_etats_meteos
+variable = 0  # LE DEPLACEMENT COMME DEFINIT PAR LUTILISATEUR, MAIS PAR DEFAULT 0
+today = datetime.now()
+dif = timedelta(days= variable)
+date = today + dif  # A revoir pour les histoires de + et de -
 
+f = open('coordonnees_departements.csv', 'r')
+coordonnees = list(csv.DictReader(f))
 
-def coordinate_temperature(coordonees):
-    """
-# Dans cet exemple nous allons utiliser le service météo du Meteorologisk institutt de Norvège
-# (api.met.no/weatherapi is an interface to a selection of data produced by MET Norway)
-# url: https://api.met.no/weatherapi/locationforecast/2.0/documentation
+temperature = []
+humidite_relative = []
+temperature_ressentie = []
+probabilite_pluie = []
+precipitation = []
+pression_niveaumer = []
+couverture_nuageuse = []
+visibility = []
+vitesse_vent = []
+index_ux = []
+air_quality = []
+river_discharge = []
 
-# Grâce à Google Maps, nous trouvons que les coordonnées de l'IUT à Mont de Marsan sont
-# latitude 43.88566272770907, longitude -0.5092243304975015
-#
-# Ce qui nous donne l'URL suivante pour accéder aux prévisions météo au format JSON:
-# https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=43.88566272770907&lon=-0.5092243304975015
-# Fetch data from URL
-    """
-    latitude = coordonees[0]
-    longitude = coordonees[1]
-    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0',
-               'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
-    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}",
-                       headers=headers)
-    text = url.text
+"""
+for e in coordonnees:
+    c = e['coordonnee'].split(" ")
+    d, x, y = e['Code'], float(c[0][1:-2]), float(c[-1][:-2])
+    print(d)
 
-    # Get JSON data
-    data = json.loads(text)
-    # print(data)
+    data = pd.read_json(f"https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,pressure_msl,cloudcover,visibility,windspeed_10m,uv_index&forecast_days=1&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
+    temperature.append(data.values.tolist()[1][-1][today.hour])
+    humidite_relative.append(data.values.tolist()[2][-1][today.hour])
+    temperature_ressentie.append(data.values.tolist()[3][-1][today.hour])
+    probabilite_pluie.append(data.values.tolist()[4][-1][today.hour])
+    precipitation.append(data.values.tolist()[5][-1][today.hour])
+    pression_niveaumer.append(data.values.tolist()[6][-1][today.hour])
+    couverture_nuageuse.append(data.values.tolist()[7][-1][today.hour])
+    visibility.append(data.values.tolist()[8][-1][today.hour])
+    vitesse_vent.append(data.values.tolist()[9][-1][today.hour])
+    index_ux.append(data.values.tolist()[10][-1][today.hour])
 
-    # Process JSON data
-    units = data["properties"]["meta"]["units"]
-    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
-    return weather
+    # Données de qualité de l'air
+    data = pd.read_json(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={x}&longitude={y}&hourly=pm2_5&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}")
+    quality = data.values.tolist()[1][-1][today.hour]
+    air_quality.append(quality)
 
+    # Débit moyen des rivières
+    data = pd.read_json(f"https://flood-api.open-meteo.com/v1/flood?latitude={x}&longitude={y}&daily=river_discharge_mean&start_date={date.isoformat()[:10]}&end_date={date.isoformat()[:10]}&forecast_days=1")
+    debit = data.values.tolist()[1][-1][0]
+    river_discharge.append(debit)
+"""
+
+indices_meteo = {}
 
 def get_department(commune_name):
     geolocator = Nominatim(user_agent="my-app")
@@ -57,25 +75,10 @@ def get_department(commune_name):
         return None
 
 
-read = []
-
-global departements_numeros
-departements_numeros = []
-
-with open('coordonnees_departements.csv', 'r') as f:
-    lect = csv.DictReader(f, delimiter=',')
-    try:
-        for row in lect:
-            departements_numeros.append(row)
-    except:
-        pass
-
-dico_etats_meteos = []
-
 with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
     read = csv.DictReader(f, fieldnames=['lien', 'departement'])
     # DETERMINATION DE L'ÉTAT MÉTÉO
-    for ligne in read:
+    for ligne in list(read)[0:100]:
         if ligne['departement'] != 'NULL' and 'webcam_error.png' not in ligne['lien']:
             url = ligne['lien']
             try:
@@ -105,37 +108,31 @@ with open('donnees_cameras.csv', 'r', encoding="ISO-8859-1") as f:
                 except:
                     # probleme avec Geopy : numero sauté
                     continue
-            global indice
             try:
                 # INDICE DE METEO
                 open_cv_image = open_cv_image[:, :, ::-1].copy()
                 image_tronquee = tronquer(open_cv_image)
-                indice = determine_weather_index(open_cv_image)
+                indices_meteo[no_departement] =  determine_weather_index(image_tronquee) # NE MARCHE PAS AVEC LA CORSE
+
             except:
                 print("probleme avec l'indexation de l'image")
-                indice = 'NULL'
 
-            if no_departement is not None:
-                coordonnes = sum([d['coordonnee'].strip('][').split(', ') for d in departements_numeros if
-                                  d['Code'] == no_departement], [])
-                coordonnes = [float(i) for i in coordonnes]
-                try:
-                    meteo = coordinate_temperature(coordonnes)
-                    dico_etats_meteos.append({'Code': no_departement, 'coordonnees': coordonnes, 'indice': indice,
-                                              'temperature': meteo['air_temperature'],
-                                              'humidite': meteo['relative_humidity'],
-                                              'pression': meteo['air_pressure_at_sea_level'], 'weather': ''})
-                except IndexError:
-                    print('PROBLEME')
-            # print(dico_etats_meteos)
+for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, "2A", "2B", 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 971, 972, 973, 974, 976]:
+    if i not in indices_meteo.keys():
+        indices_meteo[str(i)] = "NULL"
 
-dico_etats_meteos = sorted(dico_etats_meteos, key=lambda dico_etats_meteos: dico_etats_meteos['Code'])
-
+print(sorted(list(indices_meteo.items()))) # TRI MAL LES DEPARTEMENTS ET LES METS SUR LE TABLEAU DANS LE MAUVAIS ORDRE
 # on comble les departements sans infos avec les temperatures
 
-with open('donnes_a_classifie.csv', 'w') as f:
-    # creer / actualiser un csv pour létat météo d'un departement
-    lect = csv.DictWriter(f, fieldnames=['Code', 'coordonnees', 'indice', 'temperature', 'humidite', 'pression',
-                                         'weather'])
-    lect.writeheader()
-    lect.writerows(dico_etats_meteos)
+df = pd.read_csv('tableau_finalv2.csv')
+df["air_quality (pm2.5)"] = air_quality
+df["river_discharge (m3/s)"] = river_discharge
+df["probabilite_pluie (%)"] = probabilite_pluie
+df["precipitation (mm)"] = precipitation
+df["pression (hPa)"] = pression_niveaumer
+df["couverture_nuageuse (%)"] = couverture_nuageuse
+df["visibility (m)"] = visibility
+df["vitesse_vent (km/h)"] = vitesse_vent
+df["index_ux"] = index_ux
+df["Etat_meteo"] = [e[1] for e in sorted(list(indices_meteo.items()))]
+df.to_csv('tableau_finalv2.csv', index=False)

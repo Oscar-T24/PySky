@@ -1,5 +1,4 @@
 import csv
-
 from geopy.geocoders import Nominatim
 
 coordonees = []
