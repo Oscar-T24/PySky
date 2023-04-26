@@ -110,6 +110,7 @@ departements = df[df.columns[1]].tolist()
 
 for i in range(len(coordonees)):
     try:
+        try:
             html = f"""
             <h1>{i} - {departements[i]}</h1>
             <p>Voici les données météo pour ce département:</p>
@@ -127,6 +128,12 @@ for i in range(len(coordonees)):
                 <li>Index UV: {meteo[i]["index_ux"]}</li>
             </ul>
             """
+        except IndexError:
+                        html = f"""
+            <p>Voici les données météo pour ce département:</p>
+            <ul>
+            </ul>
+            """
     except KeyError:
         print('les données recherchées ne coprrepsondent pas à celles de tableau_finalv2.csv ')
         html = f"""
@@ -136,7 +143,7 @@ for i in range(len(coordonees)):
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'cross'
-        match dico_meteo[i + 1]['Etat_meteo']:
+        match dico_meteo[i]['Etat_meteo']:
             case 'Cloudy':
                 weather = 'cloud'
             case 'Rainy':
@@ -171,7 +178,9 @@ fg.add_child(folium.LayerControl())
 '''
 folium.TileLayer('cartodbpositron', name='carte simplifiee').add_to(m)
 
-folium.LayerControl().add_to(m)  # ajouter le panneau de controle
+folium.LayerControl(
+    collapsed=True,
+).add_to(m)  # ajouter le panneau de controle
 
 # Display the map
 
