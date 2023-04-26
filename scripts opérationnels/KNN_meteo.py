@@ -125,7 +125,7 @@ def meteo_majoritaire(table):
 
 def alocation_meteo():
     table_supervisee = charge_table('donnes_classifiees.csv')
-    with open('donnes_a_classifie.csv') as f:
+    with open('donnes_a_classifie.csv') as f: # IL FAUT LE PRENDRE DE donnees_meteo.csv !!!!
         lect = csv.DictReader(f, delimiter=',',
                               fieldnames=descripteurs)
         global elements_assigner
@@ -164,7 +164,7 @@ def alocation_meteo():
             'temperature': group[0]['temperature'],
             'humidite': group[0]['humidite'],
             'pression': group[0]['pression'],
-            'weather': most_common_weather
+            'weather': most_common_weather # PAS LES BONS DESCRIPTEURS
         }
         merged.append(merged_dict)
         '''
