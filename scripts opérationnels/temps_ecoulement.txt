@@ -2139,3 +2139,11 @@ temps ecoule :2.4465131759643555s (etape 2,3,4) 27 13:51
 temps ecoule :2.4465131759643555s (etape 2,3,4) 27 13:51
 temps ecoule :2.4122071266174316s (etape 2,3,4) 27 13:51
 temps ecoule :123.48680186271667s (etape 2,3,4) 27 13:58
+temps ecoule :100.28570318222046s (etape 2,3,4) 27 14:04
+temps ecoule :108.01111912727356s (etape 2,3,4) 27 14:04
+temps ecoule :106.32837677001953s (etape 2,3,4) 27 14:04
+temps ecoule :109.00756001472473s (etape 2,3,4) 27 14:04
+temps ecoule :107.06228232383728s (etape 2,3,4) 27 14:04
+temps ecoule :104.8315680027008s (etape 2,3,4) 27 14:04
+temps ecoule :83.02833294868469s (etape 2,3,4) 27 14:04
+temps ecoule :89.41198086738586s (etape 2,3,4) 27 14:04
