@@ -16,6 +16,7 @@ if __name__ == '__main__':
     jours_diff= int(args.value) # 
         
 time_depart = time.time()
+print('jours de différences',jours_diff)
 
 subprocess.run(["python3", "preparation_dataset_a_trier.py","-value",str(jours_diff)])
 print('etape 3 finie : preparation du dataset à classifier')
