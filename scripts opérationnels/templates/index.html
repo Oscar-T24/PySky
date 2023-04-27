@@ -59,6 +59,12 @@ header {
     padding:20px;
 }
 
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #inlineception {
     display:flex;
     justify-content: center;
@@ -79,7 +85,7 @@ header {
     padding: 10px;
 }
 
-#aide {
+.aide {
     display: flex;
     align-items: center;
 }
@@ -113,7 +119,7 @@ header {
     }
 }
 
-.popup{
+.popup1{
     background-color: #ffffff;
     padding: 30px 40px;
     position: fixed;
@@ -128,7 +134,7 @@ header {
 }
 
 
-.popup button{ /* Style du bouton de fermeture */
+.popup1 button{ /* Style du bouton de fermeture */
     display: block;
     font-size: 20px;
     color: #ffffff;
@@ -142,14 +148,48 @@ header {
     cursor: pointer; /* Change la souris sur hover */
 }
 
-.popup p {
+.popup1 p {
     text-align:center;
 }
 
-.popup img {
+.popup1 img {
    width: 80%;
    height: auto;
  }
+
+ .popup2{
+    background-color: #ffffff;
+    padding: 30px 40px;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 8px;
+    display: none;
+    text-align: center;
+    border:2px solid #000;
+    width:50%;
+}
+
+
+.popup2 button{ /* Style du bouton de fermeture */
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: #03549a;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    float:right;
+    cursor: pointer; /* Change la souris sur hover */
+}
+
+.popup2 p {
+    text-align:center;
+}
+
 
 .boutons  {
     /* Style texte */
@@ -185,8 +225,8 @@ header {
     <meta charset = "utf-8">
 </head>
 <body>
-    <div class="popup">
-        <button id="close">X</button>
+    <div class="popup1">
+        <button class="close" id="close1">X</button>
         <h2>Besoin d'aide?</h2>
         <img src="http://93.14.22.225/Pins.png">
         <td style="width:40%;">
@@ -196,6 +236,13 @@ header {
                 <p>Le deplacement temporel se fait par rapport à la date des données affichées</p>
             </div>
         </td>
+    </div>
+    <div class="popup2">
+         <button class="close" id="close2">X</button>
+        <div id="stream">
+            <label>Console d'execution en LIVE</label>
+            <iframe id='iframe' src="http://127.0.0.1:5000/stream" height="auto" width="100%"></iframe>
+        </div>
     </div>
     <header>
         <div class="inline">
@@ -209,8 +256,11 @@ header {
                     <!-- HTML element to hold the timer value -->
                 </div>
                 <p id="timer"></p>
-                <div class="header" id="aide">
-                    <button onclick="pop(this)" class="boutons" id="rules">Aide</button>
+                <div class="header" class="aide">
+                    <button onclick="pop2(this)" class="boutons">Console</button>
+                </div>
+                <div class="header" class="aide">
+                    <button onclick="pop1(this)" class="boutons">Aide</button>
                 </div>
         </div>
     </header>
@@ -299,23 +349,26 @@ header {
         }
 
         // Ouverture du popup:
-        function pop(){  // Au chargement de la page:
-            document.querySelector(".popup").style.display = "block"; // On affiche la class popup comme un bloc
+        function pop1(){  // Au chargement de la page:
+            document.querySelector(".popup1").style.display = "block"; // On affiche la class popup comme un bloc
         };
 
         // Fermeture lors du click:
-        document.querySelector("#close").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
-            document.querySelector(".popup").style.display = "none"; // On met plus de display au bloc de class popup
+        document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
+            document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
 
-        document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
-            document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
+        // Ouverture du popup:
+        function pop2(){  // Au chargement de la page:
+            document.querySelector(".popup2").style.display = "block"; // On affiche la class popup comme un bloc
+        };
+
+        // Fermeture lors du click:
+        document.querySelector("#close2").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close2:
+            document.querySelector(".popup2").style.display = "none"; // On met plus de display au bloc de class popup
         });
+
     </script>
-<div id="stream">
-    <label>Console d'execution en LIVE</label>
-    <iframe id='iframe' src="http://127.0.0.1:5000/stream" height="auto" width="100%"></iframe>
-</div>
 </body>
 <footer>
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
