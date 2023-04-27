@@ -257,7 +257,7 @@ nav{
                 <div class="header" id="inlineception">
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                     <p><span id="day">Aujourd'hui</span></p>
-                    <button id="execute" onclick="startTimer()" onclick="recharger()" class="boutons">Actualiser la carte</button>
+                    <button id="execute" onclick="startTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
                     <!-- HTML element to hold the timer value -->
                 </div>
                 <p id="timer"></p>
@@ -279,7 +279,6 @@ nav{
         document.getElementById('iframe').setAttribute('src','google.fr');    
         //alert(document.getElementById('iframe').setAttribute('src','google.fr'));
         document.getElementById('iframe').setAttribute('src','http://127.0.0.1:5000/stream');
-        location.reload()
         var countdown = 180; // 3 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         var timer = setInterval(function() {
