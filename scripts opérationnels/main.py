@@ -3,10 +3,27 @@ import time
 from datetime import datetime, timedelta, date
 import sys
 import pandas as pd
+import argparse
+
 '''
 subprocess.run(["python3", "recuperation_donneswebcam.py"])
 print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
+if __name__ == '__main__':
+        """
+        ANCIENNE VERSION
+        value = sys.argv[1]
+        with open('diff_jours.txt','w') as f:
+            f.write(value)
+        """
+        parser = argparse.ArgumentParser(description='Print the value of a command line argument')
+        parser.add_argument('-value', help='the value to be printed')
+        args = parser.parse_args()
+        value = int(args.value)
+        print('jours diff',value)
+        with open('diff_jours.txt', "w") as f:
+            f.write(str(value))
+        
 
 # Extraction de la difference du nombre de jours voulue par l'utilisateur
 with open('diff_jours.txt', "r") as f:
@@ -34,10 +51,6 @@ diff_from_today = datetime.now() - new_date
 value = diff_from_today.days
 
 # On met l'écart par rapport à aujourd'hui et non par rapport à celles du tableau pour l'étape 3
-if __name__ == '__main__':
-    value = sys.argv[1]
-    with open('diff_jours.txt','w') as f:
-        f.write(value)
 
 
 time_depart = time.time()

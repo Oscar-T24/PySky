@@ -1,10 +1,11 @@
-import sys
+import time
+from datetime import datetime
+now = datetime.now()
 
-def my_function(value):
-    print(value)
-    print('VALMEUR RECUE SANS PROBLEMES')
-    pass
+print('hello, world')
+def bloubiboulga():
+    print("ledknrfjnrbfjrf")
+    time.sleep(3)
+    print('il est ',now)
 
-if __name__ == '__main__':
-    value = sys.argv[1]
-    my_function(value)
+bloubiboulga()

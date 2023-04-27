@@ -5,6 +5,8 @@ import random
 from IPython.display import IFrame
 from datetime import datetime
 
+now = datetime.now()
+
 # PARTIE TRANSFORMATION NOM_DEPARTEMENT --> LATITUDE, LONGITUDE 
 
 from geopy.geocoders import Nominatim
@@ -54,6 +56,8 @@ with open('donnees_meteo.csv', 'r') as f:
 dico_meteo = []
 with open('donnees_meteo.csv', 'r') as f:
     read = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
+    global temps
+    temps = list(read)[1]['Date']
     # print(list(read)[0])
     for ligne in read:
         dico_meteo.append(ligne)
@@ -157,6 +161,8 @@ for i in range(len(coordonees)):
         print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondent pas')
         pass
 
+html = f'<h2 style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background-color:white;padding:5px;border:1px solid black;z-index:1000;">Temps de la carte: {temps}</h2>'
+m.get_root().html.add_child(folium.Element(html))
 '''
 # Bring the image overlay to the front
 fg = folium.FeatureGroup().add_to(m)
