@@ -262,6 +262,8 @@ header {
             let daysFromStart = sliderValue + 10;
             let date = new Date(startDate);
             date.setDate(date.getDate() + daysFromStart);
+            let currentMonth = date.getMonth();
+            date.setMonth(currentMonth - 1); // il y a un mois en trop
             return date.toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' })+' ';
         }
 
