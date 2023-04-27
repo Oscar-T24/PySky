@@ -50,7 +50,7 @@ river_discharge = []
 # ON REMPLIT LES COLONNES
 for e in coordonnees:
     c = e['coordonnee'].split(" ")
-    d, x, y = e['code'], float(c[0][1:-2]), float(c[-1][:-2])
+    d, x, y = e['Code'], float(c[0][1:-2]), float(c[-1][:-2])
 
     data = pd.read_json(f"https://api.open-meteo.com/v1/forecast?latitude={x}&longitude={y}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,pressure_msl,cloudcover,visibility,windspeed_10m,uv_index&forecast_days=1&start_date={dateiso}&end_date={dateiso}")
     temperature.append(data.values.tolist()[1][-1][today.hour])
@@ -74,7 +74,7 @@ for e in coordonnees:
     debit = data.values.tolist()[1][-1][0]
     river_discharge.append(debit)
 
-    print(f"Données météo extraites pour le département {d} (sur 101)")
+    print(f"Données météo du {dateiso} extraites pour le département {d} (sur 101)")
 
 
 # ON CREE UNE COLONNE POUR L'INDICE DE METEO DETERMINE A PARTIR DES WEBCAMS, ON LA PASSE ENSUITE PAR KNN POUR OBTENIR UNE CLASSE
@@ -102,7 +102,7 @@ with open('donnees_camerasv2.csv', 'r') as f:
             open_cv_image = open_cv_image[:, :, ::-1].copy()
             image_tronquee = tronquer(open_cv_image)
         except:
-            print("Probleme avec le tronquage de l'image")
+            print("Image trop sombre, problème avec le tronquage")
             erreurs += 1
             continue
         succes += 1

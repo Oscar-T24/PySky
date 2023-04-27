@@ -93,13 +93,13 @@ descripteurs = list(csv.reader(f, delimiter=','))[0]
 f = open('donnees_meteo.csv', 'r')
 meteo = list(csv.DictReader(f, delimiter=','))
 
-df = pd.read_csv('departements-france.csv')
-departements = df[df.columns[1]].tolist()
+df = pd.read_csv('coordonnees_departements.csv')
+departements = [(df[df.columns[0]].tolist()[i], df[df.columns[1]].tolist()[i]) for i in range(len(df[df.columns[1]].tolist()))]
 
 for i in range(len(coordonees)):
     try:
         html = f"""
-        <h1>{i} - {departements[i]}</h1>
+        <h1>{departements[i][0]} - {departements[i][1]}</h1>
         <p>Voici les données météo pour ce département:</p>
         <ul>
             <li>Date: {meteo[i]["Date"]}</li>
@@ -121,12 +121,12 @@ for i in range(len(coordonees)):
             <li>Météo: {meteo[i]["Etat_meteo"]}</li>
         </ul>
         """
-    except KeyError:
+    except KeyError or IndexError:
         print('les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv ')
         html = f"""
-            <p>test</p>
+            <p>Reessayer</p>
         """
-    iframe = folium.IFrame(html=html, width=300, height=350)
+    iframe = folium.IFrame(html=html, width=300, height=300)
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'circle'

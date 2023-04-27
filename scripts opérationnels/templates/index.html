@@ -27,6 +27,16 @@ margin-right: 40px;
     color:aliceblue;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+
+#presentation h1 {
+  background-image: linear-gradient(to right, skyblue, white);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
 h3{
 font-style:italic;
 }
@@ -53,6 +63,10 @@ header {
     display:flex;
     justify-content: center;
     align-items:center;
+}
+
+#day {
+    white-space: nowrap;
 }
 
 
@@ -116,7 +130,7 @@ header {
 
 .popup button{ /* Style du bouton de fermeture */
     display: block;
-    font-size: 30px;
+    font-size: 20px;
     color: #ffffff;
     background: #03549a;
     border-radius: 100%;
@@ -172,23 +186,25 @@ header {
 </head>
 <body>
     <div class="popup">
-        <button id="close">&times;</button>
+        <button id="close">X</button>
         <h2>Besoin d'aide?</h2>
         <img src="http://93.14.22.225/Pins.png">
         <td style="width:40%;">
             <div id="'explication">
                 <p>Pour selectionner un jour dans la timeline, faites glisser le slider</p>
+                <p>En cliquant sur les icones, consultez les données exactes</p>
+                <p>Le deplacement temporel se fait par rapport à la date des données affichées</p>
             </div>
         </td>
     </div>
     <header>
         <div class="inline">
                 <div class="header" id="presentation">
-                    <h1>PySky - Trophées NSI</h1>
+                    <h1>PySky</h1>
                 </div>
                 <div class="header" id="inlineception">
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
-                    <p><span id="day">0</span></p>
+                    <p><span id="day">Présent</span></p>
                     <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
                     <!-- HTML element to hold the timer value -->
                 </div>
@@ -214,7 +230,7 @@ header {
             const sliderValue = slider.value;
 
             // Update day element with selected day
-            const day = sliderValue == 0 ? '+0 jours' : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
+            const day = sliderValue == 0 ? "Présent" : `${sliderValue > 0 ? '+' : ''}${sliderValue} jours`;
             dayElement.textContent = day;
         });
 
