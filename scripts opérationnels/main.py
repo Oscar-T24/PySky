@@ -25,34 +25,6 @@ if __name__ == '__main__':
             f.write(str(value))
         
 
-# Extraction de la difference du nombre de jours voulue par l'utilisateur
-with open('diff_jours.txt', "r") as f:
-    diff_wanted = f.read()
-    if diff_wanted is None or diff_wanted == "":
-        diff_wanted = 0
-    else:
-        diff_wanted = int(diff_wanted)
-
-# Extraction de la date des données sur le tableau
-df = pd.read_csv('donnees_meteo.csv')
-date = df["Date"][0]
-
-# Calcul de la date voulue
-new_date = datetime.fromisoformat(date) + timedelta(days=diff_wanted)
-
-print(new_date)
-if datetime.now().isoformat()[:10] == new_date.isoformat()[:10]:
-    print("UTILISER LES VALEURS DE TODAY DATA")
-elif datetime.now().isoformat()[:10] != new_date.isoformat()[:10]:
-    print("UTILISER LES VALEURS DE HISTORIC DATA")
-
-# Calcul de l'écart entre la date voulue et aujourd'hui
-diff_from_today = datetime.now() - new_date
-value = diff_from_today.days
-
-# On met l'écart par rapport à aujourd'hui et non par rapport à celles du tableau pour l'étape 3
-
-
 time_depart = time.time()
 
 subprocess.run(["python3", "preparation_dataset_a_trier.py"])
