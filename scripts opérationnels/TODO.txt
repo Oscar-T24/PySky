@@ -1,4 +1,4 @@
 > verifier que le range du slider fonctionne avec les forecasts
 
-
+> sauter index pendant la nuit + recuperer les données de coucher de soleil pour mettre un icone nuit
 

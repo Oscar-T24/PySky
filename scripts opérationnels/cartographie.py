@@ -117,8 +117,8 @@ for i in range(len(coordonees)):
             <li>Météo: {meteo[i]["Etat_meteo"]}</li>
         </ul>
         """
-    except KeyError or IndexError:
-        print(f'les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv {departements[i][0]} - {departements[i][1]} ')
+    except IndexError:
+        print(f'les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv {departements[i][0]} - {departements[i][1]} \n ou il manque les DOM-TOM dans donneees_meteo.csv (script preparation_dataset_a_trier.py mal executé)')
         html = f"""
             <p>Reessayer</p>
         """
