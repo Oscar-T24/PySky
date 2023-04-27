@@ -53,15 +53,7 @@ descripteurs = []
 with open('donnees_meteo.csv', 'r') as f:
     descripteurs = list(csv.reader(f, delimiter=','))[0]  # la ligne 0 correspond aux descripteurs
     #descripteurs = [e for e in descripteurs if e != 'code' and e != 'Date' and e !='Air_quality (pm2.5)' and e != 'Etat_meteo' and e != 'Indice']  # on n'exploite pas ces données visuelles
-dico_meteo = []
-with open('donnees_meteo.csv', 'r') as f:
-    read = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
-    global temps
-    temps = list(read)[1]['Date']
-    # print(list(read)[0])
-    for ligne in read:
-        dico_meteo.append(ligne)
-# print(dico_meteo)
+
 descripteurs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation']
 # on modifie expressement les descripteurs pour n'inclure que ceux qu'on veux mettre en cloropleth
 for donnee in descripteurs:
@@ -126,7 +118,7 @@ for i in range(len(coordonees)):
         </ul>
         """
     except KeyError or IndexError:
-        print('les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv ')
+        print(f'les données recherchées ne coprrepsondent pas à celles de donnees_meteo.csv {departements[i][0]} - {departements[i][1]} ')
         html = f"""
             <p>Reessayer</p>
         """
@@ -134,7 +126,7 @@ for i in range(len(coordonees)):
     popup = folium.Popup(iframe, max_width=2650)
     try:
         weather = 'circle'
-        match dico_meteo[i]['Etat_meteo']:
+        match meteo[i]['Etat_meteo']:
             case 'Cloudy':
                 weather = 'cloud'
             case 'Rainy':
@@ -161,7 +153,7 @@ for i in range(len(coordonees)):
         print('les données du tableau tableau_finalv2.csv et celles de coordonnées_departements ne correspondent pas')
         pass
 
-html = f'<h2 style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background-color:white;padding:5px;border:1px solid black;z-index:1000;">Temps de la carte: {temps}</h2>'
+html = f'<h2 style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background-color:white;padding:5px;border:1px solid black;z-index:1000;">Temps de la carte: {meteo[0]["Date"]}</h2>'
 m.get_root().html.add_child(folium.Element(html))
 '''
 # Bring the image overlay to the front

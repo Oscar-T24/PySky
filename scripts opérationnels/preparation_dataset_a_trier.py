@@ -12,10 +12,14 @@ import argparse
 
 # on recupere le nombre de jours différés, 0 par défaut pour aujourdh'ui
 if __name__ == '__main__':
-        parser = argparse.ArgumentParser(description='Print the value of a command line argument')
-        parser.add_argument('-value', help='the value to be printed')
-        args = parser.parse_args()
-        variable = int(args.value) # 
+    parser = argparse.ArgumentParser(description='Print the value of a command line argument')
+    parser.add_argument('-value', help='the value to be printed')
+    args = parser.parse_args()
+    variable = args.value
+    if variable is None:
+        variable = 0
+    else:
+        variable = int(variable)
 '''
     with open('diff_jours.txt', 'r+') as f:
         global variable

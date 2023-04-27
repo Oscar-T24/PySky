@@ -2125,3 +2125,16 @@ temps ecoule :126.97849488258362s (etape 2,3,4) 27 12:55
 temps ecoule :113.42602515220642s (etape 2,3,4) 27 12:56
 temps ecoule :89.43556690216064s (etape 2,3,4) 27 12:56
 temps ecoule :120.05059885978699s (etape 2,3,4) 27 12:57
+temps ecoule :5.729907751083374s (etape 2,3,4) 27 13:40
+temps ecoule :5.959452867507935s (etape 2,3,4) 27 13:40
+temps ecoule :5.306056261062622s (etape 2,3,4) 27 13:40
+temps ecoule :5.843671083450317s (etape 2,3,4) 27 13:40
+temps ecoule :122.82296705245972s (etape 2,3,4) 27 13:40
+temps ecoule :2.165786027908325s (etape 2,3,4) 27 13:40
+temps ecoule :2.1764841079711914s (etape 2,3,4) 27 13:40
+temps ecoule :2.0031001567840576s (etape 2,3,4) 27 13:41
+temps ecoule :2.1331751346588135s (etape 2,3,4) 27 13:41
+temps ecoule :2.625261068344116s (etape 2,3,4) 27 13:49
+temps ecoule :2.4465131759643555s (etape 2,3,4) 27 13:51
+temps ecoule :2.4465131759643555s (etape 2,3,4) 27 13:51
+temps ecoule :2.4122071266174316s (etape 2,3,4) 27 13:51
