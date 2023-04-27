@@ -1,18 +1,22 @@
-from flask import Flask, render_template
 import flask
-import subprocess
-from flask import request
+from flask import Flask, render_template, request, Response
 from shelljob import proc
 
 app = Flask(__name__)
 
-with open('diff_jours.txt','w') as f:
-    f.write("0")
+value = 0
+
+def generate(g,value):
+    print('generation avec',value)
+    p = g.run(["python3", "main.py", '-value', str(value)])
+    while g.is_pending():
+        lines = g.readlines()
+        for proc, line in lines:
+            yield line
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/iframe')
 def iframe():
@@ -20,13 +24,18 @@ def iframe():
 
 @app.route('/execute')
 def execute():
+    global value
     value = request.args.get('value')
-    print("execution du stream et de l'actualisation de la valeur")
-    # Executer le script main
-    subprocess.call(['python3', 'main.py', '-value', value])
-    print('exxecution terminée')
-    # Render a new template that includes the additional element
-    return ''
+    print("execution du stream et de l'actualisation de la valeur",value)
+    g = proc.Group()
+    return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
 
+@app.route('/stream')
+def read_process():
+    global value
+    print('valeur recue :', value)
+    g = proc.Group()
+    return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
+    
 if __name__ == '__main__':
     app.run(debug=True)
