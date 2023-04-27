@@ -204,7 +204,7 @@ header {
                 </div>
                 <div class="header" id="inlineception">
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
-                    <p><span id="day">Présent</span></p>
+                    <p><span id="day">Aujourd'hui</span></p>
                     <button id="execute" onclick="startTimer()" onclick="recharger()" class="boutons">Actualiser la carte</button>
                     <!-- HTML element to hold the timer value -->
                 </div>
@@ -248,7 +248,7 @@ header {
             // Get value of slider
             const sliderValue = slider.value;
             // Update day element with selected day
-            const day = sliderValue == 0 ? "___Aujourd'hui___ " : `${getSliderValueDate(Number(sliderValue)+20)} jours`; // a ajouter juste si on veuxn preciser qu'on est dans le passé : ${sliderValue > 0 ? '+' : ''}
+            const day = sliderValue == 0 ? "Aujourd'hui" : `${getSliderValueDate(Number(sliderValue)+20)}`; // a ajouter juste si on veuxn preciser qu'on est dans le passé : ${sliderValue > 0 ? '+' : ''}
             dayElement.textContent = day;
         });
 
@@ -262,7 +262,7 @@ header {
             let daysFromStart = sliderValue + 10;
             let date = new Date(startDate);
             date.setDate(date.getDate() + daysFromStart);
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            return date.toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' })+' ';
         }
 
 
