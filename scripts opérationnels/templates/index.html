@@ -205,9 +205,10 @@ header {
                 <div class="header" id="inlineception">
                     <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                     <p><span id="day">Présent</span></p>
-                    <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
+                    <button id="execute" onclick="startTimer()" onclick="recharger()" class="boutons">Actualiser la carte</button>
                     <!-- HTML element to hold the timer value -->
                 </div>
+                <p id="timer"></p>
                 <div class="header" id="aide">
                     <button onclick="pop(this)" class="boutons" id="rules">Aide</button>
                 </div>
@@ -218,6 +219,21 @@ header {
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
 
     <script>
+              function startTimer() {
+        alert('veuillez patientez, le temps que la carte se mette à jour. La page se rechargera toute seule')
+        var countdown = 160; // 2,7 minutes en secondes
+        var timerDisplay = document.getElementById('timer');
+        var timer = setInterval(function() {
+          var minutes = Math.floor(countdown / 60);
+          var seconds = countdown % 60;
+          timerDisplay.innerHTML = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+          countdown--;
+          if (countdown < 0) {
+            clearInterval(timer);
+            location.reload(); // recharger la page 
+          }
+        }, 1000); // update every second
+      }
 
         // Get slider, day element, and button elements
         const slider = document.getElementById('slider');
@@ -276,36 +292,7 @@ header {
         document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
             document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
         });
-        function countdown() {
-        var seconds = 180;
-        function tick() {
-          var counter = document.getElementById("counter");
-          seconds--;
-          counter.innerHTML =
-            "0:" + (seconds < 10 ? "0" : "") + String(seconds);
-          if (seconds > 0) {
-            setTimeout(tick, 1000);
-          } else {
-            document.getElementById("verifiBtn").innerHTML = `
-                <div class="Btn" id="ResendBtn">
-                    <button type="submit">Resend</button>
-                </div>
-            `;
-            document.getElementById("counter").innerHTML = "";
-          }
-        }
-        tick();
-      }
-      countdown();
     </script>
-                        <div class="btnGroup">
-                            <span class="Btn" id="verifiBtn">
-                              <button type="submit">Verify</button>
-                            </span>
-                            <span class="timer">
-                              <span id="counter"></span>
-                            </span>
-                          </div>
 </body>
 <footer>
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
