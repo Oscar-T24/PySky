@@ -4,6 +4,8 @@ from shelljob import proc
 
 app = Flask(__name__)
 
+debut = False
+
 value = 0
 
 def generate(g,value):
