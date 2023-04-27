@@ -8,17 +8,24 @@ from datetime import datetime, timedelta
 import csv
 from math import sqrt
 import pandas as pd
+import argparse
 
-# RECUPERE LA DATE DEMANDÉE PAR L'UTILISATEUR, PAR DEFAULT LA DATE D'AUJOURD'HUI
-with open('diff_jours.txt', 'r+') as f:
-    global variable
-    variable = f.read()
-    if variable == '':
-        variable = 0
-    else:
-        variable = int(variable)
-    f.write('')
-
+# on recupere le nombre de jours différés, 0 par défaut pour aujourdh'ui
+if __name__ == '__main__':
+        parser = argparse.ArgumentParser(description='Print the value of a command line argument')
+        parser.add_argument('-value', help='the value to be printed')
+        args = parser.parse_args()
+        variable = int(args.value) # 
+'''
+    with open('diff_jours.txt', 'r+') as f:
+        global variable
+        variable = f.read()
+        if variable == '':
+            variable = 0
+        else:
+            variable = int(variable)
+        f.write('')
+    '''
 today = datetime.now()
 dif = timedelta(days=variable)
 date = today + dif
