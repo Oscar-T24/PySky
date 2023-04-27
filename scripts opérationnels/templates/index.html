@@ -191,7 +191,6 @@ header {
                     <p><span id="day">0</span></p>
                     <button id="execute" onclick="recharger()" class="boutons">Actualiser la carte</button>
                     <!-- HTML element to hold the timer value -->
-<div id="timer">3:00</div>
                 </div>
                 <div class="header" id="aide">
                     <button onclick="pop(this)" class="boutons" id="rules">Aide</button>
@@ -261,34 +260,36 @@ header {
         document.querySelector("#zoomOut").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close:
             document.getElementById("rules").style.display = "none"; // On met plus de display au bloc de class popup
         });
- 
-  // Set the timer duration to 3 minutes (in seconds)
-  let timerDuration = 3 * 60;
-
-  // Get the timer element
-  const timerElement = document.getElementById('timer');
-
-  // Update the timer element with the remaining time
-  function updateTimer() {
-    const minutes = Math.floor(timerDuration / 60);
-    const seconds = timerDuration % 60;
-    timerElement.innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  }
-
-  // Start the timer
-  updateTimer(); // Display initial time
-  const interval = setInterval(function() {
-    timerDuration--; // Decrease the remaining time
-    updateTimer(); // Update the timer element
-
-    // Reload the webpage when the timer reaches 0
-    if (timerDuration <= 0) {
-      clearInterval(interval);
-      location.reload();
-    }
-  }, 1000); // Update the timer every second
-
+        function countdown() {
+        var seconds = 180;
+        function tick() {
+          var counter = document.getElementById("counter");
+          seconds--;
+          counter.innerHTML =
+            "0:" + (seconds < 10 ? "0" : "") + String(seconds);
+          if (seconds > 0) {
+            setTimeout(tick, 1000);
+          } else {
+            document.getElementById("verifiBtn").innerHTML = `
+                <div class="Btn" id="ResendBtn">
+                    <button type="submit">Resend</button>
+                </div>
+            `;
+            document.getElementById("counter").innerHTML = "";
+          }
+        }
+        tick();
+      }
+      countdown();
     </script>
+                        <div class="btnGroup">
+                            <span class="Btn" id="verifiBtn">
+                              <button type="submit">Verify</button>
+                            </span>
+                            <span class="timer">
+                              <span id="counter"></span>
+                            </span>
+                          </div>
 </body>
 <footer>
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
