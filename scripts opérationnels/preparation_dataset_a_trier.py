@@ -74,7 +74,7 @@ for e in coordonnees:
     debit = data.values.tolist()[1][-1][0]
     river_discharge.append(debit)
 
-    print(f"Données météo extraites pour le département {d} (sur 101)")
+    print(f"Données météo du {dateiso} extraites pour le département {d} (sur 101)")
 
 
 # ON CREE UNE COLONNE POUR L'INDICE DE METEO DETERMINE A PARTIR DES WEBCAMS, ON LA PASSE ENSUITE PAR KNN POUR OBTENIR UNE CLASSE
