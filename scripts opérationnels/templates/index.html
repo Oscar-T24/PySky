@@ -4,7 +4,7 @@ span {
  margin-top: 20px;
  margin-left: 45px;
 }
-button {
+boutton {
   background-color: #800000;
   border: 2px solid #ffd700;
   color: #fff;
@@ -139,7 +139,7 @@ header {
 }
 
 
-.popup1 button{ /* Style du bouton de fermeture */
+.popup1 boutton{ /* Style du bouton de fermeture */
     display: block;
     font-size: 20px;
     color: #ffffff;
@@ -222,10 +222,10 @@ nav{
             <div class="header" id="inlineception">
                 <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
                 <p><span id="day">Aujourd'hui</span></p>
-                <button id="execute" onclick="startTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
-                <!-- HTML element to hold the timer value -->
+                <button id="execute" onclick="demarrerTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
             </div>
             <div class="header">
+                <!-- timer ici  -->
                 <p id="timer"></p>
             </div>
             <div class="header" class="aide">
@@ -238,15 +238,16 @@ nav{
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
 
     <script>
-        function startTimer() {
-        alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE, elle se rechargera toute seule")
+        function demarrerTimer() {
+        // commence un timer et quand il est fini, recharge la page web
 
+        alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE. Elle se rechargera toute seule")
 
         // désactiver les controles avec 'disable'
     
-        var button = document.getElementById("execute");
-        button.disabled = true;
-        button.innerHTML = "Chargement...";
+        var boutton = document.getElementById("execute");
+        boutton.disabled = true;
+        boutton.innerHTML = "Chargement...";
 
         // --------------------------------------
 
@@ -256,34 +257,37 @@ nav{
           var minutes = Math.floor(countdown / 60);
           var seconds = countdown % 60;
           timerDisplay.innerHTML = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-          countdown--;
+
+          countdown--; // desincrementer d'une seconde
+
           if (countdown < 0) {
             clearInterval(timer);
 
             // reaciver le bouton et recharger la page
 
-            var button = document.getElementById("execute");
-            button.disabled = false;
-            button.innerHTML = "Actualiser";
+            var boutton = document.getElementById("execute");
+            boutton.disabled = false;
+            boutton.innerHTML = "Actualiser";
 
             location.reload(); // recharger la page 
           }
-        }, 1000); // update every second
+        }, 1000); // mettre a jour toutes les secondes
       }
 
-        // Get slider, day element, and button elements
         const slider = document.getElementById('slider');
         const dayElement = document.getElementById('day');
         const executeButton = document.getElementById('execute');
 
-        // Add event listener to slider
+        // event listener pour afficher la valeur de <input>
         slider.addEventListener('input', () => {
-            // Get value of slider
+
             const sliderValue = slider.value;
-            // Update day element with selected day
+
             const day = sliderValue == 0 ? "Aujourd'hui" : `${getSliderValueDate(Number(sliderValue)+20)}`; // a ajouter juste si on veuxn preciser qu'on est dans le passé : ${sliderValue > 0 ? '+' : ''}
             dayElement.textContent = day;
         });
+
+// VERIFIER CETTE PARTIE 
 
         let sliderRange = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let startDate = new Date(); // start date set to today's date
@@ -299,9 +303,9 @@ nav{
             date.setMonth(currentMonth - 1); // il y a un mois en trop
             return date.toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' })+' ';
         }
+// ---------------------
 
-
-        // Add event listener to button
+        //  event listener pour l'evenement d'un clic
         executeButton.addEventListener('click', () => {
             // Get value of slider
             const sliderValue = slider.value;
