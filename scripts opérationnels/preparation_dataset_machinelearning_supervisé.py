@@ -81,7 +81,6 @@ def eval_photo():
 
     meteo_dep = [e for e in data if e["code"] == dep][0]
     meteo_dep["Etat_meteo"] = utilisateur
-    meteo_dep.pop('')
     ecr.writerow(meteo_dep)
 
 while True:
