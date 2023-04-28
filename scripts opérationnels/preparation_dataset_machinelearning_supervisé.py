@@ -42,7 +42,6 @@ def display_image(image):
 
 arreter = False
 
-
 def ajouter(etat):
     f = open('temp_meteo.txt', 'w')
     f.write(etat)
@@ -82,9 +81,8 @@ def eval_photo():
 
     meteo_dep = [e for e in data if e["code"] == dep][0]
     meteo_dep["Etat_meteo"] = utilisateur
-
+    meteo_dep.pop('')
     ecr.writerow(meteo_dep)
-    print(meteo_dep)
 
 while True:
     eval_photo()
