@@ -203,6 +203,7 @@ nav{
 <head>
     <title>Site Météréologique<br> des Trophées NSI</title>
     <meta charset = "utf-8">
+    <!-- <meta http-equiv="refresh" content="20">   -->
 </head>
 <body>
     <nav>
@@ -228,6 +229,9 @@ nav{
                 <input type="range" min="-10" max="5" step="1" id="slider"style="transform: scale(2);">
                 <p><span id="day">Aujourd'hui</span></p>
                 <button id="execute" onclick="demarrerTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
+                <!--<form action="/execute" >
+                <input type="submit" value="actualiser la carte" class="boutons">
+                </form>-->
             </div>
             <div class="header">
                 <!-- timer ici  -->
@@ -241,11 +245,10 @@ nav{
     </nav>
     <div class="spinner" style="display: none; width:150px;height:150px;"></div>
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function demarrerTimer() {
         // commence un timer et quand il est fini, recharge la page web
-
         alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE. Elle se rechargera toute seule")
 
         // désactiver les controles avec 'disable'
@@ -258,6 +261,8 @@ nav{
 
         var countdown = 300; // 5 minutes en secondes
         var timerDisplay = document.getElementById('timer');
+        console.log('fetching')
+        fetch('/execute');
         var timer = setInterval(function() {
           var minutes = Math.floor(countdown / 60);
           var seconds = countdown % 60;
@@ -274,10 +279,10 @@ nav{
             boutton.disabled = false;
             boutton.innerHTML = "Actualiser";
 
-            //location.reload(); // recharger la page 
-            recharger()
+            //location.reload(); // recharger la page  
           }
         }, 1000); // mettre a jour toutes les secondes
+        
       }
 
         const slider = document.getElementById('slider');
@@ -355,17 +360,11 @@ nav{
         document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
-    function executeAndUpdate() {
-        fetch('/execute?value=' + document.getElementById('slider').value)
-        .then(response => response.json())
-        .then(data => {
-    alert('update recue');
-      if (data.reload) {
-        location.reload();
-      }
-    });
-}
+
     </script>
+        {% if updated %}
+        <p>updated !</p>
+        {% endif %}
 </body>
 <footer>
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
