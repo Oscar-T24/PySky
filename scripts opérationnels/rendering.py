@@ -13,10 +13,6 @@ value = 0
 def index():
     return render_template('index.html')
 
-@app.route('/iframe')
-def iframe():
-    return render_template('map.html')
-
 @app.route('/execute')
 def execute():
     global value
@@ -27,7 +23,10 @@ def execute():
     #g = proc.Group()
     return ""
     return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
-
+    
+@app.route('/iframe')
+def iframe():
+    return render_template('map.html')
 '''
 @app.route('/stream')
 def read_process():
