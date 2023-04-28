@@ -1,41 +1,8 @@
-import requests
 import csv
-import json
 
-
-def coordinate_temperature(coordonees):
-    """
-# Dans cet exemple nous allons utiliser le service météo du Meteorologisk institutt de Norvège
-# (api.met.no/weatherapi is an interface to a selection of data produced by MET Norway)
-# url: https://api.met.no/weatherapi/locationforecast/2.0/documentation
-
-# Grâce à Google Maps, nous trouvons que les coordonnées de l'IUT à Mont de Marsan sont
-# latitude 43.88566272770907, longitude -0.5092243304975015
-#
-# Ce qui nous donne l'URL suivante pour accéder aux prévisions météo au format JSON:
-# https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=43.88566272770907&lon=-0.5092243304975015
-# Fetch data from URL
-    """
-    latitude = coordonees[0]
-    longitude = coordonees[1]
-    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0',
-               'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}
-    url = requests.get(f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}7&lon={longitude}",
-                       headers=headers)
-    text = url.text
-
-    # Get JSON data
-    data = json.loads(text)
-    # print(data)
-
-    # Process JSON data
-    units = data["properties"]["meta"]["units"]
-    weather = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
-    return weather
-
-# determination des fieldnames qui serviront tout le long 
+# determination des fieldnames qui serviront tout le long
 descriteurs = []
-with open('donnees_meteo.csv', 'r') as f:
+with open('../scripts opérationnels/donnees_meteo.csv', 'r') as f:
     descripteurs = list(csv.reader(f))[0]
 
 
@@ -103,7 +70,7 @@ def k_plus_proches_voisins(nouveau, table, k):
     '''
     nouveau : un dictionnaire contenant les informations d'une image à classer
     table : une liste d'images déjas classifiées (en provenance de donnees_classifiees)
-    k : le nombre de voisins à integrer 
+    k : le nombre de voisins à integrer
 
     :out : liste de longueur k des plus proches voisins
     '''
@@ -128,7 +95,7 @@ def alocation_meteo():
     associe à chaque département un état météo basé sur un dataset supervisé
     '''
     table_supervisee = charge_table('donnees_meteo_classifiees.csv') # charger le dataset classifé qui sert de support
-    with open('donnees_meteo.csv') as f:
+    with open('../scripts opérationnels/donnees_meteo.csv') as f:
         # ouvrir le fichier à charger
         lect = csv.DictReader(f, delimiter=',',
                               fieldnames=descripteurs)
@@ -140,8 +107,8 @@ def alocation_meteo():
 
     for i in range(1,len(meteo_associee)):
         meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
-    
-    with open('donnees_meteo.csv','w') as f:
+
+    with open('../scripts opérationnels/donnees_meteo.csv', 'w') as f:
         ecr = csv.DictWriter(f,fieldnames=descripteurs)
         ecr.writerows(meteo_associee)
 

@@ -209,7 +209,8 @@ nav{
             <div id="'explication">
                 <p>Pour selectionner un jour dans la timeline, faites glisser le slider</p>
                 <p>En cliquant sur les icones, consultez les données exactes</p>
-                <p>Le deplacement temporel se fait par rapport à la date des données affichées</p>
+                <p>Si votre débit est trop lent (i.e., chargement données > 5min), <br> vous aurez besoin de recharger la page vous même. </p>
+                <p><a href="" target="_blank">Pour plus d'informations</a></p>
             </div>
         </td>
     </div>
@@ -238,7 +239,7 @@ nav{
 
     <script>
         function startTimer() {
-        alert("Veuillez patienter. N'INTERAGISSEZ PAS AVEC LA PAGE, HORS CARTE. La page se rechargera toute seule")
+        alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE, elle se rechargera toute seule")
 
 
         // désactiver les controles avec 'disable'
@@ -249,7 +250,7 @@ nav{
 
         // --------------------------------------
 
-        var countdown = 180; // 3 minutes en secondes
+        var countdown = 300; // 5 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         var timer = setInterval(function() {
           var minutes = Math.floor(countdown / 60);
