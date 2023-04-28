@@ -353,8 +353,7 @@ if variable == 0: # Si la requête est pour aujourd'hui
             try:
                 meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
             except:
-                print('erreur')
-                meteo_associee[i]["Etat_meteo"] = "Cross"
+                meteo_associee[i]["Etat_meteo"] = ""
         with open('donnees_meteo.csv','w') as f:
             ecr = csv.DictWriter(f,fieldnames=descripteurs)
             ecr.writerows(meteo_associee)
