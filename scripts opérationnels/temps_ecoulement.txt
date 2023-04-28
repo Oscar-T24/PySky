@@ -2188,3 +2188,5 @@ temps ecoule :64.6351249217987s (etape 2,3,4) 28 16 :54
 temps ecoule :71.07273483276367s (etape 2,3,4) 28 19 :11
 temps ecoule :81.59289789199829s (etape 2,3,4) 28 19 :23
 temps ecoule :84.499764919281s (etape 2,3,4) 28 21 :32
+temps ecoule :3.135964870452881s (etape 2,3,4) 28 21 :35
+temps ecoule :2.694936752319336s (etape 2,3,4) 28 21 :35

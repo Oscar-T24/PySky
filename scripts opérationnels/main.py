@@ -31,5 +31,3 @@ with open('temps_ecoulement.txt', 'a') as f:
     f.write('\n')
 # temps pour faire les étapes 2 à 4 : 4 minutes +/- 10s
 # temps pour la partie 1 : 160,7 minutes soit 2,67 heures
-
-os.remove("donnees_meteo.csv")
