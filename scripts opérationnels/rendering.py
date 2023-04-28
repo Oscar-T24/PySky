@@ -2,12 +2,15 @@ import flask
 from flask import Flask, render_template, request, Response
 from shelljob import proc
 import subprocess
+import os
 
 app = Flask(__name__)
 
 debut = False
 
 value = 0
+
+os.remove("templates/map.html")
 
 def generate(g,value):
     with open('requetes','r+') as f:
@@ -31,7 +34,7 @@ def iframe():
 def execute():
     global value
     value = request.args.get('value')
-    print("execution du stream et de l'actualisation de la valeur",value)
+    print("execution du stream et de l'actualisation de la valeur", value)
     # value correspond à la valeur du slider
     subprocess.run(["python3", "main.py", '-value', str(value)])
     #g = proc.Group()

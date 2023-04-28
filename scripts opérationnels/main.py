@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Print the value of a command line argument')
     parser.add_argument('-value', help='the value to be printed')
     args = parser.parse_args()
-    jours_diff= int(args.value) # 
+    jours_diff= int(args.value)
         
 time_depart = time.time()
 print('jours de différences',jours_diff)
