@@ -20,7 +20,7 @@ def execute():
     value = request.args.get('value')
     print("execution du stream et de l'actualisation de la valeur",value)
     # value correspond à la valeur du slider
-    subprocess.run(["python3", "main.py", '-value', str(value)])
+    #subprocess.run(["python3", "main.py", '-value', str(value)])
     #g = proc.Group()
     print("actualisation de la carte")
     return jsonify({'reload': True})
