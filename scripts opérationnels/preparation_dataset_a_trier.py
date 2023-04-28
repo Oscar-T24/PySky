@@ -242,10 +242,6 @@ else:
 df["Etat_meteo"] = [None for i in range(101)]
 df.to_csv('donnees_meteo.csv', index=False)
 
-with open("donnees_meteo.csv", "w") as f:
-    df.to_csv(f)
-f.close()
-
 if variable == 0: # Si la requête est pour aujourd'hui
     # ALGORITHME KNN DETERMINATION METEO
 
