@@ -63,7 +63,19 @@ for donnee in descripteurs:
         data=merged_data,
         columns=["properties.nom", f"{donnee}"],
         key_on="feature.properties.nom",
-        fill_color=random.choice(["YlOrRd", "PuBuGn", "YlGnBu", "PuBu", "PuBu"]),  # ColorBrewer code
+
+        # CODE COULEUR 
+
+        # "YlOrRd" : temperatures + ressenti
+        # 'BuPu' : humidite + % pluie + precipitation 
+        #  'GnRd' : air_quality + UV index (PRGn si ca marche pas)
+        # 'RdBu' : pression + couverture nuageuse
+        # 'Greys' : visibilité + vitesse vent 
+        # 'Blues' : River discharge + pbilité inondation
+        # 'RdGy' : pbilité secheresse
+        # 'Reds' : cancicule
+
+        fill_color= random.choice(["YlOrRd", "PuBuGn", "YlGnBu", "PuBu"]),  # ColorBrewer code A CHANGER
         # https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
         fill_opacity=1,
         line_opacity=0.5,
