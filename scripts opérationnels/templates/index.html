@@ -269,7 +269,8 @@ nav{
             boutton.disabled = false;
             boutton.innerHTML = "Actualiser";
 
-            location.reload(); // recharger la page 
+            //location.reload(); // recharger la page 
+            recharger()
           }
         }, 1000); // mettre a jour toutes les secondes
       }
@@ -328,8 +329,11 @@ nav{
         function recharger(){
             document.getElementsByTagName('iframe').src = 'https://google.fr';
             // recharger l'iframe
+            alert(document.getElementsByTagName('iframe').src)
+            
             document.getElementsByTagName('iframe').src = 'http://127.0.0.1:5000/iframe';
             // location.reload() AVANT 
+            alert(document.getElementsByTagName('iframe').src)
         }
         function enlever(){
             var myButton = document.getElementById('execute');

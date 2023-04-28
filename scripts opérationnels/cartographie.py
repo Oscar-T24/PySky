@@ -2,7 +2,6 @@ import pandas as pd
 import folium
 import csv
 import random
-from IPython.display import IFrame
 from datetime import datetime
 
 now = datetime.now()
@@ -202,8 +201,6 @@ folium.LayerControl(
 
 # PARTIE RENDERING
 
-map_html = m._repr_html_()
-IFrame(width=1000, height=500, src=map_html)
 '''
 app = Flask(__name__)
 
