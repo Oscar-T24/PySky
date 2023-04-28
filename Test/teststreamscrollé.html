@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function scroll_to_bottom() {
+            var element = document.getElementById("output");
+            element.scrollTop = element.scrollHeight;
+        }
+
+        $(document).ready(function() {
+            setInterval(function() {
+                $.get('/stream', function(data) {
+                    $('#output').append(data);
+                    scroll_to_bottom();
+                });
+            }, 1000);
+        });
+    </script>
+</head>
+<body>
+    <h1>Example</h1>
+    <iframe id="iframe" src="http://127.0.0.1:5000/stream"></iframe>
+    <div id="output"></div>
+</body>
+</html>

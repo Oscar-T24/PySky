@@ -75,6 +75,11 @@ header {
     white-space: nowrap;
 }
 
+#timer {
+    border-width:3px;
+    border-style:solid;
+    padding: 1em;
+}
 
 .inline {
     display:flex;
@@ -157,40 +162,6 @@ header {
    height: auto;
  }
 
- .popup2{
-    background-color: #ffffff;
-    padding: 30px 40px;
-    position: fixed;
-    transform: translate(-50%,-50%);
-    left: 50%;
-    top: 50%;
-    border-radius: 8px;
-    display: none;
-    text-align: center;
-    border:2px solid #000;
-    width:50%;
-}
-
-
-.popup2 button{ /* Style du bouton de fermeture */
-    display: block;
-    font-size: 20px;
-    color: #ffffff;
-    background: #03549a;
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    border: none;
-    outline: none;
-    float:right;
-    cursor: pointer; /* Change la souris sur hover */
-}
-
-.popup2 p {
-    text-align:center;
-}
-
-
 .boutons  {
     /* Style texte */
     color: black;
@@ -242,31 +213,23 @@ nav{
             </div>
         </td>
     </div>
-    <div class="popup2">
-         <button class="close" id="close2">X</button>
-        <div id="stream">
-            <label>Console d'execution en LIVE</label>
-            <iframe id='iframe' src="" height="auto" width="100%"></iframe>
-        </div>
-    </div>
     <header>
         <div class="inline">
-                <div class="header" id="presentation">
-                    <h1>PySky</h1>
-                </div>
-                <div class="header" id="inlineception">
-                    <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
-                    <p><span id="day">Aujourd'hui</span></p>
-                    <button id="execute" onclick="startTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
-                    <!-- HTML element to hold the timer value -->
-                </div>
+            <div class="header" id="presentation">
+                <h1>PySky</h1>
+            </div>
+            <div class="header" id="inlineception">
+                <input type="range" min="-10" max="10" step="1" id="slider"style="transform: scale(2);">
+                <p><span id="day">Aujourd'hui</span></p>
+                <button id="execute" onclick="startTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
+                <!-- HTML element to hold the timer value -->
+            </div>
+            <div class="header">
                 <p id="timer"></p>
-                <div class="header" class="aide">
-                    <button onclick="pop2(this)" class="boutons">Console</button>
-                </div>
-                <div class="header" class="aide">
-                    <button onclick="pop1(this)" class="boutons">Aide</button>
-                </div>
+            </div>
+            <div class="header" class="aide">
+                <button onclick="pop1(this)" class="boutons">Aide</button>
+            </div>
         </div>
     </header>
     </nav>
@@ -275,10 +238,7 @@ nav{
 
     <script>
         function startTimer() {
-        alert('veuillez patientez, le temps que la carte se mette à jour. La page se rechargera toute seule')
-        document.getElementById('iframe').setAttribute('src','google.fr');    
-        //alert(document.getElementById('iframe').setAttribute('src','google.fr'));
-        document.getElementById('iframe').setAttribute('src','http://127.0.0.1:5000/stream');
+        alert("Veuillez patienter. N'INTERAGISSEZ PAS AVEC LA PAGE, HORS CARTE. La page se rechargera toute seule")
         var countdown = 180; // 3 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         var timer = setInterval(function() {
@@ -360,18 +320,6 @@ nav{
         // Fermeture lors du click:
         document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
-        });
-
-        // Ouverture du popup:
-        function pop2(){  // Au chargement de la page:
-            document.getElementById('iframe').setAttribute('src','http://127.0.0.1:5000/stream'); // ajouter le stream
-            document.querySelector(".popup2").style.display = "block"; // On affiche la class popup comme un bloc
-        };
-
-        // Fermeture lors du click:
-        document.querySelector("#close2").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close2:
-            document.querySelector(".popup2").style.display = "none"; // On met plus de display au bloc de class popup
-            document.getElementById('iframe').setAttribute('src','http://127.0.0.1:5000/stream'); // enlever le stream
         });
 
     </script>
