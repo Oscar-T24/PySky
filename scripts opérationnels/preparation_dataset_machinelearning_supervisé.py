@@ -18,7 +18,10 @@ def display_image(image):
     # Open file dialog and select image file
 
     # Load image and display in window
-    blue, green, red = cv2.split(image)
+    try :
+        blue, green, red = cv2.split(image)
+    except ValueError:
+        return
     image = cv2.merge((red, green, blue))
     image = Image.fromarray(image)
     from PIL import ImageTk as itk
@@ -64,16 +67,15 @@ f = open("donnees_meteo_classifiees.csv", "a")
 ecr = csv.DictWriter(f, delimiter=",", fieldnames=["code","Date","Temperature (°C)","Humidite_relative (%)","Temperature_ressentie (°C)","Probabilite_pluie (%)","Precipitation (mm)","Pression (0m)(hPa)","Couverture_nuageuse (%)","Visibility (m)","Vitesse_vent (km/h)","Index_UV","Air_quality (pm2.5)","River_discharge (m3/s)","Probabilité sècheresse","Probabilité canicule (%)","Probabilité innondation","Indice","Etat_meteo"])
 
 def eval_photo():
-    try:
-        ligne = choice(cameras)
-        url = ligne["lien"]
-        dep = ligne["departement"]
-        response = requests.get(url)
-        img = Image.open(BytesIO(response.content))
-        open_cv_image = numpy.array(img) # Image bon format?
-        display_image(open_cv_image)
-    except ValueError:
-        return # en cas d'erreur de lecture d'image
+    ligne = choice(cameras)
+    url = ligne["lien"]
+    dep = ligne["departement"]
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    global open_cv_image
+    open_cv_image = numpy.array(img) # Image bon format?
+    display_image(open_cv_image)
+
 
     f = open("temp_meteo.txt", "r+")
     utilisateur = f.read()

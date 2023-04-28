@@ -9,8 +9,8 @@ subprocess.run(["python3", "recuperation_donneswebcam.py"])
 print('etape 1 finie : actualisation de la base de donnée webcams')
 '''
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Print the value of a command line argument')
-    parser.add_argument('-value', help='the value to be printed')
+    parser = argparse.ArgumentParser(description='afficher valeur de la commande de ligne')
+    parser.add_argument('-value', help='la valeur à afficher')
     args = parser.parse_args()
     jours_diff= int(args.value)
         
