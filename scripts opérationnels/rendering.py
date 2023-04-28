@@ -2,7 +2,6 @@ import flask
 from flask import Flask, render_template, request, Response
 from shelljob import proc
 import subprocess
-import os
 
 app = Flask(__name__)
 
@@ -15,35 +14,24 @@ try:
 except FileNotFoundError:
     pass
 
-def generate(g,value):
-    with open('requetes','r+') as f:
-        f.write('1') # ecrire la requette actuelle
-    print('generation avec',value)
-    p = g.run(["python3", "main.py", '-value', str(value)])
-    while g.is_pending():
-        lines = g.readlines()
-        for proc, line in lines:
-            yield line
-
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/iframe')
-def iframe():
-    return render_template('map.html')
 
 @app.route('/execute')
 def execute():
     global value
     value = request.args.get('value')
-    print("execution du stream et de l'actualisation de la valeur", value)
+    print("execution du stream et de l'actualisation de la valeur",value)
     # value correspond à la valeur du slider
     subprocess.run(["python3", "main.py", '-value', str(value)])
     #g = proc.Group()
     return ""
     return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
-
+    
+@app.route('/iframe')
+def iframe():
+    return render_template('map.html')
 '''
 @app.route('/stream')
 def read_process():
