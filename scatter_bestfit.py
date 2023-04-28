@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the image and convert it to grayscale
-im = Image.open("test.jpg").convert('L')
+im = Image.open("testciel.jpeg").convert('L')
 pix = np.array(im)
 
 # Choose the column to analyze
@@ -75,15 +75,9 @@ fig.colorbar(scatter, ax=ax)
 #fig.savefig("lol_with_sc") 
 # sauvegarder l'image finale
 
-# on reutilise les 3 canaux RGB de l'image originale pour couper 
-upper_half_gray = pix[:int(max_slope_y[col_index]), :]
-upper_half_rgb = np.zeros((upper_half_gray.shape[0], upper_half_gray.shape[1], 3), dtype=np.uint8)
 
-# Retrieve the colors from the original image
-for i in range(3):
-    upper_half_rgb[:,:,i] = np.array(im)[:,:,i][:int(max_slope_y[col_index]), :]
-
+'''
 im = Image.fromarray(upper_half_rgb)
 im.save("upper_half.jpg")
-
+'''
 plt.show()

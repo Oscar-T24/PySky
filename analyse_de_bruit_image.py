@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import make_interp_spline
 
 # Load the image and convert it to grayscale
-im = Image.open("lol.jpg").convert('L')
+im = Image.open("testciel.jpeg").convert('L')
 pix = np.array(im)
 
 # Choose the column to analyze
@@ -70,6 +70,6 @@ ax.set_ylabel("Row index")
 fig.colorbar(scatter, ax=ax)
 
 # Save the image
-fig.savefig("lol_with_sc")
+fig.savefig("testcielv2")
 
 plt.show()
