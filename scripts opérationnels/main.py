@@ -2,6 +2,7 @@ import subprocess
 import time
 from datetime import datetime
 import argparse
+import os
 
 '''
 subprocess.run(["python3", "recuperation_donneswebcam.py"])
@@ -11,7 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Print the value of a command line argument')
     parser.add_argument('-value', help='the value to be printed')
     args = parser.parse_args()
-    jours_diff= int(args.value) # 
+    jours_diff= int(args.value)
         
 time_depart = time.time()
 print('jours de différences',jours_diff)
@@ -30,3 +31,5 @@ with open('temps_ecoulement.txt', 'a') as f:
     f.write('\n')
 # temps pour faire les étapes 2 à 4 : 4 minutes +/- 10s
 # temps pour la partie 1 : 160,7 minutes soit 2,67 heures
+
+os.remove("donnees_meteo.csv")
