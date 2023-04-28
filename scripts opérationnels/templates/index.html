@@ -59,6 +59,10 @@ header {
     padding:20px;
 }
 
+#execute {
+    margin-left:30px;
+}
+
 .header {
     display: flex;
     justify-content: center;
@@ -76,9 +80,10 @@ header {
 }
 
 #timer {
-    border-width:3px;
+    border-width:1px;
     border-style:solid;
     padding: 1em;
+    border-radius: 50px; /* Arrondi les cotés */
 }
 
 .inline {
@@ -251,7 +256,7 @@ nav{
 
         // --------------------------------------
 
-        var countdown = 300; // 5 minutes en secondes
+        var countdown = 600; // 10 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         var timer = setInterval(function() {
           var minutes = Math.floor(countdown / 60);

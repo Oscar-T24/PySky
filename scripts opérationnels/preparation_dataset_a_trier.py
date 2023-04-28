@@ -260,7 +260,7 @@ if variable == 0: # Si la requête est pour aujourd'hui
         renvoie la distance de Manhattan entre 2 images positions
         """
         d = 0
-        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
+        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','River_discharge (m3/s)','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
         for q in attributs:
             d += abs(float(el1[q]) - float(el2[q]))
         return d
@@ -354,8 +354,10 @@ if variable == 0: # Si la requête est pour aujourd'hui
                     meteo_associee.append(row)
 
         for i in range(1,len(meteo_associee)):
-            meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
-
+            try:
+                meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
+            except:
+                meteo_associee[i]["Etat_meteo"] = "Cloudy" # PAS BON
         with open('donnees_meteo.csv','w') as f:
             ecr = csv.DictWriter(f,fieldnames=descripteurs)
             ecr.writerows(meteo_associee)
