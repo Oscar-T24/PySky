@@ -168,7 +168,7 @@ seuils = [(1, 35), (2, 33), (3, 34), (4, 36), (5, 34), (6, 31), (7, 35), (8, 33)
           (76, 33), (77, 34), (78, 33), (79, 35), (80, 33), (81, 36), (82, 36), (83, 35), (84, 36), (85, 34), (86, 35),
           (87, 34), (88, 34), (89, 35), (90, 33), (91, 35), (92, 31), (93, 31), (94, 31), (95, 35)]
 temperatures = [e for e in temperature]
-canicule = [True if temperatures[i] >= seuils[i][1] else False for i in range(len(seuils))] + ["", "", "", "", ""]
+canicule = [1 if temperatures[i] >= seuils[i][1] else 0 for i in range(len(seuils))] + ["", "", "", "", ""]
 
 print("Determination de la présence d'une canicule effectuée")
 
@@ -260,7 +260,7 @@ if variable == 0: # Si la requête est pour aujourd'hui
         renvoie la distance de Manhattan entre 2 images positions
         """
         d = 0
-        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
+        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
         for q in attributs:
             d += abs(float(el1[q]) - float(el2[q]))
         return d
@@ -271,8 +271,7 @@ if variable == 0: # Si la requête est pour aujourd'hui
         renvoie une liste de dictionnaires
         """
         with open(nom_fichier, 'r') as f:
-            lect = csv.DictReader(f, delimiter=',',
-                                  fieldnames=descripteurs)
+            lect = csv.DictReader(f, delimiter=',', fieldnames=descripteurs)
             liste_dict = []
             for row in lect:
                 # partie nouvelle
