@@ -9,17 +9,6 @@ debut = False
 
 value = 0
 
-'''
-def generate(g,value):
-    with open('requetes','r+') as f:
-        f.write('1') # ecrire la requette actuelle
-    print('generation avec',value)
-    p = g.run(["python3", "main.py", '-value', str(value)])
-    while g.is_pending():
-        lines = g.readlines()
-        for proc, line in lines:
-            yield line
-'''
 @app.route('/')
 def index():
     return render_template('index.html')
