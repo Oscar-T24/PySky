@@ -9,6 +9,7 @@ debut = False
 
 value = 0
 
+'''
 def generate(g,value):
     with open('requetes','r+') as f:
         f.write('1') # ecrire la requette actuelle
@@ -18,7 +19,7 @@ def generate(g,value):
         lines = g.readlines()
         for proc, line in lines:
             yield line
-
+'''
 @app.route('/')
 def index():
     return render_template('index.html')
