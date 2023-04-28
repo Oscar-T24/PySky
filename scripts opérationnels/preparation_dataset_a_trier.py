@@ -87,6 +87,14 @@ for e in coordonnees:
 
     print(f"Données météo du {dateiso} extraites pour le département {d} (sur 101)")
 
+liste_departements = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16',
+                          '17', '18', '19', '21', '22', '23', '24', '25', '26', '27', '28', '29', '2A', '2B', '30', '31',
+                          '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47',
+                          '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63',
+                          '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79',
+                          '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95',
+                          '971', '972', '973', '974', '976']
+
 
 # ON CREE UNE COLONNE POUR L'INDICE DE METEO DETERMINE A PARTIR DES WEBCAMS, ON LA PASSE ENSUITE PAR KNN POUR OBTENIR UNE CLASSE
 indices_meteo = {}
@@ -103,7 +111,7 @@ with open('donnees_camerasv2.csv', 'r') as f:
             response = requests.get(ligne["lien"])
             img = Image.open(BytesIO(response.content))
             open_cv_image = numpy.array(img)
-            # Convert RGB to BGR 
+            # Convert RGB to BGR
         except:
             print("Problème avec l'ouverture de l'image")
             erreurs += 1
@@ -122,15 +130,7 @@ with open('donnees_camerasv2.csv', 'r') as f:
 print(f"Analyse des images finie ; indexes extraits: {erreurs} erreurs pour {succes} succès. Taux de réussite de {(succes-erreurs)*100/(succes+erreurs)}%")
 
 
-
 # ON TRIE LES INDICES DANS L'ORDRE DES LIGNES
-liste_departements = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16',
-                      '17', '18', '19', '21', '22', '23', '24', '25', '26', '27', '28', '29', '2A', '2B', '30', '31',
-                      '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47',
-                      '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63',
-                      '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79',
-                      '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95',
-                      '971', '972', '973', '974', '976']
 for i in liste_departements:
     if i not in indices_meteo.keys():
         indices_meteo[i] = "NULL"
@@ -218,7 +218,7 @@ print("Calcul des probabilités de catastrophes naturelles effectué")
 print("Importation de toutes les données dans le tableau")
 
 df["code"] = liste_departements
-df["Date"] = [dateiso for i in range(101)]
+df["Date"] = [date.isoformat()[:10] for i in range(101)]
 df["Temperature (°C)"] = temperature
 df["Humidite_relative (%)"] = humidite_relative
 df["Temperature_ressentie (°C)"] = temperature_ressentie
@@ -234,8 +234,15 @@ df["River_discharge (m3/s)"] = river_discharge
 df["Probabilité sècheresse"] = index_secheresse
 df["Probabilité canicule (%)"] = canicule
 df["Probabilité innondation"] = probabilite_floodv2
-df["Indice"] = indices_meteov2
+if variable == 0:
+    df["Indice"] = indices_meteov2
+else:
+    df["Indice"] = [None for i in range(101)]
 df["Etat_meteo"] = [None for i in range(101)]
 df.to_csv('donnees_meteo.csv', index=False)
+
+with open("donnees_meteo.csv", "w") as f:
+    df.to_csv(f)
+f.close()
 
 print("Tableau donnees_meteo.csv mis à jour!")
