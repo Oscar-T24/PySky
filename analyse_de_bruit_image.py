@@ -58,19 +58,6 @@ duplicates = np.setdiff1d(np.arange(len(max_slope_y)), unique_indices)
 for idx in duplicates:
     max_slope_y[idx] += np.random.uniform(-0.1, 0.1)
 
-# Sort the indices by the x values
-sorted_indices = np.argsort(max_slope_y)
-
-# Create a spline interpolation of the sorted indices
-spline = make_interp_spline(max_slope_y[sorted_indices], np.arange(pix.shape[1])[sorted_indices], k=3)
-
-# Evaluate the spline on a finer grid
-x = np.linspace(0, pix.shape[1], num=pix.shape[1]*10)
-y = spline(x)
-
-# Plot the best fit line
-plt.plot(x, y, color='r')
-
 
 # Plot the results on top of the image
 fig, ax = plt.subplots()
@@ -84,3 +71,5 @@ fig.colorbar(scatter, ax=ax)
 
 # Save the image
 fig.savefig("lol_with_sc")
+
+plt.show()

@@ -140,6 +140,18 @@ for i in range(len(coordonees)):
             case "NULL":
                 weather = "cross"
                 # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_meteo[i]['etat'].lower()
+        '''
+        if weather == 'circle':
+            icone = folium.DivIcon(html=f"""
+                             <svg height="100" width="100">
+                                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="black" />
+                            </svg> """),
+        else:
+            icone = folium.DivIcon(html=f"""
+                            <div>
+                            <img src='http://93.14.22.225/{weather}.png'height='35px'width='auto'>
+                            </div>"""),
+        '''
         folium.Marker(
             location=coordonees[i],
             popup=popup,
