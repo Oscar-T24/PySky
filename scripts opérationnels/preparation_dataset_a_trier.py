@@ -95,8 +95,8 @@ liste_departements = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'
                           '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95',
                           '971', '972', '973', '974', '976']
 
-
-if variable == 0:  # Si la requête est pour aujourd'hui
+if variable == 0:  
+    # Si la requête est pour aujourd'hui
     # ON CREE UNE COLONNE POUR L'INDICE DE METEO DETERMINE A PARTIR DES WEBCAMS, ON LA PASSE ENSUITE PAR KNN POUR OBTENIR UNE CLASSE
     indices_meteo = {}
 
@@ -246,6 +246,8 @@ with open("donnees_meteo.csv", "w") as f:
     df.to_csv(f)
 f.close()
 
+
+
 if variable == 0: # Si la requête est pour aujourd'hui
     # ALGORITHME KNN DETERMINATION METEO
 
@@ -357,7 +359,8 @@ if variable == 0: # Si la requête est pour aujourd'hui
             try:
                 meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
             except:
-                meteo_associee[i]["Etat_meteo"] = "Cloudy" # PAS BON
+                print('erreur')
+                meteo_associee[i]["Etat_meteo"] = "Cross"
         with open('donnees_meteo.csv','w') as f:
             ecr = csv.DictWriter(f,fieldnames=descripteurs)
             ecr.writerows(meteo_associee)
