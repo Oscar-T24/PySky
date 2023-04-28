@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, jsonify
 from shelljob import proc
 import subprocess
 import os
@@ -22,19 +22,12 @@ def execute():
     # value correspond à la valeur du slider
     subprocess.run(["python3", "main.py", '-value', str(value)])
     #g = proc.Group()
-    return ""
-    return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
-    
+    print("actualisation de la carte")
+    return jsonify({'reload': True})
+
 @app.route('/iframe')
 def iframe():
     return render_template('map.html')
-'''
-@app.route('/stream')
-def read_process():
-    global value
-    print('valeur recue :', value)
-    g = proc.Group()
-    return flask.Response(flask.stream_with_context(generate(g,value)), mimetype='text/plain')
-    '''
+
 if __name__ == '__main__':
     app.run(debug=True)
