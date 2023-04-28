@@ -120,9 +120,8 @@ header {
 }
 
 #execute {
-    margin-left:
+    margin-left:5px;
 }
-
 
 @keyframes spinner {
     to {
@@ -222,9 +221,12 @@ nav{
     </div>
     <header>
         <div class="inline">
+            <img src="../../logoPYSKYfinal.png" height="50px" width="'auto">
+            <!--
             <div class="header" id="presentation">
                 <h1>PySky</h1>
             </div>
+        -->
             <div class="header" id="inlineception">
                 <input type="range" min="-10" max="5" step="1" id="slider"style="transform: scale(2);">
                 <p><span id="day">Aujourd'hui</span></p>
@@ -335,11 +337,11 @@ nav{
         function recharger(){
             document.getElementsByTagName('iframe').src = 'https://google.fr';
             // recharger l'iframe
-            alert(document.getElementsByTagName('iframe').src)
             
             document.getElementsByTagName('iframe').src = 'http://127.0.0.1:5000/iframe';
             // location.reload() AVANT 
-            alert(document.getElementsByTagName('iframe').src)
+
+            location.reload()
         }
         function enlever(){
             var myButton = document.getElementById('execute');
@@ -356,7 +358,15 @@ nav{
         document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
-
+    function executeAndUpdate() {
+        fetch('/execute?value=' + document.getElementById('slider').value)
+        .then(response => response.json())
+        .then(data => {
+      if (data.reload) {
+        window.location.reload();
+      }
+    });
+}
     </script>
 </body>
 <footer>
