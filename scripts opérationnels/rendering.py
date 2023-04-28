@@ -2,17 +2,13 @@ import flask
 from flask import Flask, render_template, request, Response
 from shelljob import proc
 import subprocess
+import os
 
 app = Flask(__name__)
 
 debut = False
 
 value = 0
-
-try:
-    os.remove("templates/map.html")
-except FileNotFoundError:
-    pass
 
 @app.route('/')
 def index():
