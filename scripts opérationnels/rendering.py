@@ -10,7 +10,10 @@ debut = False
 
 value = 0
 
-os.remove("templates/map.html")
+try:
+    os.remove("templates/map.html")
+except FileNotFoundError:
+    pass
 
 def generate(g,value):
     with open('requetes','r+') as f:
