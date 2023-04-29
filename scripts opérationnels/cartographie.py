@@ -54,6 +54,7 @@ with open('donnees_meteo.csv', 'r') as f:
     #descripteurs = [e for e in descripteurs if e != 'code' and e != 'Date' and e !='Air_quality (pm2.5)' and e != 'Etat_meteo' and e != 'Indice']  # on n'exploite pas ces données visuelles
 
 descripteurs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','Index_UV','River_discharge (m3/s)','Probabilité sècheresse','Probabilité innondation']
+couleurs = ["YlOrRd",'BuPu',"YlOrRd",'BuPu','BuPu','RdBu','RdBu','Greys','Greys','PRGn','Blues','RdGy','Blues']
 # on modifie expressement les descripteurs pour n'inclure que ceux qu'on veux mettre en cloropleth
 for donnee in descripteurs:
     a = folium.Choropleth(  # premier cloropleth pour la temperature
@@ -74,7 +75,7 @@ for donnee in descripteurs:
         # 'RdGy' : pbilité secheresse
         # 'Reds' : cancicule
 
-        fill_color= random.choice(["YlOrRd", "PuBuGn", "YlGnBu", "PuBu"]),  # ColorBrewer code A CHANGER
+        fill_color= couleurs[descripteurs.index(donnee)],  # ColorBrewer code A CHANGER
         # https://colorbrewer2.org/#type=sequential&scheme=PuBuGn&n=3
         fill_opacity=1,
         line_opacity=0.5,
@@ -151,24 +152,12 @@ for i in range(len(coordonees)):
             case "NULL":
                 weather = "cross"
                 # ALTERNATIVEMENT : JUSTE UTILISER weather = dico_meteo[i]['etat'].lower()
-        '''
-        if weather == 'circle':
-            icone = folium.DivIcon(html=f"""
-                             <svg height="100" width="100">
-                                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="black" />
-                            </svg> """),
-        else:
-            icone = folium.DivIcon(html=f"""
-                            <div>
-                            <img src='http://93.14.22.225/{weather}.png'height='35px'width='auto'>
-                            </div>"""),
-        '''
         folium.Marker(
             location=coordonees[i],
             popup=popup,
             icon=folium.DivIcon(html=f"""
                             <div>
-                            <img src='http://93.14.22.225/{weather}.png'height='35px'width='auto'>
+                            <img src='http://93.14.22.225/{weather}.png'height='25px'width='auto'>
                             </div>"""),
         ).add_to(m)
 
@@ -177,7 +166,7 @@ for i in range(len(coordonees)):
         pass
 
 html = f'<h2 style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background-color:white;padding:5px;border:1px solid black;z-index:1000;">Temps de la carte: {meteo[0]["Date"]}</h2>'
-m.get_root().html.add_child(folium.Element(html))
+m.get_root().html.add_child(folium.Element(html)) 
 '''
 # Bring the image overlay to the front
 fg = folium.FeatureGroup().add_to(m)
