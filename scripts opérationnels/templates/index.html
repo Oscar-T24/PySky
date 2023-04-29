@@ -280,7 +280,7 @@ nav{
             boutton.disabled = false;
             boutton.innerHTML = "Actualiser";
 
-            //location.reload(); // recharger la page  
+            location.reload(); // recharger la page  
           }
         }, 1000); // mettre a jour toutes les secondes
         
@@ -370,7 +370,6 @@ nav{
                     if(this.responseText == 'actualiser'){
                         clearInterval(timer);
                         console.log('rechargement de la page')
-                        fetch('/execute');
                         location.reload();
                     }
                 }
