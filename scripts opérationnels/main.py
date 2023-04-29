@@ -25,7 +25,7 @@ def main(jours_diff):
     subprocess.run(["python3", "preparation_dataset_a_trier.py","-value",str(jours_diff)])
     print('etape 3 finie : preparation du dataset à classifier')
 
-    assert os.path.isfile(os.path.join('', 'donnes_meteo.csv')) == True,'fichier données météos introuvable ! Veuillez relancer run.py de nouveau'
+    assert os.path.isfile(os.path.join('', 'donnees_meteo.csv')) == True,'fichier données météos introuvable ! Veuillez relancer run.py de nouveau'
 
     subprocess.run(["python3", "cartographie.py"])
     print('etape 5 finie :creation d"une carte')
