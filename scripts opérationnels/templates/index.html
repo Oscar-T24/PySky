@@ -4,7 +4,7 @@ span {
  margin-top: 20px;
  margin-left: 45px;
 }
-boutton {
+#boutton {
   background-color: #800000;
   border: 2px solid #ffd700;
   color: #fff;
@@ -298,13 +298,11 @@ nav{
             dayElement.textContent = day;
         });
 
-// VERIFIER CETTE PARTIE 
-
         let sliderRange = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let startDate = new Date(); // start date set to today's date
-        startDate.setHours(0, 0, 0, 0); // set hours, minutes, seconds, and milliseconds to 0 for consistency
+        let startDate = new Date(); 
+        startDate.setHours(0, 0, 0, 0);
         let endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + sliderRange.length - 1); // end date
+        endDate.setDate(endDate.getDate() + sliderRange.length - 1); 
 
         function getSliderValueDate(sliderValue) {
             let daysFromStart = sliderValue + 10;
@@ -318,10 +316,10 @@ nav{
 
         //  event listener pour l'evenement d'un clic
         executeButton.addEventListener('click', () => {
-            // Get value of slider
+        
             const sliderValue = slider.value;
 
-            // Call Flask endpoint to execute Python script with slider value as parameter
+            // executer main.py avec la valeur du slider que l'on a recuperée
             fetch(`/execute?value=${sliderValue}`);
         });
         var myButton = document.getElementById('execute');
@@ -345,7 +343,7 @@ nav{
 
             location.reload()
         }
-        function enlever(){
+        function enlever(){ // enleve le spinner de chargement
             var myButton = document.getElementById('execute');
             var loadingDiv = document.querySelector('.spinner');
             loadingDiv.style.display = 'none';
@@ -367,17 +365,17 @@ nav{
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
                     if(countbase == -1){ // parametrer countbase
-                        countbase = (this.responseText.match(/actualiser/g) || []).length;
+                        countbase = (this.responseText.match(/actualiser/g) || []).length; //compter le nombre d'occurences de 'actualiser' de base dans le fichier actu.txt
                     }
                     var count = (this.responseText.match(/actualiser/g) || []).length;
-                    if(count != countbase){
-                        clearInterval(timer);
+                    if(count != countbase){ //comparer cette valeur au nombre d'occurences actuelles
+                        clearInterval(timer); // reinitialiser le timer
                         console.log('rechargement de la page')
-                        setTimeout(location.reload(),5000);
+                        setTimeout(location.reload(),5000); // rechharger la page
                     }
                 }
             };
-            xhr.open('GET', '/text', true);
+            xhr.open('GET', '/text', true); // envoie une requette GET pour actualiser le contenue du fichier texte
             xhr.send();
         }
         setInterval(updateText, 2000); // envoi des requettes GET pour obtenir l'état du fichier texte : dans le terminal vous verrez des lignes telles que celle ci : 127.0.0.1 - - [23/Apr/2023 18:36:11] "GET /text HTTP/1.1" 200 -
