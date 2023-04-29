@@ -28,6 +28,7 @@ def execute():
         subprocess.run(["python3", "main.py", '-value', str(value)])
         with open('templates/actu.txt','r+') as f:
             f.write('actualiser')
+        with open('templates/actu.txt','w') as f:
             f.write('')
     else:
         with open('fichier_temp.txt','w') as f:
@@ -38,7 +39,7 @@ def execute():
     # Register a function to trigger a page reload after the response has been sent
     return redirect('/')#redirect(url_for('execute'))
 
-@app.route('/iframe') # une autre page qui est generée afin d'afficher la carte (Templates/map.html)
+@app.route('/iframe') # une autre page qui est generée afin d'afficher la carte (templates/map.html)
 def iframe():
     return render_template('map.html')
 

@@ -260,7 +260,7 @@ nav{
 
         // --------------------------------------
 
-        var countdown = 180; // 5 minutes en secondes
+        var countdown = 300; // 5 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         console.log('fetching')
         fetch('/execute');
@@ -362,7 +362,6 @@ nav{
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
 
-        // Function to fetch the content of the text file and display it on the webpage
         function updateText() {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -376,13 +375,11 @@ nav{
             xhr.open('GET', '/text', true);
             xhr.send();
         }
-
-        // Refresh the content of the text file every 5 seconds
         if(actualisation == true){
-            setInterval(updateText, 5000);
+            updateText()
         }
+        //setInterval(updateText, 5000);
 
-        // Display the content of the text file when the page loads
         window.addEventListener('load', updateText);
     </script>
 </body>
