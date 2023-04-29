@@ -7,6 +7,7 @@ def determine_weather_index(sky_image):
     determine un indice basé sur l'analyse d'image 
     cette analyse d'image est très simple et ne permet pas en elle meme de determiner l'état météo d'un endroit
     Il faut correler l'indice de l'image à des données quantitatives tels que l'humidité et la temperature pour rendre l'estimation plus precise
+    image PIL --> float 
     '''
     # on convertie l'image passée sous forme de matrice de pixels en niveaux de gris
     image_nb = cv2.cvtColor(sky_image, cv2.COLOR_BGR2GRAY)

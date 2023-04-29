@@ -12,15 +12,15 @@ import csv
 
 
 def display_image(image):
-    # Create tkinter window
+    '''
+    générer une fenetre tkinter pour interfacer le choix de l'utilisateur
+    '''
+
     root = tk.Tk()
 
-    # Open file dialog and select image file
-
-    # Load image and display in window
     try :
         blue, green, red = cv2.split(image)
-    except ValueError:
+    except ValueError: # en cas de problmeme d'image
         return
     image = cv2.merge((red, green, blue))
     image = Image.fromarray(image)
@@ -30,26 +30,26 @@ def display_image(image):
     canvas.create_image(0, 0, anchor='nw', image=img)
     canvas.pack()
 
-    # Create dropdown menu for weather selection
     weather_label = ttk.Label(root, text='Select Weather:')
     weather_label.pack(pady=10)
     weather_var = tk.StringVar(root)
     weather_dropdown = ttk.Combobox(root, textvariable=weather_var, values=['Sunny', 'Rainy', 'Cloudy', 'Foggy', 'Night'])
     weather_dropdown.pack()
 
-    # Create button to save weather and close window
-    save_button = ttk.Button(root, text='Save Weather', command=lambda: [ajouter(weather_var.get()), root.destroy()])
+    save_button = ttk.Button(root, text='Sauvegarder', command=lambda: [ajouter(weather_var.get()), root.destroy()])
     save_button.pack(pady=20)
 
-    root.mainloop()
+    quitter = ttk.Button(root, text='Arreter', command=lambda:[ajouter('ARRETER'), root.destroy()])
+    quitter.pack(pady=20)
 
-arreter = False
+    root.mainloop()
 
 def ajouter(etat):
     f = open('temp_meteo.txt', 'w')
     f.write(etat)
     print('Ecriture de', etat)
     f.close()
+
 
 
 
@@ -67,28 +67,44 @@ f = open("donnees_meteo_classifiees.csv", "a")
 ecr = csv.DictWriter(f, delimiter=",", fieldnames=["code","Date","Temperature (°C)","Humidite_relative (%)","Temperature_ressentie (°C)","Probabilite_pluie (%)","Precipitation (mm)","Pression (0m)(hPa)","Couverture_nuageuse (%)","Visibility (m)","Vitesse_vent (km/h)","Index_UV","Air_quality (pm2.5)","River_discharge (m3/s)","Probabilité sècheresse","Probabilité canicule (%)","Probabilité innondation","Indice","Etat_meteo"])
 
 def eval_photo():
+    '''
+    ajoute (append) une nouvelle ligne au fichier donnes_meteo_classifiees.csv à partir d'une image de webcam tirée au hazard depuis donnees_camerasv2.csv
+    '''
     ligne = choice(cameras)
     url = ligne["lien"]
     dep = ligne["departement"]
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
+    try:
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+    except:
+        print('erreur lors du decodage de l"image')
+        return
     global open_cv_image
     open_cv_image = numpy.array(img) # Image bon format?
     display_image(open_cv_image)
 
 
     f = open("temp_meteo.txt", "r+")
-    utilisateur = f.read()
+    utilisateur = f.read() # recup
     f.write("")
 
-    if utilisateur is None:
+    if utilisateur == 'ARRETER':
+        return 'stop'
+    elif utilisateur is None:
         return
-
-    meteo_dep = [e for e in data if e["code"] == dep][0]
+    
+    try:
+        meteo_dep = [e for e in data if e["code"] == dep][0]
+    except:
+        raise ValueError("le fichier donnees_meteo.csv est incomplet car le departement associé n'a pas pu etre trouve")
     meteo_dep["Etat_meteo"] = utilisateur
     ecr.writerow(meteo_dep)
 
 while True:
-    eval_photo()
+    match eval_photo():
+        case None:
+            pass
+        case 'stop':
+            break
 
 f.close()

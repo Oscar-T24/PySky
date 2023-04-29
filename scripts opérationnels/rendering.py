@@ -4,17 +4,19 @@ from shelljob import proc
 import subprocess
 
 
-app = Flask(__name__)
+app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
 
 debut = False
 
 value = 0
 
-@app.route('/')
+@app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
     return render_template('index.html',updated=False)
 
-@app.route('/execute')
+@app.route('/execute') # ouvrir un sous domaine /execute qui sera utilisé pour actualiser la carte
+# il prendra un argument avec la methode GET nomme value
+# exemple de requette utilisateur pour actualiser le site : (console js) fetch('/execute?value=0'); qui actualisera la carte pour le jour d'aujourdhui
 def execute():
     global value 
     value = request.args.get('value')
@@ -34,9 +36,9 @@ def execute():
     # Register a function to trigger a page reload after the response has been sent
     return redirect('/')#redirect(url_for('execute'))
 
-@app.route('/iframe')
+@app.route('/iframe') # une autre page qui est generée afin d'afficher la carte (Templates/map.html)
 def iframe():
     return render_template('map.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) # lancer l'app en boucle et activer le debogage en initialisation

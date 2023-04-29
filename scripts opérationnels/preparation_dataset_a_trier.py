@@ -10,6 +10,7 @@ from math import sqrt
 import pandas as pd
 import argparse
 
+
 # on recupere le nombre de jours différés, 0 par défaut pour aujourdh'ui
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Print the value of a command line argument')
@@ -20,16 +21,6 @@ if __name__ == '__main__':
         variable = 0
     else:
         variable = int(variable)
-'''
-    with open('diff_jours.txt', 'r+') as f:
-        global variable
-        variable = f.read()
-        if variable == '':
-            variable = 0
-        else:
-            variable = int(variable)
-        f.write('')
-    '''
 today = datetime.now()
 dif = timedelta(days=variable)
 date = today + dif
@@ -242,6 +233,16 @@ else:
 df["Etat_meteo"] = [None for i in range(101)]
 df.to_csv('donnees_meteo.csv', index=False)
 
+"""
+from TESTINUTILE import create_table
+import time
+DEOBGAGE : verifier que donnes_meteo contient bien tous les élements attendus
+create_table('donnees_meteo.csv')
+with open('donnees_meteo.csv','r') as f:
+    print(list(csv.reader(f))[0])
+time.sleep(1344)
+"""
+
 if variable == 0: # Si la requête est pour aujourd'hui
     # ALGORITHME KNN DETERMINATION METEO
 
@@ -255,8 +256,9 @@ if variable == 0: # Si la requête est pour aujourd'hui
         renvoie la distance de Manhattan entre 2 images positions
         """
         d = 0
-        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','River_discharge (m3/s)','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
-        for q in attributs:
+        #attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Precipitation (mm)','Pression (0m)(hPa)','Couverture_nuageuse (%)','Visibility (m)','Vitesse_vent (km/h)','River_discharge (m3/s)','Probabilité innondation','Indice'] # LA COLONNE 'Air_quality (pm2.5)' est vide !!! 'Probabilité canicule (%)' est un booléen !!!
+        attributs = ['Temperature (°C)','Humidite_relative (%)','Temperature_ressentie (°C)','Probabilite_pluie (%)','Visibility (m)','Indice','Pression (0m)(hPa)']
+        for q in attributs: # on examine certains attributs du departements dont on cherchhe à déterminer l'état météo et les departements classifiés
             d += abs(float(el1[q]) - float(el2[q]))
         return d
 
@@ -349,10 +351,7 @@ if variable == 0: # Si la requête est pour aujourd'hui
                     meteo_associee.append(row)
 
         for i in range(1,len(meteo_associee)):
-            try:
-                meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
-            except:
-                meteo_associee[i]["Etat_meteo"] = ""
+            meteo_associee[i]['Etat_meteo'] = meteo_majoritaire(k_plus_proches_voisins(meteo_associee[i], table_supervisee, 3))
         with open('donnees_meteo.csv','w') as f:
             ecr = csv.DictWriter(f,fieldnames=descripteurs)
             ecr.writerows(meteo_associee)
