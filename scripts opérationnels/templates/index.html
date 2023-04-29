@@ -380,7 +380,7 @@ nav{
             xhr.open('GET', '/text', true);
             xhr.send();
         }
-        setInterval(updateText, 2000);
+        setInterval(updateText, 2000); // envoi des requettes GET pour obtenir l'état du fichier texte : dans le terminal vous verrez des lignes telles que celle ci : 127.0.0.1 - - [23/Apr/2023 18:36:11] "GET /text HTTP/1.1" 200 -
         //setInterval(updateText(),10000);
         window.addEventListener('load', updateText);
     </script>
