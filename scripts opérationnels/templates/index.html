@@ -247,6 +247,7 @@ nav{
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var actualisation = false
         function demarrerTimer() {
         // commence un timer et quand il est fini, recharge la page web
         alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE. Elle se rechargera toute seule")
@@ -259,7 +260,7 @@ nav{
 
         // --------------------------------------
 
-        var countdown = 300; // 5 minutes en secondes
+        var countdown = 180; // 5 minutes en secondes
         var timerDisplay = document.getElementById('timer');
         console.log('fetching')
         fetch('/execute');
@@ -272,7 +273,7 @@ nav{
 
           if (countdown < 0) {
             clearInterval(timer);
-
+            actualisation = true
             // reaciver le bouton et recharger la page
 
             var boutton = document.getElementById("execute");
@@ -366,7 +367,7 @@ nav{
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    document.getElementById('text-container').textContent = this.responseText;
+                    //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
                     if(this.responseText == 'actualiser'){
                         location.reload();
                     }
@@ -377,14 +378,16 @@ nav{
         }
 
         // Refresh the content of the text file every 5 seconds
-        setInterval(updateText, 5000);
+        if(actualisation == true){
+            setInterval(updateText, 5000);
+        }
 
         // Display the content of the text file when the page loads
         window.addEventListener('load', updateText);
     </script>
 </body>
 <footer>
-<div id="text-container"></div>
+<!--<div id="text-container"></div>-->
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
 </footer>
 </html>
