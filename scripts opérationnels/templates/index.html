@@ -273,7 +273,7 @@ nav{
 
           if (countdown < 0) {
             clearInterval(timer);
-            actualisation = true
+            updateText()
             // reaciver le bouton et recharger la page
 
             var boutton = document.getElementById("execute");
@@ -368,6 +368,9 @@ nav{
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
                     if(this.responseText == 'actualiser'){
+                        clearInterval(timer);
+                        console.log('rechargement de la page')
+                        fetch('/execute');
                         location.reload();
                     }
                 }
@@ -375,11 +378,8 @@ nav{
             xhr.open('GET', '/text', true);
             xhr.send();
         }
-        if(actualisation == true){
-            setInterval(updateText(),5000);
-        }
-        //setInterval(updateText, 5000);
-
+        setInterval(updateText, 2000);
+        //setInterval(updateText(),10000);
         window.addEventListener('load', updateText);
     </script>
 </body>

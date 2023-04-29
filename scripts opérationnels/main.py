@@ -12,6 +12,16 @@ def main(jours_diff):
     '''
     execute la totalité des scripts necessaires à lk'actualisation de la carte pour une date donnéee
     '''
+
+    with open('templates/actu.txt','r') as f:
+        actu = f.read()
+    if actu == 'actualiser':
+        with open('templates/actu.txt','r') as f:
+            f.write('')
+        print('actualisation : fin du script')
+        return
+
+
     time_depart = time.time()
     try:    
         os.remove('donnes_meteo.csv') # supprimer le fichier 'donnes_meteo.csv' afin d'en generer un nouveau

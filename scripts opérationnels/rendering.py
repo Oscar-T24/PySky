@@ -9,9 +9,14 @@ app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler
 debut = False
 
 value = 0
+with open('templates/actu.txt','w') as f:
+    f.write('')
 
 @app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
+    print('retour au site principal')
+    with open('templates/actu.txt','w') as f:
+       f.write('')
     return render_template('index.html',updated=False)
 
 @app.route('/execute') # ouvrir un sous domaine /execute qui sera utilisé pour actualiser la carte
@@ -28,8 +33,6 @@ def execute():
         subprocess.run(["python3", "main.py", '-value', str(value)])
         with open('templates/actu.txt','r+') as f:
             f.write('actualiser')
-        with open('templates/actu.txt','w') as f:
-            f.write('')
     else:
         with open('fichier_temp.txt','w') as f:
             f.write(value)
