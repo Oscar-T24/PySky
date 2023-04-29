@@ -26,7 +26,9 @@ def execute():
             value = f.read()
         print('execution de main.py')
         subprocess.run(["python3", "main.py", '-value', str(value)])
-        print(value)
+        with open('templates/actu.txt','r+') as f:
+            f.write('actualiser')
+            f.write('')
     else:
         with open('fichier_temp.txt','w') as f:
             f.write(value)
@@ -39,6 +41,11 @@ def execute():
 @app.route('/iframe') # une autre page qui est generée afin d'afficher la carte (Templates/map.html)
 def iframe():
     return render_template('map.html')
+
+@app.route('/text')
+def text():
+    with open('templates/actu.txt', 'r') as f:
+        return f.read()
 
 if __name__ == '__main__':
     app.run(debug=True) # lancer l'app en boucle et activer le debogage en initialisation

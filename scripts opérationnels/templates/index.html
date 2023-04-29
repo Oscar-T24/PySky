@@ -361,12 +361,30 @@ nav{
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
 
+        // Function to fetch the content of the text file and display it on the webpage
+        function updateText() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    document.getElementById('text-container').textContent = this.responseText;
+                    if(this.responseText == 'actualiser'){
+                        location.reload();
+                    }
+                }
+            };
+            xhr.open('GET', '/text', true);
+            xhr.send();
+        }
+
+        // Refresh the content of the text file every 5 seconds
+        setInterval(updateText, 5000);
+
+        // Display the content of the text file when the page loads
+        window.addEventListener('load', updateText);
     </script>
-        {% if updated %}
-        <p>updated !</p>
-        {% endif %}
 </body>
 <footer>
+<div id="text-container"></div>
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
 </footer>
 </html>
