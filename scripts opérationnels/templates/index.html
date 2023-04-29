@@ -247,7 +247,6 @@ nav{
     <iframe src="http://127.0.0.1:5000/iframe" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var actualisation = false
         function demarrerTimer() {
         // commence un timer et quand il est fini, recharge la page web
         alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE. Elle se rechargera toute seule")
@@ -361,16 +360,20 @@ nav{
         document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
-
+        var countbase = -1;
         function updateText() {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
-                    if(this.responseText == 'actualiser'){
+                    if(countbase == -1){ // parametrer countbase
+                        countbase = (this.responseText.match(/actualiser/g) || []).length;
+                    }
+                    var count = (this.responseText.match(/actualiser/g) || []).length;
+                    if(count != countbase){
                         clearInterval(timer);
                         console.log('rechargement de la page')
-                        location.reload();
+                        setTimeout(location.reload(),5000);
                     }
                 }
             };
