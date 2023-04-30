@@ -1,6 +1,5 @@
 import flask
 from flask import Flask, render_template, request, Response, jsonify ,after_this_request,url_for,redirect
-from shelljob import proc
 import subprocess
 
 
