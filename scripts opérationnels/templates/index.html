@@ -26,6 +26,8 @@ margin-right: 40px;
     text-align: center;
     color:aliceblue;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding:0;
+    margin: 0;
 }
 
 #presentation h1 {
@@ -212,7 +214,6 @@ header {
     text-decoration: none;
     /* Style bouton */
     background-color: #fff;
-    display: block;
     padding: 10px 20px;
     border:1px solid #000;
     border-radius: 50px; /* Arrondi les cotés */
@@ -229,6 +230,15 @@ header {
 .boutons:active {
     color:black;
     background-color:yellow;
+}
+
+#actualiser_b{
+  margin: 0;
+  top: 50%;
+  margin-top: 60px;
+  position:relative;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 </style>
@@ -256,13 +266,14 @@ header {
     <header>
         <div class="inline">
             <div class="header" id="presentation">
-                <h1>PySky</h1>
+                <!--<h1>PySky</h1>-->
+                <img src="http://93.14.22.225/logoPYSKYfinal.png" height="120px"  width="auto">
             </div>
             <div class="header" id="inlineception">
                 <input type="range" min="-10" max="5" value="0" step="1" id="slider"style="transform: scale(2);">
                 <p><span id="day">Aujourd'hui</span></p>
             </div>
-            <div class="'header">
+            <div class="'header" id="actualiser_b">
                 <button id="execute" onclick="demarrerTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
             </div>
                 <!--<form action="/execute" >

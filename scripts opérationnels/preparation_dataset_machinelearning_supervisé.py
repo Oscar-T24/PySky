@@ -55,7 +55,7 @@ def ajouter(etat):
 
 # FIN DU MPENU TKINTER --------------------------------------------------------------------------------------------------------------------
 
-#subprocess.run(["python3", "preparation_dataset_a_trier.py"])
+#subprocess.run(["python3", "preparation_dataset_a_trier.py","-value","0"]) # executer ce script pour actualiser les données meteo
 
 f = open('donnees_meteo.csv', 'r')
 data = list(csv.DictReader(f))
