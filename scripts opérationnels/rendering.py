@@ -23,13 +23,13 @@ def index():
 # exemple de requette utilisateur pour actualiser le site : (console js) fetch('/execute?value=0'); qui actualisera la carte pour le jour d'aujourdhui
 def execute():
     global value 
-    value = request.args.get('value')
+    value = request.args.get('value') # recuperer la valeur value passée en requette GET dans l'url
     print("execution du stream et de l'actualisation de la valeur",value)
     if value == None:
         with open('fichier_temp.txt','r') as f:
             value = f.read()
         print('execution de main.py')
-        subprocess.run(["python3", "main.py", '-value', str(value)])
+        subprocess.run(["python3", "main.py", '-value', str(value)]) # executer main.py 
         print('main.py executé')
         with open('templates/actu.txt','a') as f:
             f.write('actualiser')
