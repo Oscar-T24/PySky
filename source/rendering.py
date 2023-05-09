@@ -4,7 +4,7 @@ import subprocess
 
 
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
-
+port = '5001'
 debut = False
 
 value = 0
@@ -52,4 +52,4 @@ def text():
         return f.read()
 
 if __name__ == '__main__':
-    app.run(debug=True) # lancer l'app en boucle et activer le debogage en initialisation
+    app.run(debug=True,host='0.0.0.0',port=port) # lancer l'app en boucle et activer le debogage en initialisation
