@@ -25,6 +25,7 @@ def execute():
     global value 
     value = request.args.get('value')
     print("execution du stream et de l'actualisation de la valeur",value)
+    '''
     if value == None:
         with open('fichier_temp.txt','r') as f:
             value = f.read()
@@ -34,8 +35,12 @@ def execute():
         with open('templates/actu.txt','a') as f:
             f.write('actualiser')
     else:
+        
         with open('fichier_temp.txt','w') as f:
             f.write(value)
+    '''
+    if value != None :
+        subprocess.run(["python3", "main.py", '-value', str(value)])
     # value correspond à la valeur du slider
     #g = proc.Group()
     print("actualisation de la carte")
