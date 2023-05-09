@@ -3,6 +3,10 @@ import time
 from datetime import datetime
 import argparse
 import os
+import platform
+
+print("environnement d'execution",platform.sys.version)
+assert int(platform.sys.version[2:platform.sys.version[2:].index('.')+2]) >= 10, f"Vous n'avez pas une version de python qui satisfait les demandes pour executer PySky {int(platform.sys.version)}"
 
 '''
 subprocess.run(["python3", "recuperation_donneswebcam.py"])
