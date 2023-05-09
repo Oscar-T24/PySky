@@ -41,6 +41,8 @@ def execute():
     '''
     if value != None :
         subprocess.run(["python3", "main.py", '-value', str(value)])
+        with open('templates/actu.txt','a') as f:
+            f.write('actualiser')
     # value correspond à la valeur du slider
     #g = proc.Group()
     print("actualisation de la carte")
