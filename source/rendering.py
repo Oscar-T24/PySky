@@ -1,10 +1,18 @@
 import flask
-from flask import Flask, render_template, request, Response, jsonify ,after_this_request,url_for,redirect
+from flask import Flask, render_template, request, Response, make_response,redirect
 import subprocess
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--port', type=str, help='the port number')
+args = parser.parse_args()
+global port
+port = args.port
+if port not in locals():
+    port = '5000'
 
 
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
-port = '5001'
 debut = False
 
 value = 0
@@ -16,7 +24,8 @@ def index():
     print('retour au site principal')
     #with open('templates/actu.txt','w') as f:
        #f.write('')
-    return render_template('index.html',updated=False)
+    lien_iframe = f'http://localhost:{port}/iframe'
+    return render_template('index.html',updated=False,lien_iframe=lien_iframe)
 
 @app.route('/execute') # ouvrir un sous domaine /execute qui sera utilisé pour actualiser la carte
 # il prendra un argument avec la methode GET nomme value
@@ -50,6 +59,12 @@ def iframe():
 def text():
     with open('templates/actu.txt', 'r') as f:
         return f.read()
+
+@app.after_request
+def add_favicon(response):
+    favicon_html = '<link rel="icon" type="image/x-icon" href="http://93.14.22.225/favicon.ico">'
+    response.data = response.data.replace(b'</head>', favicon_html.encode() + b'</head>')
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=port) # lancer l'app en boucle et activer le debogage en initialisation
