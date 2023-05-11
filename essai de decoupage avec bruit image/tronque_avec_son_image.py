@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the image and convert it to grayscale
-im = Image.open("test.jpg")
+im = Image.open("imagetest.jpg")
 pix = np.array(im.convert('L'))
 
 # Choose the column to analyze

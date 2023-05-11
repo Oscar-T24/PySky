@@ -6,7 +6,7 @@ matplotlib.use('TkAgg')
 from scipy.interpolate import make_interp_spline
 
 # Load the image and convert it to grayscale
-im = Image.open("testciel.jpeg").convert('L')
+im = Image.open("imagetest.jpg").convert('L')
 pix = np.array(im)
 
 # Choose the column to analyze

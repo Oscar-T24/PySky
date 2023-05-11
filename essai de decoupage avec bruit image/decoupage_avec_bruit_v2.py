@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 # Load the image and convert it to grayscale
-im = Image.open("testciel.jpeg").convert('L')
+im = Image.open("imagetest.jpg").convert('L')
 pix = np.array(im)
 
 # Choose the column to analyze
@@ -14,8 +14,8 @@ col_index = int(np.median(np.arange(pix.shape[1])))
 max_slope_indices = np.zeros(pix.shape[1])
 trusts = np.zeros(pix.shape[1])
 
-# Loop over every column
-for i in range(pix.shape[1]):
+# Loop over every column (AJOUT D'UN PAS POUR ACCELERER)
+for i in range(0,pix.shape[1]):
     col = pix[:, i]
 
     # Calculate the standard deviation of the pixels surrounding each pixel in the column
@@ -60,8 +60,37 @@ for idx in duplicates:
 
 # Curve fitting to find the best-fit line
 x = np.arange(pix.shape[1])
-popt, _ = curve_fit(lambda x, a, b, c: a * np.sin(b * x) + c, x, max_slope_y, p0=(1, 0.01, 0))
+# fonction sinuosidale popt, _ = curve_fit(lambda x, a, b, c: a * np.sin(b * x) + c, x, max_slope_y, p0=(1, 0.01, 0))
+popt, _ = curve_fit(lambda x, a, b, c: np.polyval([a, b, c], x), x, max_slope_y)
 
+# Calculate the best-fit line
+best_fit_y = popt[0] * np.sin(popt[1] * x) + popt[2]
+
+# Calculate the lower half of the image cut by the curve fit
+lower_half_mask = np.zeros_like(pix)
+for i in range(pix.shape[1]):
+    lower_half_mask[:int(best_fit_y[i]), i] = 1
+trimmed_pix = np.multiply(pix, lower_half_mask)
+
+# Save the trimmed image
+trimmed_im = Image.fromarray(trimmed_pix)
+trimmed_im.save("trimmed_image.jpg")
+
+
+
+# Plot the results on top of the image
+fig, ax = plt.subplots()
+ax.imshow(trimmed_pix, cmap='gray', alpha=0.5)
+scatter = ax.scatter(x, max_slope_y, c=trusts)
+ax.plot(x, best_fit_y, 'r--')
+ax.set_xlim([0, pix.shape[1]])
+ax.set_ylim([pix.shape[0], 0])
+ax.set_xlabel("Column index")
+ax.set_ylabel("Row index")
+fig.colorbar(scatter, ax=ax)
+plt.show()
+
+'''
 # Calculate the best-fit line
 best_fit_y = popt[0] * np.sin(popt[1] * x) + popt[2]
 
@@ -71,8 +100,12 @@ ax.imshow(pix, cmap='gray', alpha=0.5)
 scatter = ax.scatter(x, max_slope_y, c=trusts)
 ax.plot(x, best_fit_y, 'r--')
 ax.set_xlim([0, pix.shape[1]])
-ax.set_ylim([pix.shape[0], 0])
+ax.set_ylim([pix.shape[0], 0]) 
 ax.set_xlabel("Column index")
 ax.set_ylabel("Row index")
 fig.colorbar(scatter, ax=ax)
+
+#fig.savefig('upper_half.png', bbox_inches='tight')
+
 plt.show()
+'''
