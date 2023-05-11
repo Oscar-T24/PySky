@@ -6,10 +6,15 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--port', type=str, help='the port number')
 args = parser.parse_args()
-global port
-port = args.port
-if port not in locals():
+
+if not hasattr(args, 'port') or not args.port: # si aucun argument n'est passé à l'execution du script
     port = '5000'
+    print('port not defined')
+else:
+    port = args.port # recuperer le string du port
+
+# Rest of your code using the port variable
+
 
 
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
@@ -21,10 +26,10 @@ with open('templates/actu.txt','w') as f:
 
 @app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
-    print('retour au site principal')
+    print('retour au site principal','port :',port)
     #with open('templates/actu.txt','w') as f:
        #f.write('')
-    lien_iframe = f'http://localhost:{port}/iframe'
+    lien_iframe = f'http://93.14.22.225:{port}/iframe'
     return render_template('index.html',updated=False,lien_iframe=lien_iframe)
 
 @app.route('/execute') # ouvrir un sous domaine /execute qui sera utilisé pour actualiser la carte
