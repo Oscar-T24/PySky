@@ -1,9 +1,11 @@
 import flask
 from flask import Flask, render_template, request, Response, jsonify ,after_this_request,url_for,redirect
 import subprocess
+from flask_cors import CORS
 
 
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
+CORS(app)
 
 debut = False
 
@@ -11,6 +13,13 @@ value = 0
 with open('templates/actu.txt','w') as f:
     f.write('')
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    return response
+    
 @app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
     print('retour au site principal')

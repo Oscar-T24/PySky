@@ -1,0 +1,15 @@
+[Unit]                                             
+Description=Service Flask de Pysky
+Requires=local-fs.target                           
+Requires=network-online.target                     
+After=network-online.target                        
+                                                   
+[Service]                                          
+Type=simple                                        
+StandardInput=null                                 
+StandardOutput=file:/var/log/PYSKY_flask.log        
+StandardError=inherit                              
+ExecStart=/usr/bin/python3 -u /home/oscarigo/filtre_utilisateur.py 
+                                                   
+[Install]                                          
+WantedBy=default.target 
