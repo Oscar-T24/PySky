@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Backend Port Configuration</title>
+</head>
+<body>
+  <h1>Backend Port Configuration</h1>
+  
+  <form action="/set_port" method="POST">
+    <label for="backend_port">Backend Port:</label>
+    <input type="text" id="backend_port" name="backend_port" required>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      setTimeout(function() {
+        window.location.href = 'http://192.168.1.72:81?backend_port=' + encodeURIComponent(document.getElementById('backend_port').value);
+      }, 5000);
+      
+      // You can add additional logic here if needed
+      
+      // Submit the form after the delay if needed
+      // this.submit();
+    });
+  </script>
+</body>
+</html>

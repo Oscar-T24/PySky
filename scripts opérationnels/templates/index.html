@@ -4,7 +4,7 @@ span {
  margin-top: 20px;
  margin-left: 45px;
 }
-boutton {
+#boutton {
   background-color: #800000;
   border: 2px solid #ffd700;
   color: #fff;
@@ -26,6 +26,8 @@ margin-right: 40px;
     text-align: center;
     color:aliceblue;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding:0;
+    margin: 0;
 }
 
 #presentation h1 {
@@ -54,15 +56,52 @@ footer{
 #legende{
     background-color:aliceblue;
 }
-
 header {
-    padding:20px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
 }
-
 .header {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+@media only screen and (max-width: 1000px) {
+  /*.header {
+    display: block !important;
+  }
+  */
+  .inline {
+    display: block !important;
+  }    
+  header{
+    display: block;
+    align-content: center;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+  }
+  .boutons {
+    width : 100% !important;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+    }
+    #inlineception {
+    display: block;
+    width: 100% !important;
+    }
+    input{
+    align-content: center;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+    }
+    #slider{
+        display: relative !important;
+    }
 }
 
 #inlineception {
@@ -175,7 +214,6 @@ header {
     text-decoration: none;
     /* Style bouton */
     background-color: #fff;
-    display: block;
     padding: 10px 20px;
     border:1px solid #000;
     border-radius: 50px; /* Arrondi les cotés */
@@ -194,8 +232,13 @@ header {
     background-color:yellow;
 }
 
-nav{
- display: block;
+#actualiser_b{
+  margin: 0;
+  top: 50%;
+  margin-top: 60px;
+  position:relative;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 </style>
@@ -223,16 +266,19 @@ nav{
     <header>
         <div class="inline">
             <div class="header" id="presentation">
-                <h1>PySky</h1>
+                <!--<h1>PySky</h1>-->
+                <img src="http://93.14.22.225/logoPYSKYfinal.png" height="120px"  width="auto">
             </div>
             <div class="header" id="inlineception">
                 <input type="range" min="-10" max="5" value="0" step="1" id="slider"style="transform: scale(2);">
                 <p><span id="day">Aujourd'hui</span></p>
+            </div>
+            <div class="'header" id="actualiser_b">
                 <button id="execute" onclick="demarrerTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
+            </div>
                 <!--<form action="/execute" >
                 <input type="submit" value="actualiser la carte" class="boutons">
                 </form>-->
-            </div>
             <div class="header">
                 <!-- timer ici  -->
                 <p id="timer"></p>
@@ -272,14 +318,14 @@ nav{
 
           if (countdown < 0) {
             clearInterval(timer);
-
+            updateText()
             // reaciver le bouton et recharger la page
 
             var boutton = document.getElementById("execute");
             boutton.disabled = false;
             boutton.innerHTML = "Actualiser";
 
-            //location.reload(); // recharger la page  
+            location.reload(); // recharger la page  
           }
         }, 1000); // mettre a jour toutes les secondes
         
@@ -298,13 +344,11 @@ nav{
             dayElement.textContent = day;
         });
 
-// VERIFIER CETTE PARTIE 
-
         let sliderRange = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let startDate = new Date(); // start date set to today's date
-        startDate.setHours(0, 0, 0, 0); // set hours, minutes, seconds, and milliseconds to 0 for consistency
+        let startDate = new Date(); 
+        startDate.setHours(0, 0, 0, 0);
         let endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + sliderRange.length - 1); // end date
+        endDate.setDate(endDate.getDate() + sliderRange.length - 1); 
 
         function getSliderValueDate(sliderValue) {
             let daysFromStart = sliderValue + 10;
@@ -318,10 +362,10 @@ nav{
 
         //  event listener pour l'evenement d'un clic
         executeButton.addEventListener('click', () => {
-            // Get value of slider
+        
             const sliderValue = slider.value;
 
-            // Call Flask endpoint to execute Python script with slider value as parameter
+            // executer main.py avec la valeur du slider que l'on a recuperée
             fetch(`/execute?value=${sliderValue}`);
         });
         var myButton = document.getElementById('execute');
@@ -345,7 +389,7 @@ nav{
 
             location.reload()
         }
-        function enlever(){
+        function enlever(){ // enleve le spinner de chargement
             var myButton = document.getElementById('execute');
             var loadingDiv = document.querySelector('.spinner');
             loadingDiv.style.display = 'none';
@@ -360,13 +404,33 @@ nav{
         document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
             document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
         });
-
+        var countbase = -1;
+        function updateText() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
+                    if(countbase == -1){ // parametrer countbase
+                        countbase = (this.responseText.match(/actualiser/g) || []).length; //compter le nombre d'occurences de 'actualiser' de base dans le fichier actu.txt
+                    }
+                    var count = (this.responseText.match(/actualiser/g) || []).length;
+                    if(count != countbase){ //comparer cette valeur au nombre d'occurences actuelles
+                        clearInterval(timer); // reinitialiser le timer
+                        console.log('rechargement de la page')
+                        setTimeout(location.reload(),5000); // rechharger la page
+                    }
+                }
+            };
+            xhr.open('GET', '/text', true); // envoie une requette GET pour actualiser le contenue du fichier texte
+            xhr.send();
+        }
+        setInterval(updateText, 2000); // envoi des requettes GET pour obtenir l'état du fichier texte : dans le terminal vous verrez des lignes telles que celle ci : 127.0.0.1 - - [23/Apr/2023 18:36:11] "GET /text HTTP/1.1" 200 -
+        //setInterval(updateText(),10000);
+        window.addEventListener('load', updateText);
     </script>
-        {% if updated %}
-        <p>updated !</p>
-        {% endif %}
 </body>
 <footer>
+<!--<div id="text-container"></div>-->
 <p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
 </footer>
 </html>

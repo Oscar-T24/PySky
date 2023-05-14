@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<style>
+span {
+ margin-top: 20px;
+ margin-left: 45px;
+}
+#boutton {
+  background-color: #800000;
+  border: 2px solid #ffd700;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  float : right;
+  margin-left: 20%;
+  
+}
+input {
+margin-left: 10px;
+margin-right: 40px;
+}
+#presentation{
+    position:center;
+    background-color: brown;
+    text-align: center;
+    color:aliceblue;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding:0;
+    margin: 0;
+}
+
+#presentation h1 {
+  background-image: linear-gradient(to right, skyblue, white);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+h3{
+font-style:italic;
+}
+
+#explication{
+    font-family:cursive;
+    color:blueviolet;
+    background-color: blanchedalmond;
+    font-size :large;
+}
+footer{
+    height: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+#legende{
+    background-color:aliceblue;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media only screen and (max-width: 1000px) {
+  /*.header {
+    display: block !important;
+  }
+  */
+  .inline {
+    display: block !important;
+  }    
+  header{
+    display: block;
+    align-content: center;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+  }
+  .boutons {
+    width : 100% !important;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+    }
+    #inlineception {
+    display: block;
+    width: 100% !important;
+    }
+    input{
+    align-content: center;
+    justify-content: center !important;
+    align-items:center !important;
+    position:relative !important;
+    }
+    #slider{
+        display: relative !important;
+    }
+}
+
+#inlineception {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+#day {
+    white-space: nowrap;
+}
+
+#timer {
+    border-width:1px;
+    border-style:solid;
+    padding: 1em;
+    border-radius:50px;
+}
+
+.inline {
+    display:flex;
+    justify-content:space-between;
+}
+
+.inline div {
+    padding: 10px;
+}
+
+.aide {
+    display: flex;
+    align-items: center;
+}
+
+.spinner {
+/* chargement */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+/* animation chargement */
+.spinner::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 15px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #09f;
+    animation: spinner 0.6s linear infinite;
+}
+
+#execute {
+    margin-left:5px;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.popup1{
+    background-color: #ffffff;
+    padding: 30px 40px;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 8px;
+    display: none;
+    text-align: center;
+    border:2px solid #000;
+    width:30%;
+}
+
+
+.popup1 boutton{ /* Style du bouton de fermeture */
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: #03549a;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    float:right;
+    cursor: pointer; /* Change la souris sur hover */
+}
+
+.popup1 p {
+    text-align:center;
+}
+
+.popup1 img {
+   width: 80%;
+   height: auto;
+ }
+
+.boutons  {
+    /* Style texte */
+    color: black;
+    text-transform: uppercase;
+    text-align:center;
+    text-decoration: none;
+    /* Style bouton */
+    background-color: #fff;
+    padding: 10px 20px;
+    border:1px solid #000;
+    border-radius: 50px; /* Arrondi les cotés */
+
+}
+
+
+.boutons:hover {
+    background-color: rgb(209, 52, 99);
+    color: rgb(31, 18, 18);
+}
+
+
+.boutons:active {
+    color:black;
+    background-color:yellow;
+}
+
+#actualiser_b{
+  margin: 0;
+  top: 50%;
+  margin-top: 60px;
+  position:relative;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+</style>
+<html>
+<head>
+    <title>Site Météréologique<br> des Trophées NSI</title>
+    <meta charset = "utf-8">
+    <!-- <meta http-equiv="refresh" content="20">   -->
+</head>
+<body>
+    <nav>
+    <div class="popup1">
+        <button class="close" id="close1">X</button>
+        <h2>Besoin d'aide?</h2>
+        <img src="http://93.14.22.225/Pins.png">
+        <td style="width:40%;">
+            <div id="'explication">
+                <p>Pour selectionner un jour dans la timeline, faites glisser le slider</p>
+                <p>En cliquant sur les icones, consultez les données exactes</p>
+                <p>Si votre débit est trop lent (i.e., chargement données > 5min), <br> vous aurez besoin de recharger la page vous même. </p>
+                <p><a href="" target="_blank">Pour plus d'informations</a></p>
+            </div>
+        </td>
+    </div>
+    <header>
+        <div class="inline">
+            <div class="header" id="presentation">
+                <!--<h1>PySky</h1>-->
+                <img src="http://93.14.22.225/logoPYSKYfinal.png" height="120px"  width="auto">
+            </div>
+            <div class="header" id="inlineception">
+                <input type="range" min="-10" max="5" value="0" step="1" id="slider"style="transform: scale(2);">
+                <p><span id="day">Aujourd'hui</span></p>
+            </div>
+            <div class="'header" id="actualiser_b">
+                <button id="execute" onclick="demarrerTimer()" class="boutons">Actualiser la carte</button> <!-- onclick="recharger()"-->
+            </div>
+                <!--<form action="/execute" >
+                <input type="submit" value="actualiser la carte" class="boutons">
+                </form>-->
+            <div class="header">
+                <!-- timer ici  -->
+                <p id="timer"></p>
+            </div>
+            <div class="header" class="aide">
+                <button onclick="pop1(this)" class="boutons">Aide</button>
+            </div>
+        </div>
+    </header>
+    </nav>
+    <div class="spinner" style="display: none; width:150px;height:150px;"></div>
+    <iframe src="{{ lien_iframe }}" height="700px" width="100%" onload="enlever()"></iframe> <!-- onload="enlever()-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function demarrerTimer() {
+        // commence un timer et quand il est fini, recharge la page web
+        alert("Veuillez patienter. NE RECHARGEZ PAS LA PAGE. Elle se rechargera toute seule")
+
+        // désactiver les controles avec 'disable'
+    
+        var boutton = document.getElementById("execute");
+        boutton.disabled = true;
+        boutton.innerHTML = "Chargement...";
+
+        // --------------------------------------
+
+        var countdown = 300; // 5 minutes en secondes
+        var timerDisplay = document.getElementById('timer');
+        console.log('fetching')
+        fetch('/execute');
+        var timer = setInterval(function() {
+          var minutes = Math.floor(countdown / 60);
+          var seconds = countdown % 60;
+          timerDisplay.innerHTML = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+          countdown--; // desincrementer d'une seconde
+
+          if (countdown < 0) {
+            clearInterval(timer);
+            updateText()
+            // reaciver le bouton et recharger la page
+
+            var boutton = document.getElementById("execute");
+            boutton.disabled = false;
+            boutton.innerHTML = "Actualiser";
+
+            location.reload(); // recharger la page  
+          }
+        }, 1000); // mettre a jour toutes les secondes
+        
+      }
+
+        const slider = document.getElementById('slider');
+        const dayElement = document.getElementById('day');
+        const executeButton = document.getElementById('execute');
+
+        // event listener pour afficher la valeur de <input>
+        slider.addEventListener('input', () => {
+
+            const sliderValue = slider.value;
+
+            const day = sliderValue == 0 ? "Aujourd'hui" : `${getSliderValueDate(Number(sliderValue)+20)}`; // a ajouter juste si on veuxn preciser qu'on est dans le passé : ${sliderValue > 0 ? '+' : ''}
+            dayElement.textContent = day;
+        });
+
+        let sliderRange = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let startDate = new Date(); 
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + sliderRange.length - 1); 
+
+        function getSliderValueDate(sliderValue) {
+            let daysFromStart = sliderValue + 10;
+            let date = new Date(startDate);
+            date.setDate(date.getDate() + daysFromStart);
+            let currentMonth = date.getMonth();
+            date.setMonth(currentMonth - 1); // il y a un mois en trop
+            return date.toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' })+' ';
+        }
+// ---------------------
+
+        //  event listener pour l'evenement d'un clic
+        executeButton.addEventListener('click', () => {
+        
+            const sliderValue = slider.value;
+
+            // executer main.py avec la valeur du slider que l'on a recuperée
+            fetch(`/execute?value=${sliderValue}`);
+        });
+        var myButton = document.getElementById('execute');
+        var loadingDiv = document.querySelector('.spinner');
+        loadingDiv.style.display = 'block';
+        myButton.addEventListener('click', function() {
+            loadingDiv.style.display = 'block';
+            /*
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 15000);
+            */
+        });
+
+        function recharger(){
+            document.getElementsByTagName('iframe').src = 'https://google.fr';
+            // recharger l'iframe
+            
+            document.getElementsByTagName('iframe').src = 'http://93.14.22.225/iframe';
+            // location.reload() AVANT 
+
+            location.reload()
+        }
+        function enlever(){ // enleve le spinner de chargement
+            var myButton = document.getElementById('execute');
+            var loadingDiv = document.querySelector('.spinner');
+            loadingDiv.style.display = 'none';
+        }
+
+        // Ouverture du popup:
+        function pop1(){  // Au chargement de la page:
+            document.querySelector(".popup1").style.display = "block"; // On affiche la class popup comme un bloc
+        };
+
+        // Fermeture lors du click:
+        document.querySelector("#close1").addEventListener("click", function(){ // Lorsqu'on click sur le bouton d'id close1:
+            document.querySelector(".popup1").style.display = "none"; // On met plus de display au bloc de class popup
+        });
+        var countbase = -1;
+        function updateText() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    //document.getElementById('text-container').textContent = this.responseText; pour debugger : affichher la valeur ecrite
+                    if(countbase == -1){ // parametrer countbase
+                        countbase = (this.responseText.match(/actualiser/g) || []).length; //compter le nombre d'occurences de 'actualiser' de base dans le fichier actu.txt
+                    }
+                    var count = (this.responseText.match(/actualiser/g) || []).length;
+                    if(count != countbase){ //comparer cette valeur au nombre d'occurences actuelles
+                        clearInterval(timer); // reinitialiser le timer
+                        console.log('rechargement de la page')
+                        setTimeout(location.reload(),5000); // rechharger la page
+                    }
+                }
+            };
+            xhr.open('GET', '/text', true); // envoie une requette GET pour actualiser le contenue du fichier texte
+            xhr.send();
+        }
+        setInterval(updateText, 2000); // envoi des requettes GET pour obtenir l'état du fichier texte : dans le terminal vous verrez des lignes telles que celle ci : 127.0.0.1 - - [23/Apr/2023 18:36:11] "GET /text HTTP/1.1" 200 -
+        //setInterval(updateText(),10000);
+        window.addEventListener('load', updateText);
+    </script>
+</body>
+<footer>
+<!--<div id="text-container"></div>-->
+<p> Trophees NSI - 2023. Site crée par Oscar, Paul, Hippolyte, Ava et Benjamin - 1ère à l'EJM Paris</p>
+</footer>
+</html>

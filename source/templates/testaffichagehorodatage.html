@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Countdown Timer</title>
+  </head>
+  <body>
+    <h1>Countdown Timer</h1>
+    <script>
+let sliderRange = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let startDate = new Date(); // start date set to today's date
+        startDate.setHours(0, 0, 0, 0); // set hours, minutes, seconds, and milliseconds to 0 for consistency
+        let endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + sliderRange.length - 1); // end date
+
+        function getSliderValueDate(sliderValue) {
+            let daysFromStart = sliderValue + 10;
+            let date = new Date(startDate);
+            date.setDate(date.getDate() + daysFromStart);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });;
+        }
+    alert(getSliderValueDate(21))
+
+    </script>
+  </body>
+</html>

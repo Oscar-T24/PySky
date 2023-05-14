@@ -16,7 +16,7 @@
 
 
 # PROJET DES TROPHÉES NSI 2023 
-## Paul et Oscar, 1ère à l'EJM Paris
+## Paul , Oscar, Hypollite, Ava et Benjamin à l'EJM Paris
 
 ###  Dépendances 
 
@@ -29,6 +29,11 @@
 `pip3 install flask`
 
 * Avoir Chrome ou Firefox installé
+
+### environnement d'execution
+
+* veuillez executer la totalité des scripts dans le dossier script_opérationnels
+[script_operationnels](https://github.com/Oscar-T24/Trophees-NSI-2023/tree/main/scripts%20op%C3%A9rationnels)
 
 ### résumé
 
