@@ -7,7 +7,7 @@
 * vous pouvez accéder à une démo de la plateforme PySky mise à disposition pour tous à l'adresse suivante : 
 [site Pysky demo](http://93.14.22.225:1025)
 
-* A noter que la démo ne fonctionne pas sur firefox 
+* A noter que la démo ne fonctionne pas sur firefox (vous aurez un `403 - forbidden`)
 
 ###  Dépendances 
 
