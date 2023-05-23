@@ -7,6 +7,8 @@
 * vous pouvez accéder à une démo de la plateforme PySky mise à disposition pour tous à l'adresse suivante : 
 [site Pysky demo](http://93.14.22.225:1025)
 
+* A noter que la démo ne fonctionne pas sur firefox 
+
 ###  Dépendances 
 
 * vous pouvez consulter les requirements dans le fichier [requirements.txt](https://github.com/Oscar-T24/PySky/blob/main/requirements.txt)
