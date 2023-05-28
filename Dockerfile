@@ -1,6 +1,7 @@
 # docker build -t app .
-# docker run -d -p 5001:5001 -e PORT=5001 app --name CUSTOMNAME
+# docker run -d -p 5001:5001 -e PORT=5001  --name CUSTOMNAME app
 # docker system prune 
+#docker stop $(docker ps -q)
 # Use an official Python runtime as the base image
 
 FROM python:3.10-slim
