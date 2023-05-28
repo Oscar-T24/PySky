@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, Response, make_response,redirect,abort
+from flask import Flask, render_template, request, Response, make_response,redirect,abort,session
 import subprocess
 import argparse
 import re
@@ -17,6 +17,8 @@ else:
 # Rest of your code using the port variable
 
 def check_cle(cle):
+    if cle is None or len(cle) < 10:
+        return None
     try: 
         cle = re.split(r'(\d+)(?=\D)',cle)
         for i in range(0,len(cle)-1,2):
@@ -31,7 +33,6 @@ def check_cle(cle):
     except:
         return None
 
-
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
 debut = False
 
@@ -41,10 +42,11 @@ value = 0
 with open('templates/actu.txt','w') as f:
     f.write('')
 
-@app.route('/',methods=['POST']) # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
+@app.route('/',methods=['GET']) # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
-    message = request.form.get('message')
-    if check_cle(message) == None and not request.is_reload: # si il s'agit d'une fresh request
+    message = request.args.get('message')
+    print('valeur du check',check_cle(message))
+    if check_cle(message) == None:
         abort(403)  # Return a 403 Forbidden error
     print('retour au site principal','port :',port)
     #with open('templates/actu.txt','w') as f:

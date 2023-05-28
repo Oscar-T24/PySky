@@ -26,4 +26,4 @@ def check_cle(cle):
             return None
     return True
 
-print(check_cle(generer_cle(80)))
+print(generer_cle(80))
