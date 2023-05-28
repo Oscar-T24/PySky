@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, Response, make_response,redirect
+from flask import Flask, render_template, request, Response, make_response,redirect,abort
 import subprocess
 import argparse
 
@@ -20,12 +20,18 @@ else:
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
 debut = False
 
+def check_access():
+    if request.referrer != 'http://93.14.22.225:81/show_port':
+        abort(403)  # Return a 403 Forbidden error
+
 value = 0
 with open('templates/actu.txt','w') as f:
     f.write('')
 
 @app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
+    if request.referrer != 'http://93.14.22.225:81/show_port':
+        abort(403)  # Return a 403 Forbidden error
     print('retour au site principal','port :',port)
     #with open('templates/actu.txt','w') as f:
        #f.write('')
