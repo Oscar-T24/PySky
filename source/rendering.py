@@ -30,6 +30,8 @@ with open('templates/actu.txt','w') as f:
 
 @app.route('/') # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
+    if request.referrer != 'http://93.14.22.225:81/show_port':
+        abort(403)  # Return a 403 Forbidden error
     print('retour au site principal','port :',port)
     #with open('templates/actu.txt','w') as f:
        #f.write('')
