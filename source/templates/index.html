@@ -351,7 +351,7 @@ header {
         endDate.setDate(endDate.getDate() + sliderRange.length - 1); 
 
         function getSliderValueDate(sliderValue) {
-            let daysFromStart = sliderValue + 10;
+            let daysFromStart = sliderValue + 9;
             let date = new Date(startDate);
             date.setDate(date.getDate() + daysFromStart);
             let currentMonth = date.getMonth();
