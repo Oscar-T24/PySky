@@ -4,8 +4,14 @@
 ## Paul , Oscar, Hypollite, Ava et Benjamin à l'EJM Paris
 
 ## NOUVEAU : 
-* vous pouvez accéder à une démo de la plateforme PySky mise à disposition pour tous à l'adresse suivante : 
+<span style="color:red;font-family:monospace;font-size:25px;">
+vous pouvez accéder à une démo de la plateforme PySky mise à disposition pour tous à l'adresse suivante : 
+<a href="http://93.14.22.225:1025">PAR ICI</a>
+</span>
+
 [site Pysky demo](http://93.14.22.225:1025)
+
+![screenshot](/site_principal.png)
 
 * A noter que la démo ne fonctionne pas sur firefox (vous aurez un `403 - forbidden`)
 
