@@ -17,21 +17,28 @@ else:
 # Rest of your code using the port variable
 
 def check_cle(cle):
-    if cle is None or len(cle) < 10:
-        return None
-    try: 
-        cle = re.split(r'(\d+)(?=\D)',cle)
-        for i in range(0,len(cle)-1,2):
-            if cle[i].isupper() == True:
-                if (ord(cle[i])+32) % 3 != 0:
-                    print('unmatch')
-                    return None
-            if chr(int(cle[i+1])-4) != cle[i] and cle[i].islower():
-                print('decalage incrorrect')
-                return None
-        return True
-    except:
-        return None
+    cle_nouv = ""
+    port = []
+    i = 0
+    while i < len(cle)-1:
+        if cle[i] == '-':
+            # Skip the dash and the character following it
+            port.append(str(ord(cle[i+1])-32))
+            i += 2
+        else:
+            cle_nouv += cle[i]
+            i += 1
+    cle = re.split(r'(\d+)(?=\D)',cle_nouv)
+    #print(cle)
+    for i in range(0,len(cle)-1,2):
+        if cle[i].isupper() == True:
+            if (ord(cle[i])+32) % 3 != 0:
+                print('unmatch')
+                return None,None
+        if chr(int(cle[i+1])-4) != cle[i] and cle[i].islower():
+            print('decalage incrorrect')
+            return None,None
+    return True,"".join(port)
 
 app = Flask(__name__) # instantiation d'un objet de la classe Flask pour émuler une page 
 debut = False
@@ -45,8 +52,10 @@ with open('templates/actu.txt','w') as f:
 @app.route('/',methods=['GET']) # ouvrir un domaine principal qui utilisera index.html (dans le dossier Templates)
 def index():
     message = request.args.get('message')
-    print('valeur du check',check_cle(message))
-    if check_cle(message) == None:
+    print(message)
+    if message is None:
+        abort(403)
+    elif None in check_cle(message) or check_cle(message)[0] == True and check_cle(message)[1] != port:
         abort(403)  # Return a 403 Forbidden error
     print('retour au site principal','port :',port)
     #with open('templates/actu.txt','w') as f:
