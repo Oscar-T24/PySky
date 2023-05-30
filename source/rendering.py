@@ -96,7 +96,10 @@ def execute():
 
 @app.route('/iframe') # une autre page qui est generée afin d'afficher la carte (templates/map.html)
 def iframe():
-    return render_template('map.html')
+    try:
+        return render_template('map.html')
+    except:
+        return render_template('nopage.html')
 
 @app.route('/text')
 def text():

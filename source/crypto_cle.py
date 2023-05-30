@@ -14,7 +14,7 @@ def generer_cle(taille,port):
         longueur_ini = len(cle)
     for i in range(4):
         #print(cle)
-        cle.insert(longueur_ini//4*i,'-'+chr(int(port[i])+32))
+        cle.insert(longueur_ini//4*i,'-'+chr(int(port[i])+97))
         print("insertion à l'indice",longueur_ini//4*i)
     return "".join(cle)
 
@@ -26,7 +26,7 @@ def check_cle(cle):
     while i < len(cle):
         if cle[i] == '-':
             # Skip the dash and the character following it
-            port.append(ord(cle[i+1])-32)
+            port.append(ord(cle[i+1])-97)
             i += 2
         else:
             cle_nouv += cle[i]
@@ -43,4 +43,4 @@ def check_cle(cle):
             return None
     return True,port
 
-print(generer_cle(14,[5,0,0,8]))
+print(generer_cle(14,[5,0,0,0]))
