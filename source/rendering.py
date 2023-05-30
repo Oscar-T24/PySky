@@ -23,7 +23,7 @@ def check_cle(cle):
     while i < len(cle)-1:
         if cle[i] == '-':
             # Skip the dash and the character following it
-            port.append(str(ord(cle[i+1])-32))
+            port.append(str(ord(cle[i+1])-97))
             i += 2
         else:
             cle_nouv += cle[i]
