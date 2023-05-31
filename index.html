@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Redirect Page</title>
+    <script>
+        function checkAvailability() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var response = xhr.responseText;
+                        if (response.trim() === 'True') {
+                            window.location.href = 'http://93.14.22.225:1025';  // Replace with the desired redirect URL
+                        } else {
+                            document.getElementById('message').textContent = 'Serveur non disponible.';
+                        }
+                    } else {
+                        document.getElementById('message').textContent = 'Failed to read the file.';
+                    }
+                }
+            };
+            xhr.open('GET', 'etat.txt', true);  // Replace with the name of your text file
+            xhr.send();
+        }
+    </script>
+</head>
+<body onload="checkAvailability()">
+    <h1>Loading...</h1>
+    <p id="message"></p>
+</body>
+</html>
