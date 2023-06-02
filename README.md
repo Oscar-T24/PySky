@@ -16,6 +16,7 @@
 ###  Dépendances 
 
 * vous pouvez consulter les requirements dans le fichier [requirements.txt](https://github.com/Oscar-T24/PySky/blob/main/requirements.txt)
+* et les installer avec la commande  : `pip3 install -r requirements.txt`
 
 * il vous suffira d'executer dans votre terminal la commande suivante, en ajoutant le nom de la librairie
 
@@ -28,7 +29,7 @@
 ### environnement d'execution
 
 * veuillez executer la totalité des scripts dans le dossier script_opérationnels
-[script_operationnels](https://github.com/Oscar-T24/Trophees-NSI-2023/tree/main/scripts%20op%C3%A9rationnels)
+[source](https://github.com/Oscar-T24/Trophees-NSI-2023/tree/main/source)
 
 ### résumé
 
