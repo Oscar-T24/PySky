@@ -29,7 +29,7 @@
 ### environnement d'execution
 
 * veuillez executer la totalité des scripts dans le dossier scripts_operationels (pour tester localement sur votre machine)
-[source](https://github.com/Oscar-T24/Trophees-NSI-2023/tree/main/source)
+[source]([https://github.com/Oscar-T24/PySky/tree/main/scripts%20op%C3%A9rationnels%20(pour%20la%20d%C3%A9mo%20locale)])
 
 * le dossier source contient un duplicata des fichiers de base de scripts_operationels, mais il a été modifié afin de pouvoir etre utilisé dans le deploiment de notre serveur (il n'est pas destiné à fonctioner sur votre machine) 
 [source](https://github.com/Oscar-T24/Trophees-NSI-2023/tree/main/source)
